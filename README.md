@@ -4,4 +4,4 @@
 
 ## Prototype 1
 
-- 67 is afraid of 89 because they were black.
+- 6 and 7 is afraid of 8 and 9 because they were black.
