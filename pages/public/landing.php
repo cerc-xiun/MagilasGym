@@ -1345,7 +1345,6 @@
                 </div>
                 <ul class="pricing-features">
                     <li><i class="fas fa-check"></i> Unlimited gym access</li>
-                    <li><i class="fas fa-check"></i> 2 free coaching sessions</li>
                     <li><i class="fas fa-check"></i> Free WiFi & drinking water</li>
                     <li><i class="fas fa-check"></i> Free parking</li>
                     <li><i class="fas fa-check"></i> Students: ₱600 | Seniors: ₱500</li>
