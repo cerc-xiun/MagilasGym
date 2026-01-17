@@ -1,0 +1,146 @@
+/* =============================================
+   Magilas Gym - Dev Index Styles
+   ============================================= */
+
+.dev-page {
+    min-height: 100vh;
+    background: url('../assets/images/hero-bg.jpg') center/cover no-repeat fixed;
+    display: flex;
+    flex-direction: column;
+}
+
+.dev-overlay {
+    background: linear-gradient(135deg, rgba(13, 13, 13, 0.95), rgba(13, 13, 13, 0.85));
+    flex: 1;
+    padding: var(--space-8) var(--space-4);
+}
+
+.dev-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.dev-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: var(--space-4);
+    filter: drop-shadow(0 0 15px var(--color-accent-glow));
+}
+
+.dev-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+    letter-spacing: 2px;
+}
+
+.dev-subtitle {
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    font-weight: 300;
+}
+
+.dev-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dev-card {
+    background: rgba(26, 26, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.dev-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.dev-card-header {
+    padding: var(--space-4) var(--space-6);
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.dev-card-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--color-surface);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.dev-card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-text);
+    letter-spacing: 1px;
+}
+
+.dev-links {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.dev-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.dev-link:hover {
+    background: rgba(212, 175, 0, 0.1);
+    color: var(--color-accent);
+    border-color: rgba(212, 175, 0, 0.2);
+    padding-left: var(--space-5);
+}
+
+.dev-link.coming-soon {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: transparent !important;
+    color: var(--color-text-muted) !important;
+    border-color: transparent !important;
+    padding-left: var(--space-4) !important;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-border);
+}
+
+.dev-link:hover .status-dot {
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+}
+
+.status-dot.active {
+    background: var(--color-accent);
+    box-shadow: 0 0 5px var(--color-accent-glow);
+}
