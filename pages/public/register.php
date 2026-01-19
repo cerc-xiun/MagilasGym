@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +44,7 @@
                 </header>
 
                 <form class="auth-form" id="registerForm" novalidate>
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                     <!-- Personal Info -->
                     <div class="form-group">
                         <label for="fullname" class="form-label">Full Name</label>
@@ -199,11 +206,37 @@
             if (isValid) {
                 loadingOverlay.classList.add('active');
                 
-                setTimeout(() => {
+                fetch('register_process.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
                     loadingOverlay.classList.remove('active');
-                    window.location.href = 'application_submitted.php';
-                }, 2000);
+                    
+                    if (data.success) {
+                        window.location.href = 'application_submitted.php';
+                    } else {
+                        // Show general error or field specific errors
+                        if (data.errors) {
+                             if (data.errors.fullname) showError('fullname', data.errors.fullname);
+                             if (data.errors.email) showError('email', data.errors.email);
+                             if (data.errors.phone) showError('phone', data.errors.phone);
+                             if (data.errors.photo) showError('photo', data.errors.photo);
+                        }
+                        
+                        if (data.message && !data.errors) {
+                            alert(data.message); // Fallback for general errors
+                        }
+                    }
+                })
+                .catch(error => {
+                    loadingOverlay.classList.remove('active');
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again later.');
+                });
             }
+
         });
 
         function showError(fieldId, message) {
