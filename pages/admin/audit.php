@@ -27,10 +27,7 @@
                 </a>
                 <a href="stock.php" class="nav-item">
                     <i class="fas fa-boxes"></i> <span>Stock Count</span>
-                </a>
-                <a href="equipment.php" class="nav-item">
-                    <i class="fas fa-dumbbell"></i> <span>Equipment</span>
-                </a>
+                </a> 
                 <a href="audit.php" class="nav-item active">
                     <i class="fas fa-file-invoice-dollar"></i> <span>Money Audit</span>
                 </a>
@@ -75,22 +72,16 @@
                         <label class="form-label">Physical Cash Counted</label>
                         <div class="input-group">
                             <span class="input-icon">₱</span>
-                            <input type="number" class="form-input" placeholder="0.00" value="12500">
+                            <input type="number" class="form-input" style="color: black;" placeholder="0.00" value="12500">
                         </div>
                     </div>
 
-                    <!-- Discrepancy Display -->
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-4); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm);">
-                        <span class="text-muted">Discrepancy:</span>
-                        <span class="text-success" style="font-weight: bold; font-size: 1.1rem;">₱ 0.00
-                            (Balanced)</span>
-                    </div>
+
 
                     <!-- Notes -->
                     <div class="form-group">
                         <label class="form-label">Audit Notes</label>
-                        <textarea class="form-input" rows="3"
+                        <textarea class="form-input" style="width: 100%; color: black;" rows="3"
                             placeholder="Any variance explanation or notes..."></textarea>
                     </div>
 

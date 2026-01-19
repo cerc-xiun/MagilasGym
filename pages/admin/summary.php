@@ -28,9 +28,6 @@
                 <a href="stock.php" class="nav-item">
                     <i class="fas fa-boxes"></i> <span>Stock Count</span>
                 </a>
-                <a href="equipment.php" class="nav-item">
-                    <i class="fas fa-dumbbell"></i> <span>Equipment</span>
-                </a>
                 <a href="audit.php" class="nav-item">
                     <i class="fas fa-file-invoice-dollar"></i> <span>Money Audit</span>
                 </a>

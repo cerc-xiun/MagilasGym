@@ -28,9 +28,6 @@
                 <a href="stock.php" class="nav-item">
                     <i class="fas fa-boxes"></i> <span>Stock Count</span>
                 </a>
-                <a href="equipment.php" class="nav-item">
-                    <i class="fas fa-dumbbell"></i> <span>Equipment</span>
-                </a>
                 <a href="audit.php" class="nav-item">
                     <i class="fas fa-file-invoice-dollar"></i> <span>Money Audit</span>
                 </a>
@@ -68,17 +65,6 @@
                     </div>
                 </a>
 
-                <!-- Equipment -->
-                <a href="equipment.php" class="dash-card action-card-hover"
-                    style="text-decoration: none; transition: transform 0.3s; display: block;">
-                    <div style="text-align: center; padding: var(--space-8) 0;">
-                        <i class="fas fa-dumbbell"
-                            style="font-size: 4rem; color: #3498db; margin-bottom: var(--space-4);"></i>
-                        <h2 style="color: #fff;">Equipment Check</h2>
-                        <p class="text-muted">Report broken machines & maintenance</p>
-                    </div>
-                </a>
-
                 <!-- Audit -->
                 <a href="audit.php" class="dash-card action-card-hover"
                     style="text-decoration: none; transition: transform 0.3s; display: block;">
@@ -96,7 +82,7 @@
                     <div style="text-align: center; padding: var(--space-8) 0;">
                         <i class="fas fa-clipboard-list"
                             style="font-size: 4rem; color: #e74c3c; margin-bottom: var(--space-4);"></i>
-                        <h2 style="color: #fff;">Daily Summary</h2>
+                        <h2 style="color: #fff;">Daily Report</h2>
                         <p class="text-muted">View end-of-day reports</p>
                     </div>
                 </a>
