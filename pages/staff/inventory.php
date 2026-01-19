@@ -21,8 +21,6 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f5f7;
-            color: #1a1a1a;
         }
 
         a {
@@ -275,25 +273,26 @@
                     <div class="nav-label">Overview</div>
                     <a href="dashboard.php" class="nav-item"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
                 </div>
-                <div class="nav-section">
-                    <div class="nav-label">Members</div>
-                    <a href="search.php" class="nav-item"><i class="fas fa-search"></i> <span>Search Member</span></a>
-                    <a href="scan.php" class="nav-item"><i class="fas fa-qrcode"></i> <span>Scan Entry</span></a>
-                    <a href="activate.php" class="nav-item"><i class="fas fa-user-plus"></i> <span>New
-                            Membership</span></a>
-                </div>
+
                 <div class="nav-section">
                     <div class="nav-label">Management</div>
+                    <a href="members.php" class="nav-item">
+                        <i class="fas fa-users"></i> <span>Members</span>
+                    </a>
                     <a href="inventory.php" class="nav-item active"><i class="fas fa-boxes-stacked"></i>
                         <span>Inventory</span></a>
                 </div>
             </nav>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar"><i class="fas fa-user-shield"></i></div>
-                    <div class="user-info">
-                        <h4>Staff Member</h4><span>Front Desk</span>
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">SM</div>
+                    <div class="user-text">
+                        <h4>Staff Member</h4>
+                        <span>Front Desk</span>
                     </div>
+                    <a href="../auth/login.php" class="user-logout" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
                 </div>
             </div>
         </aside>

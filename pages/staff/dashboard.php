@@ -30,8 +30,6 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #050505;
-            color: #fff;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -72,18 +70,7 @@
                     </a>
                 </div>
 
-                <div class="nav-section">
-                    <div class="nav-label">Members</div>
-                    <a href="search.php" class="nav-item">
-                        <i class="fas fa-search"></i> Search Member
-                    </a>
-                    <a href="scan.php" class="nav-item">
-                        <i class="fas fa-qrcode"></i> Scan Entry
-                    </a>
-                    <a href="activate.php" class="nav-item">
-                        <i class="fas fa-user-plus"></i> New Membership
-                    </a>
-                </div>
+
 
                 <div class="nav-section">
                     <div class="nav-label">Management</div>
@@ -525,9 +512,9 @@
             const sidebar = document.getElementById('sidebar');
             const menuBtn = document.getElementById('menuBtn');
             if (window.innerWidth <= 1024 &&
-               sidebar.classList.contains('open') &&
-               !sidebar.contains(e.target) &&
-               !menuBtn.contains(e.target)) {
+                sidebar.classList.contains('open') &&
+                !sidebar.contains(e.target) &&
+                !menuBtn.contains(e.target)) {
                 sidebar.classList.remove('open');
             }
         });

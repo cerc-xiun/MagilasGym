@@ -30,8 +30,6 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #050505;
-            color: #fff;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
@@ -206,8 +204,8 @@
 
         /* Result card */
         .result-card {
-            background: linear-gradient(145deg, rgba(25, 25, 25, 0.95) 0%, rgba(12, 12, 12, 0.98) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: var(--gradient-card);
+            border: 1px solid var(--border);
             border-radius: 20px;
             padding: 32px;
             height: 100%;
@@ -373,14 +371,25 @@
                         <i class="fas fa-user-plus"></i> <span>New Membership</span>
                     </a>
                 </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">Management</div>
+                    <a href="inventory.php" class="nav-item">
+                        <i class="fas fa-boxes-stacked"></i> <span>Inventory</span>
+                    </a>
+                </div>
             </nav>
 
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar"><i class="fas fa-user-shield"></i></div>
-                    <div class="user-info">
-                        <h4>Staff Member</h4><span>Front Desk</span>
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">SM</div>
+                    <div class="user-text">
+                        <h4>Staff Member</h4>
+                        <span>Front Desk</span>
                     </div>
+                    <a href="../auth/login.php" class="user-logout" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
                 </div>
             </div>
         </aside>
@@ -396,55 +405,84 @@
                 </div>
             </header>
 
-            <div class="scan-grid">
-                <!-- Camera View -->
-                <div class="camera-container">
-                    <div class="camera-placeholder">
-                        <i class="fas fa-camera"></i>
-                        <p>Camera Feed Active</p>
-                    </div>
-                    <div class="scan-corners"></div>
-                    <div class="scan-corners-bottom"></div>
-                    <div class="scan-line"></div>
-                    <div class="camera-status">Ready to Scan</div>
+            <!-- Scan Header & Action -->
+            <div class="scan-header-action" style="margin-bottom: 24px;">
+                <button class="btn-allow" style="width: 100%; padding: 20px; font-size: 18px;" onclick="openScanModal()">
+                    <i class="fas fa-qrcode" style="font-size: 24px;"></i> SCAN MEMBER QR
+                </button>
+            </div>
+
+            <!-- Main Content: Who's In List -->
+            <div class="panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fas fa-users"></i> Who's In Gym</h2>
+                    <span class="member-badge" id="activeLabel">0 Active</span>
                 </div>
+                <div class="panel-body" id="gymMembersList" style="flex: 1; overflow-y: auto;">
+                    <!-- List -->
+                </div>
+            </div>
 
-                <!-- Scan Result Area -->
-                <div class="result-card">
-                    <div class="result-header">
-                        <h3 class="result-title">Scan Result</h3>
-                        <span class="status-badge pending" id="scanStatus">Waiting for scan...</span>
-                    </div>
+            <!-- Scan Modal -->
+            <div id="scanModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+                <div class="modal-content" style="background: var(--bg-secondary); border-radius: var(--radius-xl); border: 1px solid var(--border); width: 90%; max-width: 500px; padding: 24px; position: relative;">
+                    <button onclick="closeScanModal()" style="position: absolute; top: 16px; right: 16px; color: var(--text-muted); font-size: 20px;"><i class="fas fa-times"></i></button>
+                    
+                    <h3 style="margin-bottom: 20px; color: var(--text-primary);">Scan QR Code</h3>
 
-                    <!-- Waiting State -->
-                    <div id="no-scan" class="waiting-state">
-                        <i class="fas fa-qrcode"></i>
-                        <p>Point camera at member's QR code</p>
-                    </div>
-
-                    <!-- Scan Success (Hidden by default) -->
-                    <div id="scan-data" class="scan-success" style="display: none;">
-                        <div class="member-avatar-large">JD</div>
-                        <h2 class="member-name">John Doe</h2>
-                        <p class="member-plan">Premium Member</p>
-                        <span class="status-badge success">Active Membership</span>
-
-                        <div class="action-buttons">
-                            <button class="btn-allow" onclick="allowEntry()">
-                                <i class="fas fa-check"></i> ALLOW ENTRY
+                    <!-- Camera View -->
+                    <div class="camera-container" style="height: 300px; margin-bottom: 20px;">
+                        <!-- Camera Placeholder / Start State -->
+                        <div id="camera-placeholder" class="camera-placeholder">
+                            <i class="fas fa-camera"></i>
+                            <p>Camera is ready</p>
+                            <button class="btn-allow" style="margin-top: 16px; padding: 12px 24px;" onclick="startCamera()">
+                                <i class="fas fa-power-off"></i> Start Camera
                             </button>
-                            <button class="btn-deny" onclick="denyEntry()">
-                                <i class="fas fa-times"></i> DENY ENTRY
-                            </button>
+                        </div>
+                        
+                        <!-- Active Camera State -->
+                        <div id="camera-active" class="camera-active" style="display: none; width: 100%; height: 100%;">
+                             <div class="scan-corners"></div>
+                             <div class="scan-corners-bottom"></div>
+                             <div class="scan-line"></div>
+                             <div class="camera-status">Scanning...</div>
                         </div>
                     </div>
 
-                    <!-- Demo Controls -->
-                    <div class="demo-controls">
-                        <p>Demo Controls:</p>
-                        <button class="btn btn-secondary btn-sm" onclick="simulateScan()">
-                            <i class="fas fa-play"></i> Simulate Scan
-                        </button>
+                    <!-- Scan Result Area -->
+                    <div class="result-card" style="border: none; background: transparent; padding: 0;">
+                        <div class="result-header" style="padding-bottom: 12px; margin-bottom: 12px;">
+                            <h3 class="result-title" style="font-size: 18px;">Result</h3>
+                            <span class="status-badge pending" id="scanStatus">Waiting...</span>
+                        </div>
+
+                        <!-- Waiting State -->
+                        <div id="no-scan" class="waiting-state" style="padding: 20px;">
+                            <p>Point camera at member's QR code</p>
+                            <div class="demo-controls" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                                <button class="btn btn-secondary btn-sm" onclick="simulateScan()">
+                                    <i class="fas fa-play"></i> Simulate Scan
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Scan Success -->
+                        <div id="scan-data" class="scan-success" style="display: none;">
+                            <div class="member-avatar-large" style="width: 80px; height: 80px; font-size: 32px; margin-bottom: 12px;">JD</div>
+                            <h2 class="member-name" style="font-size: 20px;">John Doe</h2>
+                            <p class="member-plan">Premium Member</p>
+                            <span class="status-badge success">Active</span>
+
+                            <div class="action-buttons" style="margin-top: 20px;">
+                                <button class="btn-allow" onclick="allowEntry()">
+                                    <i class="fas fa-check"></i> ALLOW
+                                </button>
+                                <button class="btn-deny" onclick="denyEntry()">
+                                    <i class="fas fa-times"></i> DENY
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -452,16 +490,93 @@
     </div>
 
     <script>
+        // Demo Data for Who's In
+        let gymMembers = [
+            { id: 101, name: 'Sarah Connor', initials: 'SC', plan: 'Monthly', time: '2 hours ago' },
+            { id: 102, name: 'Mike Johnson', initials: 'MJ', plan: 'Day Pass', time: '1 hour ago' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGymMembers();
+        });
+
+        function renderGymMembers() {
+            const list = document.getElementById('gymMembersList');
+            const label = document.getElementById('activeLabel');
+            
+            if (gymMembers.length === 0) {
+                list.innerHTML = '<div class="empty-state" style="padding:20px;text-align:center;color:var(--text-muted)"><i class="fas fa-user-slash" style="font-size:24px;margin-bottom:8px"></i><p>No active members</p></div>';
+                label.textContent = '0 Active';
+                return;
+            }
+
+            list.innerHTML = gymMembers.map(m => `
+                <div class="member-row">
+                    <div class="member-initials">${m.initials}</div>
+                    <div class="member-details">
+                        <h5>${m.name}</h5>
+                        <small>${m.plan} • ${m.time}</small>
+                    </div>
+                    <button onclick="removeMember(${m.id})" class="btn-deny" style="padding: 6px 12px; font-size: 12px;">
+                        <i class="fas fa-sign-out-alt"></i> Exit
+                    </button>
+                </div>
+            `).join('');
+            
+            label.textContent = `${gymMembers.length} Active`;
+        }
+
+        function removeMember(id) {
+            if(confirm('Mark member as exited?')) {
+                gymMembers = gymMembers.filter(m => m.id !== id);
+                renderGymMembers();
+            }
+        }
+
+        function openScanModal() {
+            document.getElementById('scanModal').style.display = 'flex';
+        }
+
+        function closeScanModal() {
+            document.getElementById('scanModal').style.display = 'none';
+            // Optional: reset camera state if desired when closing modal
+             document.getElementById('camera-placeholder').style.display = 'flex';
+             document.getElementById('camera-active').style.display = 'none';
+             resetScan();
+        }
+
+        function startCamera() {
+            document.getElementById('camera-placeholder').style.display = 'none';
+            document.getElementById('camera-active').style.display = 'block';
+            document.getElementById('scanStatus').textContent = 'Scanning...';
+            // Here you would also initialize the actual QR scanner library
+        }
+
         function simulateScan() {
-            document.getElementById('no-scan').style.display = 'none';
-            document.getElementById('scan-data').style.display = 'block';
-            document.getElementById('scanStatus').textContent = 'Member Found';
-            document.getElementById('scanStatus').className = 'status-badge success';
+            startCamera(); // Ensure camera UI is active first
+            setTimeout(() => {
+                document.getElementById('no-scan').style.display = 'none';
+                document.getElementById('scan-data').style.display = 'block';
+                document.getElementById('scanStatus').textContent = 'Member Found';
+                document.getElementById('scanStatus').className = 'status-badge success';
+            }, 800); // Small delay to simulate finding
         }
 
         function allowEntry() {
-            alert('Entry Allowed! Member checked in.');
+            // Add Demo User
+            const newMember = {
+                id: Date.now(),
+                name: 'John Doe',
+                initials: 'JD',
+                plan: 'Premium',
+                time: 'Just now'
+            };
+            gymMembers.unshift(newMember);
+            renderGymMembers();
+            
+            alert('Entry Allowed! Member added to active list.');
             resetScan();
+            closeScanModal(); // Close modal after success
         }
 
         function denyEntry() {
@@ -472,7 +587,7 @@
         function resetScan() {
             document.getElementById('no-scan').style.display = 'block';
             document.getElementById('scan-data').style.display = 'none';
-            document.getElementById('scanStatus').textContent = 'Waiting for scan...';
+            document.getElementById('scanStatus').textContent = 'Waiting...';
             document.getElementById('scanStatus').className = 'status-badge pending';
         }
 
