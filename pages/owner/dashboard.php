@@ -28,7 +28,12 @@
                 <a href="#" class="nav-item">
                     <i class="fas fa-users"></i> <span>Staff Mgmt</span>
                 </a>
+                <a href="summary.php" class="nav-item">
+                    <i class="fas fa-chart-bar"></i> <span>Daily Report</span>
+                </a>
             </nav>
+
+
 
             <div class="sidebar-footer">
                 <div class="user-profile">
@@ -95,6 +100,15 @@
                     </div>
                     <div style="font-size: 2rem; color: #fff;">+45</div>
                     <small class="text-muted">32 Renewals</small>
+                </div>
+
+                <div class="dash-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Pending Collection</h3>
+                    </div>
+                    <div style="font-size: 2rem; color: #fff;">PHP 5000</div>
+                    <button
+                        style="background: #ffd700; color: black; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; margin-top: 10px; font-size: 0.9rem;">Claim</button>
                 </div>
 
                 <!-- Graphic Placeholder -->

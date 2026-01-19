@@ -23,16 +23,10 @@
 
             <nav class="sidebar-nav">
                 <a href="dashboard.php" class="nav-item">
-                    <i class="fas fa-th-large"></i> <span>Dashboard</span>
+                    <i class="fas fa-chart-line"></i> <span>Financials</span>
                 </a>
-                <a href="stock.php" class="nav-item">
-                    <i class="fas fa-boxes"></i> <span>Stock Count</span>
-                </a>
-                <a href="equipment.php" class="nav-item">
-                    <i class="fas fa-dumbbell"></i> <span>Equipment</span>
-                </a>
-                <a href="audit.php" class="nav-item">
-                    <i class="fas fa-file-invoice-dollar"></i> <span>Money Audit</span>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i> <span>Staff Mgmt</span>
                 </a>
                 <a href="summary.php" class="nav-item active">
                     <i class="fas fa-chart-bar"></i> <span>Daily Report</span>
