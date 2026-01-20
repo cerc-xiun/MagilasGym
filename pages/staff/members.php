@@ -465,17 +465,17 @@
             border-color: var(--gold);
         }
 
-        .whos-in-search i {
+        .whos-in-search .search-wrapper i {
             position: absolute;
-            left: 24px;
+            left: 14px;
+            /* Closer to edge */
             top: 50%;
-            /* Adjusted relative to container */
             transform: translateY(-50%);
-            /* This needs relative container */
             color: var(--text-muted);
             font-size: 13px;
-            margin-top: -6px;
-            /* Correction for padding */
+            pointer-events: none;
+            margin: 0;
+            /* Reset margins */
         }
 
         /* Relative wrapper for search icon */
@@ -483,15 +483,12 @@
             position: relative;
         }
 
-        .whos-in-search .search-wrapper i {
-            top: 50%;
-            margin: 0;
-        }
+        /* Remove specific overrides if generic selector serves */
 
         .member-list-header {
             display: grid;
-            grid-template-columns: 48px 1.5fr 0.8fr 80px 120px;
-            /* Adjusted columns */
+            grid-template-columns: 48px 2fr 1.2fr 1.2fr 120px;
+            /* Balanced proportions */
             padding: 0 16px 8px 16px;
             gap: 12px;
             font-size: 11px;
@@ -502,7 +499,7 @@
         }
 
         .member-list-header div:nth-child(4) {
-            padding-left: 2px;
+            /* padding-left removal for alignment */
         }
 
         .member-list-header div:last-child {
@@ -511,8 +508,8 @@
 
         #whosInContent .member-item {
             display: grid;
-            grid-template-columns: 48px 1.5fr 0.8fr 80px 120px;
-            /* Adjusted columns */
+            grid-template-columns: 48px 2fr 1.2fr 1.2fr 120px;
+            /* Match balanced */
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
@@ -521,7 +518,11 @@
             border-radius: var(--radius-sm);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             transform-origin: right center;
-            /* Hover origin fixed to right */
+        }
+
+        /* Smooth transition for content appearance */
+        .cell-content {
+            transition: opacity 0.3s ease;
         }
 
         /* Hover Effect: Highlight entire row instead of button */
@@ -732,8 +733,9 @@
         /* Minimize Button */
         .minimize-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 16px;
+            /* Aligned with header padding */
+            right: 16px;
             width: 32px;
             height: 32px;
             background: var(--bg-tertiary);
@@ -799,10 +801,11 @@
         }
 
         .modal-btn.confirm:hover {
-            background: var(--gold);
+            background: #fff;
             color: #000;
-            border: 1px solid var(--gold);
-            box-shadow: 0 0 15px rgba(184, 150, 12, 0.4);
+            border-color: #fff;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
         .modal-btn.cancel {
@@ -1730,19 +1733,21 @@
                     <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
                             class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <div class="icon orange"><i class="fas fa-users"></i></div>
-                        <span class="title">Who's In</span>
-                        <div class="active-indicator" id="activeCount">
-                            <i class="fas fa-user"></i> <span>0</span>
-                        </div>
+                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Who's
+                            In</span>
                     </div>
 
                     <div class="cell-content" id="whosInContent" onclick="event.stopPropagation();">
-                        <div class="whos-in-search">
-                            <div class="search-wrapper">
+                        <div class="whos-in-search"
+                            style="display: flex; gap: 12px; margin-top: 12px; justify-content: center; align-items: center;">
+                            <div class="search-wrapper" style="width: 50%; position: relative; flex: none;">
                                 <i class="fas fa-search"></i>
-                                <input type="text" id="whosInSearch" placeholder="Search member name..."
-                                    oninput="filterWhosIn()">
+                                <input type="text" id="whosInSearch" placeholder="Search..." oninput="filterWhosIn()">
+                            </div>
+                            <div class="active-indicator" id="activeCount"
+                                style="margin: 0; background: rgba(184, 150, 12, 0.1); border: 1px solid rgba(184, 150, 12, 0.2); white-space: nowrap;">
+                                <i class="fas fa-user"></i> <span style="margin-right: 4px;">0</span> <span
+                                    style="font-size: 11px; opacity: 0.8; font-weight: 500;">Inside</span>
                             </div>
                         </div>
                         <div class="member-list-header">
