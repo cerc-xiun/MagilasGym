@@ -22,12 +22,20 @@
     <link rel="icon" type="image/png" href="../../assets/images/logo.png">
 
     <style>
+        :root {
+            --active-ratio: 2.5fr;
+            --inactive-ratio: 1fr;
+        }
+
         /* ===== DYNAMIC GRID SYSTEM ===== */
         .members-grid-container {
-            height: calc(100vh - 100px);
+            height: calc(100vh - 140px);
+            /* Increased offset to prevent bottom cutoff */
             padding: 16px;
             display: grid;
             grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            /* Ensure strict containment */
             grid-template-rows: 1fr 1fr;
             gap: 12px;
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -152,18 +160,25 @@
             display: none !important;
         }
 
-        [data-pos="top-right"] .cell-content {
+        [data-pos="top-right"] .cell-content,
+        [data-pos="bottom-left"] .cell-content,
+        [data-pos="bottom-right"] .cell-content {
             display: flex;
-            /* Always show content */
+            /* Always show content (under overlay when inactive) */
             flex-direction: column;
             padding: 16px;
+            height: 100%;
+            /* Fill cell */
         }
 
         /* Inactive Overlay for Scan Entry */
-        [data-pos="top-right"]:not(.active)::after {
-            content: "Click to Scan";
+        /* Inactive Overlay Shared Styles */
+        [data-pos="top-right"]:not(.active)::after,
+        [data-pos="bottom-left"]:not(.active)::after,
+        [data-pos="bottom-right"]:not(.active)::after {
             position: absolute;
-            top: 60px;
+            top: 50px;
+            /* Below header */
             left: 0;
             right: 0;
             bottom: 0;
@@ -178,8 +193,22 @@
             letter-spacing: 1px;
             z-index: 10;
             opacity: 1;
-            /* Always visible bg, maybe text on hover? */
             transition: opacity 0.2s;
+            pointer-events: none;
+            /* Let click pass to grid-cell to activate */
+        }
+
+        /* Specific Content Strings */
+        [data-pos="top-right"]:not(.active)::after {
+            content: "Click to Scan";
+        }
+
+        [data-pos="bottom-left"]:not(.active)::after {
+            content: "Click to Register";
+        }
+
+        [data-pos="bottom-right"]:not(.active)::after {
+            content: "Click to Search";
         }
 
         /* Hide scan buttons when inactive to keep it clean */
@@ -202,8 +231,11 @@
         }
 
         /* Inactive State for Who's In */
+        /* Inactive State Hiding (Search, Buttons, etc.) */
         [data-pos="top-left"]:not(.active) .whos-in-search,
         [data-pos="top-left"]:not(.active) .minimize-btn,
+        [data-pos="bottom-left"]:not(.active) .minimize-btn,
+        [data-pos="bottom-right"]:not(.active) .minimize-btn,
         [data-pos="top-left"]:not(.active) .member-list-header {
             /* Hide search and headers when inactive if desired, or keep headers? 
                 User said "time in header should be aligned... same to the other header".
@@ -335,9 +367,8 @@
         /* When top-left is active */
         /* When top-left is active */
         .members-grid-container[data-active="top-left"] {
-            grid-template-columns: 3fr 1fr;
-            grid-template-rows: 1fr auto;
-            /* Allow bottom row to size by content, avoiding cutoff */
+            grid-template-columns: var(--active-ratio) var(--inactive-ratio);
+            grid-template-rows: var(--active-ratio) var(--inactive-ratio);
         }
 
         .members-grid-container[data-active="top-left"] [data-pos="top-left"] {
@@ -358,8 +389,8 @@
 
         /* When top-right is active */
         .members-grid-container[data-active="top-right"] {
-            grid-template-columns: 1fr 2.5fr;
-            grid-template-rows: 2.5fr 1fr;
+            grid-template-columns: var(--inactive-ratio) var(--active-ratio);
+            grid-template-rows: var(--active-ratio) var(--inactive-ratio);
         }
 
         .members-grid-container[data-active="top-right"] [data-pos="top-left"] {
@@ -380,8 +411,8 @@
 
         /* When bottom-left is active */
         .members-grid-container[data-active="bottom-left"] {
-            grid-template-columns: 2.5fr 1fr;
-            grid-template-rows: 1fr 2.5fr;
+            grid-template-columns: var(--active-ratio) var(--inactive-ratio);
+            grid-template-rows: var(--inactive-ratio) var(--active-ratio);
         }
 
         .members-grid-container[data-active="bottom-left"] [data-pos="top-left"] {
@@ -402,8 +433,8 @@
 
         /* When bottom-right is active */
         .members-grid-container[data-active="bottom-right"] {
-            grid-template-columns: 1fr 2.5fr;
-            grid-template-rows: 1fr 2.5fr;
+            grid-template-columns: var(--inactive-ratio) var(--active-ratio);
+            grid-template-rows: var(--inactive-ratio) var(--active-ratio);
         }
 
         .members-grid-container[data-active="bottom-right"] [data-pos="top-left"] {
@@ -1993,23 +2024,13 @@
 
                 <!-- Cell 3: New Member (Bottom-Left) -->
                 <div class="grid-cell" data-pos="bottom-left" onclick="activateCell('bottom-left')">
+                    <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
+                            class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <div class="icon green"><i class="fas fa-user-plus"></i></div>
-                        <span class="title">New Member</span>
+                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">New
+                            Member</span>
                     </div>
-                    <div class="cell-preview">
-                        <div class="plan-preview">
-                            <div class="plan-mini">
-                                <div class="pn">Daily</div>
-                                <div class="pp">₱60</div>
-                            </div>
-                            <div class="plan-mini">
-                                <div class="pn">Monthly</div>
-                                <div class="pp">₱800</div>
-                            </div>
-                        </div>
-                        <div class="preview-hint"><i class="fas fa-id-card"></i> Click to register</div>
-                    </div>
+                    <!-- Preview removed/Overlay logic used -->
                     <div class="cell-content">
                         <div class="new-member-container" id="newMemberContainer">
                             <!-- STATE: Choice -->
@@ -2140,19 +2161,13 @@
 
                 <!-- Cell 4: Directory (Bottom-Right) -->
                 <div class="grid-cell" data-pos="bottom-right" onclick="activateCell('bottom-right')">
+                    <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
+                            class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <div class="icon blue"><i class="fas fa-address-book"></i></div>
-                        <span class="title">Directory</span>
+                        <span class="title"
+                            style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Directory</span>
                     </div>
-                    <div class="cell-preview">
-                        <div class="preview-item">
-                            <div class="av">MJ</div><span class="nm">Mike Johnson</span><span class="mt">Active</span>
-                        </div>
-                        <div class="preview-item">
-                            <div class="av">SC</div><span class="nm">Sarah Connor</span><span class="mt">Active</span>
-                        </div>
-                        <div class="preview-hint"><i class="fas fa-search"></i> Click to search</div>
-                    </div>
+                    <!-- Preview removed/Overlay logic used -->
                     <div class="cell-content">
                         <div class="search-box">
                             <i class="fas fa-search"></i>
