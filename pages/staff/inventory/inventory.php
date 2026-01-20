@@ -10,276 +10,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../../css/dashboard.css">
-    <link rel="icon" type="image/png" href="../../assets/images/logo.png">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .tab-navigation {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            background: var(--bg-secondary);
-            padding: 8px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 16px 24px;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text-muted);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .tab-btn:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-        }
-
-        .tab-btn.active {
-            background: var(--gradient-gold);
-            color: #000;
-            box-shadow: 0 4px 12px var(--gold-glow);
-        }
-
-        .tab-btn i {
-            font-size: 16px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .controls-row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 250px;
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 20px 14px 48px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: var(--bg-secondary);
-            font-size: 14px;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-
-        .filter-select {
-            padding: 14px 20px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: var(--bg-secondary);
-            min-width: 180px;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table th {
-            text-align: left;
-            padding: 14px 16px;
-            background: var(--bg-tertiary);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .data-table td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
-        }
-
-        .data-table tr:hover {
-            background: rgba(184, 150, 12, 0.03);
-        }
-
-        .data-table .actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 24px;
-        }
-
-        .pagination button {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            background: var(--bg-secondary);
-            color: var(--text-muted);
-        }
-
-        .pagination button:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        .pagination button.active {
-            background: var(--gold);
-            color: #000;
-            border-color: var(--gold);
-        }
-
-        .pagination button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .status-pill {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-pill.operational {
-            background: rgba(5, 150, 105, 0.12);
-            color: #059669;
-        }
-
-        .status-pill.maintenance {
-            background: rgba(245, 158, 11, 0.12);
-            color: #d97706;
-        }
-
-        .status-pill.missing {
-            background: rgba(220, 38, 38, 0.12);
-            color: #dc2626;
-        }
-
-        .inventory-worth {
-            background: linear-gradient(135deg, rgba(184, 150, 12, 0.1) 0%, rgba(184, 150, 12, 0.05) 100%);
-            border: 1px solid rgba(184, 150, 12, 0.3);
-            border-radius: var(--radius-lg);
-            padding: 24px 32px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .inventory-worth h3 {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .inventory-worth .value {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 42px;
-            background: var(--gradient-gold-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .expense-type-tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .expense-type-btn {
-            padding: 10px 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            background: var(--bg-secondary);
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .expense-type-btn.active {
-            background: var(--gold-subtle);
-            border-color: var(--gold);
-            color: var(--gold-dark);
-        }
-    </style>
+    <link rel="stylesheet" href="../../../css/dashboard.css">
+    <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
+    <link rel="stylesheet" href="inventory.css">
 </head>
 
 <body class="dashboard-body">
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <img src="../../assets/images/logo.png" alt="Magilas Logo" class="sidebar-logo">
+                <img src="../../../assets/images/logo.png" alt="Magilas Logo" class="sidebar-logo">
                 <div class="sidebar-brand">MAGILAS <span class="text-accent">GYM</span></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-label">Overview</div>
-                    <a href="dashboard.php" class="nav-item"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
+                    <a href="../dashboard/dashboard.php" class="nav-item"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
                 </div>
 
                 <div class="nav-section">
                     <div class="nav-label">Management</div>
-                    <a href="members.php" class="nav-item">
+                    <a href="../members/members.php" class="nav-item">
                         <i class="fas fa-users"></i> <span>Members</span>
                     </a>
-                    <a href="inventory.php" class="nav-item active"><i class="fas fa-boxes-stacked"></i>
+                    <a href="../inventory/inventory.php" class="nav-item active"><i class="fas fa-boxes-stacked"></i>
                         <span>Inventory</span></a>
                 </div>
             </nav>
@@ -532,7 +286,8 @@
         </div>
     </div>
 
-    <script src="../../js/inventory.js"></script>
+    <script src="../../../js/inventory.js"></script>
+    <script src="inventory.js"></script>
 </body>
 
 </html>
