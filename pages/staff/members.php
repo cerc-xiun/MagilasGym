@@ -33,6 +33,25 @@
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Header Date Pill */
+        .header-date {
+            padding: 8px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-date i {
+            color: var(--gold);
+        }
+
         /* Grid Cell Base */
         .grid-cell {
             background: var(--bg-secondary);
@@ -126,9 +145,50 @@
             /* Adjusted padding */
         }
 
-        [data-pos="top-left"] .cell-preview {
+        /* Hide preview logic completely */
+        }
+
+        [data-pos="top-right"] .cell-preview {
             display: none !important;
-            /* Hide preview logic completely */
+        }
+
+        [data-pos="top-right"] .cell-content {
+            display: flex;
+            /* Always show content */
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        /* Inactive Overlay for Scan Entry */
+        [data-pos="top-right"]:not(.active)::after {
+            content: "Click to Scan";
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            z-index: 10;
+            opacity: 1;
+            /* Always visible bg, maybe text on hover? */
+            transition: opacity 0.2s;
+        }
+
+        /* Hide scan buttons when inactive to keep it clean */
+        [data-pos="top-right"]:not(.active) .scan-buttons {
+            display: none;
+        }
+
+        [data-pos="top-right"]:not(.active) .camera-status {
+            display: none;
         }
 
         /* Show content when active for others */
@@ -356,6 +416,23 @@
 
         .members-grid-container[data-active="bottom-right"] [data-pos="bottom-left"] {
             grid-area: 2 / 1 / 3 / 2;
+        }
+
+        /* Responsive "Who's In" List: Hide columns when squeezed */
+        .members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-list-header,
+        .members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-list-header,
+        .members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-item,
+        .members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-item {
+            grid-template-columns: 48px 1fr !important;
+        }
+
+        .members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-list-header>div:nth-child(n+3),
+        .members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-list-header>div:nth-child(n+3),
+        .members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-item>div:nth-child(n+3),
+        .members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-item>div:nth-child(n+3),
+        .members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-item>button,
+        .members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-item>button {
+            display: none !important;
         }
 
         .members-grid-container[data-active="bottom-right"] [data-pos="bottom-right"] {
@@ -1133,50 +1210,99 @@
             width: 100%;
         }
 
-        .result-member .avatar-large {
-            width: 60px;
-            height: 60px;
-            background: rgba(184, 150, 12, 0.15);
-            color: var(--gold);
-            border-radius: var(--radius-md);
+        /* Scan Card Styles */
+        .scan-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 12px;
+            position: relative;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0 auto 12px;
+            flex-direction: column;
+            gap: 12px;
+            border: 2px solid var(--border);
+            width: 100%;
         }
 
-        .result-member .member-name {
-            font-size: 16px;
+        .scan-card.inactive {
+            border-color: var(--danger);
+        }
+
+        .sc-status {
+            text-align: center;
+            background: var(--bg-tertiary);
+            padding: 6px 16px;
+            border-radius: 4px;
             font-weight: 700;
-            color: var(--text-primary);
+            font-size: 13px;
+            text-transform: uppercase;
+            align-self: center;
+            width: fit-content;
             margin-bottom: 4px;
         }
 
-        .result-member .member-plan {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
-        .result-member .status-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .result-member .status-tag.active {
-            background: rgba(5, 150, 105, 0.15);
+        .sc-status.active {
+            background: rgba(5, 150, 105, 0.2);
             color: var(--success);
         }
 
-        .result-member .status-tag.expired {
-            background: rgba(220, 38, 38, 0.15);
+        .sc-status.inactive {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--danger);
+        }
+
+        .sc-image {
+            width: 250px;
+            height: 250px;
+            /* Fixed square */
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            flex-shrink: 0;
+        }
+
+        .sc-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Show whole photo */
+        }
+
+        .sc-details {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .sc-box {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .sc-box .label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sc-box .val {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 4px;
+        }
+
+        .sc-box .expired-text {
             color: var(--danger);
         }
 
@@ -1202,20 +1328,69 @@
             color: var(--text-muted);
         }
 
-        .allow-entry-btn {
+        /* Action Buttons */
+        .scan-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
             width: 100%;
+        }
+
+        .allow-entry-btn {
+            flex: 1;
             padding: 12px;
-            background: var(--gradient-gold);
-            border: none;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
             border-radius: var(--radius-sm);
-            color: #000;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: not-allowed;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            text-transform: uppercase;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .allow-entry-btn:not([disabled]).success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+        }
+
+        .allow-entry-btn:not([disabled]).warning {
+            background: #f59e0b;
+            /* Orange */
+            color: #fff;
+            border-color: #f59e0b;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .allow-entry-btn.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            border-color: var(--text-muted);
+        }
+
+        .allow-entry-btn.secondary:hover {
+            background: var(--border);
+        }
+
+        border-radius: var(--radius-sm);
+        color: #000;
+        font-weight: 700;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         }
 
         .allow-entry-btn:disabled {
@@ -1763,14 +1938,13 @@
 
                 <!-- Cell 2: Scan Entry (Top-Right) -->
                 <div class="grid-cell" data-pos="top-right" onclick="activateCell('top-right')">
+                    <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
+                            class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <div class="icon gold"><i class="fas fa-qrcode"></i></div>
-                        <span class="title">Scan Entry</span>
+                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Scan
+                            Entry</span>
                     </div>
-                    <div class="cell-preview">
-                        <div class="qr-preview"><i class="fas fa-qrcode"></i></div>
-                        <div class="preview-hint"><i class="fas fa-camera"></i> Click to scan</div>
-                    </div>
+                    <!-- Preview removed, using content UI -->
                     <div class="cell-content">
                         <div class="scan-layout">
                             <!-- Camera Section -->
@@ -1790,7 +1964,12 @@
                                     </button>
                                     <button class="scan-btn fail"
                                         onclick="event.stopPropagation(); simulateScanFail();">
-                                        <i class="fas fa-times"></i> Simulate Fail
+                                        <i class="fas fa-times"></i> Fail
+                                    </button>
+                                    <button class="scan-btn"
+                                        style="background: rgba(255, 152, 0, 0.2); color: orange; border: 1px solid orange;"
+                                        onclick="event.stopPropagation(); simulateScanExpired();">
+                                        <i class="fas fa-clock"></i> Expired
                                     </button>
                                 </div>
                             </div>
@@ -1802,10 +1981,11 @@
                                     <p style="font-size:10px; margin-top:8px; opacity:0.6;">Point camera at member's QR
                                         code</p>
                                 </div>
-                                <button class="allow-entry-btn" id="allowEntryBtn" disabled
-                                    onclick="event.stopPropagation(); allowEntry();">
-                                    <i class="fas fa-door-open"></i> ALLOW ENTRY
-                                </button>
+                                <div class="scan-actions" id="scanActions">
+                                    <button class="allow-entry-btn" id="allowEntryBtn" disabled>
+                                        <i class="fas fa-door-open"></i> ALLOW ENTRY
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2145,20 +2325,27 @@
 
         function resetScanResult() {
             const panel = document.getElementById('scanResultPanel');
-            const btn = document.getElementById('allowEntryBtn');
+            const actions = document.getElementById('scanActions');
             panel.className = 'result-panel waiting';
             panel.innerHTML = `
                 <i class="fas fa-qrcode"></i>
                 <p>Waiting for scan...</p>
                 <p style="font-size:10px; margin-top:8px; opacity:0.6;">Point camera at member's QR code</p>
             `;
-            btn.disabled = true;
+
+            if (actions) {
+                actions.innerHTML = `
+                <button class="allow-entry-btn" id="allowEntryBtn" disabled>
+                    <i class="fas fa-door-open"></i> ALLOW ENTRY
+                </button>
+               `;
+            }
             scannedMember = null;
         }
 
         function simulateScanSuccess() {
             const panel = document.getElementById('scanResultPanel');
-            const btn = document.getElementById('allowEntryBtn');
+            const actions = document.getElementById('scanActions');
 
             // Simulate finding a valid member
             scannedMember = {
@@ -2171,16 +2358,76 @@
             };
 
             panel.className = 'result-panel success';
+            // Layout Textures
             panel.innerHTML = `
-                <div class="result-member">
-                    <div class="avatar-large">${scannedMember.initials}</div>
-                    <div class="member-name">${scannedMember.name}</div>
-                    <div class="member-plan">${scannedMember.plan}</div>
-                    <span class="status-tag active"><i class="fas fa-check-circle"></i> Active Member</span>
+                <div class="scan-card">
+                    <div class="sc-status active">ACTIVE</div>
+                    <div class="sc-image">
+                       <img src="../../assets/images/member_sample.png" alt="Member" />
+                    </div>
+                    <div class="sc-details">
+                        <div class="sc-box">
+                            <span class="label">Name</span>
+                            <span class="val">${scannedMember.name}</span>
+                        </div>
+                        <div class="sc-box">
+                            <span class="label">Member Type</span>
+                            <span class="val">Member</span>
+                        </div>
+                    </div>
                 </div>
             `;
-            btn.disabled = false;
+
+            // Actions
+            actions.innerHTML = `
+                <button class="allow-entry-btn success" onclick="event.stopPropagation(); allowEntry();">
+                    <i class="fas fa-check"></i> Allow Entry
+                </button>
+                <button class="allow-entry-btn secondary" onclick="event.stopPropagation(); resetScanResult();">
+                    <i class="fas fa-redo"></i> Rescan
+                </button>
+            `;
         }
+
+        function simulateScanExpired() {
+            const panel = document.getElementById('scanResultPanel');
+            const actions = document.getElementById('scanActions');
+
+            scannedMember = null; // No entry allowed
+
+            panel.className = 'result-panel expired';
+            panel.innerHTML = `
+                <div class="scan-card inactive">
+                    <div class="sc-status inactive">INACTIVE</div>
+                    <div class="sc-image">
+                       <img src="../../assets/images/member_sample.png" alt="Member" style="filter: grayscale(1);" />
+                    </div>
+                    <div class="sc-details">
+                        <div class="sc-box">
+                            <span class="label">Name</span>
+                            <span class="val">Maria Santos</span>
+                        </div>
+                        <div class="sc-box">
+                            <span class="label">Status</span>
+                            <span class="val expired-text">Expired</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Actions: Renew and Rescan
+            // Actions: Renew and Rescan separated
+            actions.innerHTML = `
+                <button class="allow-entry-btn warning" onclick="event.stopPropagation(); alert('Redirecting to Renewal UI...');">
+                    <i class="fas fa-sync"></i> Renew
+                </button>
+                <button class="allow-entry-btn secondary" onclick="event.stopPropagation(); resetScanResult();">
+                    <i class="fas fa-redo"></i> Rescan
+                </button>
+            `;
+        }
+
+
 
         function simulateScanFail() {
             const panel = document.getElementById('scanResultPanel');
@@ -2510,6 +2757,22 @@
         document.getElementById('pendingModal').addEventListener('click', function (e) {
             if (e.target === this) closePendingModal();
         });
+
+        // Date Display
+        function updateDate() {
+            const now = new Date();
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
+            const options = isDesktop
+                ? { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' }
+                : { weekday: 'short', month: 'short', day: 'numeric' };
+
+            const dateStr = now.toLocaleDateString('en-US', options);
+            document.getElementById('dateDisplay').textContent = dateStr;
+        }
+        window.addEventListener('resize', updateDate);
+        updateDate();
+        setInterval(updateDate, 60000);
 
         renderPendingList();
     </script>
