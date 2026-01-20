@@ -216,6 +216,12 @@
             display: none;
         }
 
+        /* Disable interaction on bottom panels when inactive */
+        [data-pos="bottom-left"]:not(.active) .cell-content,
+        [data-pos="bottom-right"]:not(.active) .cell-content {
+            pointer-events: none;
+        }
+
         [data-pos="top-right"]:not(.active) .camera-status {
             display: none;
         }
@@ -1617,6 +1623,93 @@
             color: var(--text-muted);
         }
 
+        /* Modern Daily Pass UI */
+        .nm-modern-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .nm-card-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nm-card-header .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nm-card-header .icon-circle.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .nm-card-header .icon-circle.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .nm-card-header h4 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .nm-card-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .nm-form-group .input-wrapper {
+            position: relative;
+        }
+
+        .nm-form-group .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .nm-form-group .input-wrapper input {
+            padding-left: 40px;
+            /* Space for icon */
+            height: 48px;
+            /* Taller input */
+            border-radius: 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .nm-form-group .input-wrapper input:focus {
+            background: var(--bg-primary);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(184, 150, 12, 0.15);
+        }
+
         /* Photo Upload */
         .photo-upload-container {
             position: relative;
@@ -2052,50 +2145,92 @@
                             </div>
 
                             <!-- STATE: Daily Pass Form -->
-                            <div class="nm-state" id="nmStateDailyForm">
-                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"><i
-                                        class="fas fa-arrow-left"></i> Back</div>
-                                <h4 style="margin-bottom: 16px; color: var(--text-primary); font-size: 14px;"><i
-                                        class="fas fa-clock" style="color: var(--warning); margin-right: 6px;"></i>
-                                    Daily Pass</h4>
-                                <div class="nm-form-group">
-                                    <label>Customer Name</label>
-                                    <input type="text" id="dailyPassName" placeholder="Enter full name..."
-                                        onclick="event.stopPropagation();">
+                            <!-- STATE: Daily Pass Form -->
+                            <div class="nm-state" id="nmStateDailyForm"
+                                style="justify-content: center; align-items: center; position: relative;">
+                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"
+                                    style="position: absolute; top: 0; left: 0;">
+                                    <i class="fas fa-arrow-left"></i> Back
                                 </div>
-                                <div style="margin-top: auto;">
-                                    <button class="btn-primary" onclick="event.stopPropagation(); applyDailyPass();"><i
-                                            class="fas fa-check"></i> APPLY DAILY PASS</button>
+
+                                <div class="nm-modern-card">
+                                    <div class="nm-card-header">
+                                        <div class="icon-circle warning">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <h4>Daily Pass</h4>
+                                        <p>Single day access for walk-ins</p>
+                                    </div>
+
+                                    <div class="nm-form-group">
+                                        <label>Full Name</label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-user"></i>
+                                            <input type="text" id="dailyPassName" placeholder="Enter customer name..."
+                                                onclick="event.stopPropagation();">
+                                        </div>
+                                    </div>
+
+                                    <button class="btn-primary" onclick="event.stopPropagation(); applyDailyPass();">
+                                        Apply Pass <i class="fas fa-arrow-right"></i>
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- STATE: Daily Pass QR -->
-                            <div class="nm-state" id="nmStateDailyQR">
-                                <div class="qr-display">
-                                    <div class="qr-box"><i class="fas fa-qrcode"></i></div>
-                                    <div class="qr-member-name" id="dailyQRName">Customer</div>
-                                    <div class="qr-member-type">Day Pass</div>
-                                    <div class="qr-expires">Valid until midnight today</div>
+                            <!-- STATE: Daily Pass Success (No QR) -->
+                            <div class="nm-state" id="nmStateDailySuccess"
+                                style="justify-content: center; align-items: center;">
+                                <div class="nm-modern-card" style="text-align: center; max-width: 320px;">
+                                    <div class="nm-card-header">
+                                        <div class="icon-circle success"
+                                            style="width: 80px; height: 80px; font-size: 32px; margin-bottom: 8px;">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <h4 style="font-size: 20px;">Daily Pass Availed!</h4>
+                                        <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">
+                                            Successfully availed for <span id="dailySuccessName"
+                                                style="color: var(--gold); font-weight: 700;">Client</span>
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-dim); margin-top: 8px;">
+                                            Added to Who's In List
+                                        </div>
+                                    </div>
+
+                                    <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();"
+                                        style="width: 100%; justify-content: center;">
+                                        <i class="fas fa-arrow-left"></i> Back to Choices
+                                    </button>
                                 </div>
-                                <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();"><i
-                                        class="fas fa-check-circle"></i> DONE</button>
                             </div>
 
                             <!-- STATE: Membership Form -->
-                            <div class="nm-state" id="nmStateMembershipForm">
-                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"><i
-                                        class="fas fa-arrow-left"></i> Back</div>
-                                <h4 style="margin-bottom: 10px; color: var(--text-primary); font-size: 14px;"><i
-                                        class="fas fa-id-card" style="color: var(--success); margin-right: 6px;"></i>
-                                    Membership</h4>
-                                <div style="flex: 1; overflow-y: auto; overflow-x: hidden; padding-right: 4px;">
-                                    <div class="nm-form-split-layout">
+                            <div class="nm-state" id="nmStateMembershipForm"
+                                style="justify-content: center; align-items: center; position: relative;">
+                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"
+                                    style="position: absolute; top: 0; left: 0;">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </div>
+
+                                <div class="nm-modern-card" style="max-width: 500px; padding: 24px;">
+                                    <div class="nm-card-header" style="margin-bottom: 8px;">
+                                        <div class="icon-circle success">
+                                            <i class="fas fa-id-card"></i>
+                                        </div>
+                                        <h4>Full Membership</h4>
+                                        <p>Create a new member profile</p>
+                                    </div>
+
+                                    <div class="nm-form-split-layout"
+                                        style="display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: start;">
                                         <!-- Left Col: Photo -->
                                         <div class="photo-upload-container">
                                             <div class="photo-upload-mini" id="photoUploadBox"
-                                                onclick="event.stopPropagation();">
-                                                <i class="fas fa-camera"></i>
-                                                <span>Click to upload</span>
+                                                onclick="event.stopPropagation();"
+                                                style="height: 140px; border-radius: 16px; background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1);">
+                                                <i class="fas fa-camera"
+                                                    style="font-size: 24px; margin-bottom: 8px; color: var(--text-muted);"></i>
+                                                <span style="font-size: 11px; color: var(--text-muted);">Upload
+                                                    Photo</span>
                                                 <input type="file" id="memberPhoto" accept="image/*"
                                                     onchange="previewPhoto(this)" onclick="event.stopPropagation();">
                                             </div>
@@ -2105,55 +2240,92 @@
                                         </div>
 
                                         <!-- Right Col: Inputs -->
-                                        <div class="nm-form-inputs">
+                                        <div class="nm-form-inputs"
+                                            style="display: flex; flex-direction: column; gap: 12px;">
                                             <div class="nm-form-group">
-                                                <label>Full Name</label>
-                                                <input type="text" id="memberName" placeholder="Juan Dela Cruz"
-                                                    onclick="event.stopPropagation();">
+                                                <div class="input-wrapper">
+                                                    <i class="fas fa-user"></i>
+                                                    <input type="text" id="memberName" placeholder="Full Name"
+                                                        onclick="event.stopPropagation();">
+                                                </div>
                                             </div>
                                             <div class="nm-form-group">
-                                                <label>Email</label>
-                                                <input type="email" id="memberEmail" placeholder="juan@email.com"
-                                                    onclick="event.stopPropagation();">
+                                                <div class="input-wrapper">
+                                                    <i class="fas fa-envelope"></i>
+                                                    <input type="email" id="memberEmail" placeholder="Email Address"
+                                                        onclick="event.stopPropagation();">
+                                                </div>
                                             </div>
                                             <div class="nm-form-group">
-                                                <label>Phone</label>
-                                                <input type="tel" id="memberPhone" placeholder="09XX-XXX-XXXX"
-                                                    onclick="event.stopPropagation();">
+                                                <div class="input-wrapper">
+                                                    <i class="fas fa-phone"></i>
+                                                    <input type="tel" id="memberPhone" placeholder="Phone Number"
+                                                        onclick="event.stopPropagation();">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="nm-form-group">
-                                        <label>Select Plan</label>
-                                        <div class="plan-grid" style="margin-top: 6px;">
+                                        <label style="margin-left: 4px; margin-bottom: 8px;">Select Plan</label>
+                                        <div class="plan-grid"
+                                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                                             <div class="plan-card"
-                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Monthly', 800);">
-                                                <div class="plan-name">Monthly</div>
-                                                <div class="plan-price">₱800</div>
+                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Monthly', 800);"
+                                                style="background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s;">
+                                                <div class="plan-name"
+                                                    style="font-size: 13px; font-weight: 600; color: var(--text-primary);">
+                                                    Monthly</div>
+                                                <div class="plan-price"
+                                                    style="font-size: 16px; font-weight: 700; color: var(--gold); margin-top: 4px;">
+                                                    ₱800</div>
                                             </div>
                                             <div class="plan-card"
-                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Instructor', 1250);">
-                                                <div class="plan-name">+Instructor</div>
-                                                <div class="plan-price">₱1,250</div>
+                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Instructor', 1250);"
+                                                style="background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s;">
+                                                <div class="plan-name"
+                                                    style="font-size: 13px; font-weight: 600; color: var(--text-primary);">
+                                                    +Instructor</div>
+                                                <div class="plan-price"
+                                                    style="font-size: 16px; font-weight: 700; color: var(--gold); margin-top: 4px;">
+                                                    ₱1,250</div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <button class="btn-primary" onclick="event.stopPropagation(); activateMembership();"
+                                        style="margin-top: 8px;">
+                                        Activate Membership <i class="fas fa-bolt"></i>
+                                    </button>
                                 </div>
-                                <button class="btn-primary" onclick="event.stopPropagation(); activateMembership();"><i
-                                        class="fas fa-bolt"></i> ACTIVATE MEMBERSHIP</button>
                             </div>
 
-                            <!-- STATE: Membership QR -->
-                            <div class="nm-state" id="nmStateMembershipQR">
-                                <div class="qr-display">
-                                    <div class="qr-box"><i class="fas fa-qrcode"></i></div>
-                                    <div class="qr-member-name" id="memberQRName">Member</div>
-                                    <div class="qr-member-type" id="memberQRPlan">Monthly</div>
-                                    <span class="status-tag active" style="margin-top: 8px;"><i
-                                            class="fas fa-check-circle"></i> Activated</span>
+                            <!-- STATE: Membership Success (No QR) -->
+                            <div class="nm-state" id="nmStateMembershipQR" style="justify-content: center; align-items: center;">
+                                <div class="nm-modern-card" style="text-align: center; max-width: 340px;">
+                                    <div class="nm-card-header">
+                                        <div class="icon-circle success" style="width: 80px; height: 80px; font-size: 32px; margin-bottom: 8px;">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <h4 style="font-size: 20px;">Membership Activated!</h4>
+                                        <p>Welcome to the club</p>
+                                    </div>
+
+                                    <div class="sc-details" style="background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 12px; margin-top: 8px; text-align: left;">
+                                        <div class="sc-box" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <span class="label" style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">Member</span>
+                                            <span class="val" id="memberQRName" style="color: var(--text-primary); font-weight: 600;">Name</span>
+                                        </div>
+                                        <div class="sc-box" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <span class="label" style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">Plan</span>
+                                            <span class="val" id="memberQRPlan" style="color: var(--gold); font-weight: 700;">Plan Details</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();" style="width: 100%; justify-content: center; margin-top: 8px;">
+                                        <i class="fas fa-check"></i> Done
+                                    </button>
                                 </div>
-                                <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();"><i
-                                        class="fas fa-check-circle"></i> DONE</button>
                             </div>
                         </div>
                     </div>
@@ -2540,11 +2712,11 @@
             gymMembers.unshift(newMember);
             renderWhosIn();
 
-            // Update QR display
-            document.getElementById('dailyQRName').textContent = name;
+            // Update Success Display
+            document.getElementById('dailySuccessName').textContent = name;
 
-            // Show QR state
-            setNmState('nmStateDailyQR');
+            // Show Success state (No QR)
+            setNmState('nmStateDailySuccess');
         }
 
         let selectedMemberPlan = null;
