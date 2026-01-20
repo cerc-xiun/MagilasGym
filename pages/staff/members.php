@@ -109,22 +109,68 @@
             color: var(--success);
         }
 
-        /* Preview Content (Visible in default state) */
-        .cell-preview {
-            flex: 1;
-            padding: 12px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            overflow: hidden;
-        }
-
-        /* Full Content (Hidden until expanded) */
+        /* Full Content (Always Visible for Who's In, others toggled) */
         .cell-content {
-            display: none;
             flex: 1;
             padding: 16px;
             overflow-y: auto;
+            display: none;
+            /* Default hidden for others */
+        }
+
+        /* Override for Who's In - Always show content */
+        [data-pos="top-left"] .cell-content {
+            display: flex;
+            flex-direction: column;
+            padding: 0 12px 12px;
+            /* Adjusted padding */
+        }
+
+        [data-pos="top-left"] .cell-preview {
+            display: none !important;
+            /* Hide preview logic completely */
+        }
+
+        /* Show content when active for others */
+        .grid-cell.active .cell-content {
+            display: block;
+        }
+
+        /* Hide preview when active */
+        .grid-cell.active .cell-preview {
+            display: none;
+        }
+
+        /* Inactive State for Who's In */
+        [data-pos="top-left"]:not(.active) .whos-in-search,
+        [data-pos="top-left"]:not(.active) .minimize-btn,
+        [data-pos="top-left"]:not(.active) .member-list-header {
+            /* Hide search and headers when inactive if desired, or keep headers? 
+                User said "time in header should be aligned... same to the other header".
+                User likely wants headers. I'll keep headers, hide search. */
+            display: none;
+        }
+
+        [data-pos="top-left"]:not(.active) .member-list {
+            padding: 0;
+            /* Remove padding when small */
+            gap: 4px;
+        }
+
+        [data-pos="top-left"]:not(.active) .member-item {
+            padding: 8px 12px;
+            grid-template-columns: 32px 1fr 0.8fr 60px 0px;
+            /* Hide button column effectively or shift */
+        }
+
+        [data-pos="top-left"]:not(.active) .member-item .action-btn-left {
+            display: none;
+        }
+
+        [data-pos="top-left"]:not(.active) .avatar {
+            width: 32px;
+            height: 32px;
+            font-size: 11px;
         }
 
         /* ===== PREVIEW WIDGETS ===== */
@@ -191,36 +237,47 @@
             opacity: 0.6;
         }
 
-        /* Plan Preview */
-        .plan-preview {
+        /* Plan Preview - Larger for New Member */
+        [data-pos="bottom-left"] .plan-preview {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: 8px;
+            flex: 1;
         }
 
-        .plan-mini {
-            padding: 8px;
+        [data-pos="bottom-left"] .plan-mini {
+            padding: 16px 12px;
             background: var(--bg-tertiary);
             border-radius: var(--radius-sm);
             text-align: center;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
-        .plan-mini .pn {
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        .plan-mini .pp {
+        [data-pos="bottom-left"] .plan-mini .pn {
             font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        [data-pos="bottom-left"] .plan-mini .pp {
+            font-size: 18px;
             font-weight: 700;
             color: var(--gold);
         }
 
         /* ===== EXPANDED LAYOUT STATES ===== */
         /* When top-left is active */
+        /* When top-left is active */
+        /* When top-left is active */
         .members-grid-container[data-active="top-left"] {
-            grid-template-columns: 2.5fr 1fr;
-            grid-template-rows: 2.5fr 1fr;
+            grid-template-columns: 3fr 1fr;
+            grid-template-rows: 1fr auto;
+            /* Allow bottom row to size by content, avoiding cutoff */
         }
 
         .members-grid-container[data-active="top-left"] [data-pos="top-left"] {
@@ -367,61 +424,408 @@
             overflow-y: auto;
         }
 
-        .member-item {
+        /* Who's In List - Columnar Layout */
+        #whosInContent .member-list {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-sm);
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+            /* Space for scrollbar */
         }
 
-        .member-item .avatar {
-            width: 32px;
-            height: 32px;
+        #whosInContent .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 4px 12px;
+            overflow-y: auto;
+            max-height: calc(100vh - 300px);
+            /* Limit height */
+        }
+
+        .whos-in-search {
+            padding: 0 12px 12px;
+        }
+
+        .whos-in-search input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            /* Reduced vertical padding */
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 13px;
+            box-sizing: border-box;
+            /* Fix width overflow */
+        }
+
+        .whos-in-search input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .whos-in-search i {
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            /* Adjusted relative to container */
+            transform: translateY(-50%);
+            /* This needs relative container */
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: -6px;
+            /* Correction for padding */
+        }
+
+        /* Relative wrapper for search icon */
+        .whos-in-search .search-wrapper {
+            position: relative;
+        }
+
+        .whos-in-search .search-wrapper i {
+            top: 50%;
+            margin: 0;
+        }
+
+        .member-list-header {
+            display: grid;
+            grid-template-columns: 48px 1.5fr 0.8fr 80px 120px;
+            /* Adjusted columns */
+            padding: 0 16px 8px 16px;
+            gap: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .member-list-header div:nth-child(4) {
+            padding-left: 2px;
+        }
+
+        .member-list-header div:last-child {
+            display: none;
+        }
+
+        #whosInContent .member-item {
+            display: grid;
+            grid-template-columns: 48px 1.5fr 0.8fr 80px 120px;
+            /* Adjusted columns */
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: right center;
+            /* Hover origin fixed to right */
+        }
+
+        /* Hover Effect: Highlight entire row instead of button */
+        /* Hover Effect: Highlight entire row */
+        #whosInContent .member-item:hover {
+            transform: scale(1.01);
+            /* Reduced scale */
+            border-color: var(--gold);
+            background: var(--bg-secondary);
+            z-index: 5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            /* transform-origin handled in base class */
+        }
+
+        /* Inactive Overlay for Who's In */
+        [data-pos="top-left"]:not(.active)::after {
+            content: "Click to Manage";
+            position: absolute;
+            top: 60px;
+            /* Below header */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            z-index: 10;
+            opacity: 0;
+            /* Initially hidden or always visible? User said "semi-visible dark div that covers" */
+            transition: opacity 0.2s;
+        }
+
+        [data-pos="top-left"]:not(.active):hover::after {
+            opacity: 1;
+            /* Show text on hover, always darken? */
+        }
+
+        /* Make dark overlay always visible but text on hover? 
+           User: "semi-visible dark div that covers... not header"
+           Let's make bg always visible, text on hover.
+        */
+        [data-pos="top-left"]:not(.active)::after {
+            opacity: 1;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+        }
+
+        #whosInContent .member-item .avatar {
+            width: 40px;
+            height: 40px;
+            font-size: 14px;
             background: rgba(184, 150, 12, 0.12);
             color: var(--gold);
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
             font-weight: 700;
         }
 
-        .member-item .info {
-            flex: 1;
+        #whosInContent .member-item .col-info {
+            display: flex;
+            flex-direction: column;
         }
 
-        .member-item .name {
-            font-size: 12px;
+        #whosInContent .member-item .col-info .main-text {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #whosInContent .member-item .col-info .sub-text {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        #whosInContent .action-btn-left {
+            width: 100%;
+            padding: 8px;
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        #whosInContent .action-btn-left:hover {
+            background: var(--danger);
+            color: white;
+            /* Disabled default scale/translate transform on hover as row handles it */
+            transform: none;
+        }
+
+        /* Increase Header Font and Size only for Who's In Panel Content */
+        .grid-cell[data-pos="top-left"] .cell-header .title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .grid-cell[data-pos="top-left"] .cell-header {
+            padding-bottom: 12px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Updated Modal Styles */
+        .custom-modal {
+            background: #18191a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 360px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .modal-text {
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .modal-btn.confirm:hover {
+            background: #000;
+            color: #fff;
+            border: 1px solid var(--gold);
+        }
+
+        /* Active Indicator */
+        .active-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(184, 150, 12, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 13px;
+            margin-left: 20px;
+            /* Added spacing from title */
+        }
+
+        .active-indicator i {
+            font-size: 14px;
+        }
+
+        /* Minimize Button */
+        .minimize-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .minimize-btn:hover {
+            background: var(--bg-secondary);
             color: var(--text-primary);
         }
 
-        .member-item .meta {
-            font-size: 10px;
-            color: var(--text-muted);
+        .grid-cell.active .minimize-btn {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .member-item .action-btn {
-            padding: 5px 8px;
-            font-size: 10px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text-muted);
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 50px;
+            /* More rounded */
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            /* Prevent layout shift */
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
         }
 
-        .member-item .action-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
+        .modal-btn.cancel {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
         }
 
-        .member-item .action-btn.danger:hover {
-            border-color: var(--danger);
-            color: var(--danger);
+        .modal-btn.cancel:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+        }
+
+        .modal-btn.confirm {
+            background: #fff;
+            color: #000;
+        }
+
+        .modal-btn.confirm:hover {
+            background: var(--gold);
+            color: #000;
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 15px rgba(184, 150, 12, 0.4);
+        }
+
+        .modal-btn.cancel {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+
+        .modal-btn.cancel:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .modal-btn.confirm {
+            background: var(--gold);
+            color: black;
+        }
+
+        .modal-btn.confirm:hover {
+            background: #000;
+            /* Black background on hover */
+            color: #fff;
+            /* White text on hover */
+            border: 1px solid var(--gold);
         }
 
         .plan-grid {
@@ -815,6 +1219,461 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+
+        /* ===== NEW MEMBER MULTI-STATE UI ===== */
+        .new-member-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nm-state {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .nm-state.active {
+            display: flex;
+        }
+
+        /* Choice Cards */
+        .choice-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .choice-card {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .choice-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .choice-card .choice-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .choice-card .choice-icon.daily {
+            background: rgba(217, 119, 6, 0.15);
+            color: var(--warning);
+        }
+
+        .choice-card .choice-icon.membership {
+            background: rgba(5, 150, 105, 0.15);
+            color: var(--success);
+        }
+
+        .choice-card .choice-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .choice-card .choice-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .choice-card .choice-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Form Styles */
+        .nm-form-split-layout {
+            display: grid;
+            grid-template-columns: 40% 1fr;
+            gap: 16px;
+            margin-bottom: 12px;
+            align-items: stretch;
+        }
+
+        .nm-form-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .nm-form-group {
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+        .nm-form-group label {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nm-form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 12px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .nm-form-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .nm-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .nm-back-link:hover {
+            color: var(--gold);
+        }
+
+        /* QR Display */
+        .qr-display {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .qr-box {
+            width: 140px;
+            height: 140px;
+            background: #fff;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .qr-box i {
+            font-size: 80px;
+            color: #222;
+        }
+
+        .qr-member-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .qr-member-type {
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .qr-expires {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* Photo Upload */
+        .photo-upload-container {
+            position: relative;
+            height: 100%;
+        }
+
+        .photo-upload-mini {
+            width: 100%;
+            height: 180px;
+            /* Increased height by ~15% */
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 11px;
+            color: var(--text-muted);
+            overflow: hidden;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .photo-upload-mini:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .photo-upload-mini i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .photo-upload-mini.has-photo {
+            border-style: solid;
+            padding: 0;
+            height: 180px;
+            min-height: unset;
+        }
+
+        .remove-photo-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--danger);
+            color: white;
+            border: 2px solid var(--bg-primary);
+            /* Border to separate from image */
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .remove-photo-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .photo-upload-mini .photo-preview {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #111;
+            margin: 0;
+        }
+
+        .photo-upload-mini input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+        }
+
+        /* Status Dropdown */
+        .status-dropdown {
+            padding: 4px 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .status-dropdown:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* ===== PENDING MEMBERSHIPS ===== */
+        .nav-badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .pending-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .pending-modal.active {
+            display: flex;
+        }
+
+        .pending-modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pending-modal-header {
+            padding: 16px 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pending-modal-header h3 {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .pending-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .pending-modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .pending-card {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .pending-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .pending-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .pending-card-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            font-size: 24px;
+            overflow: hidden;
+        }
+
+        .pending-card-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pending-card-info h4 {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin: 0 0 4px 0;
+        }
+
+        .pending-card-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin: 2px 0;
+        }
+
+        .pending-card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pending-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .pending-btn.approve {
+            background: rgba(5, 150, 105, 0.15);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .pending-btn.reject {
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .pending-btn:hover {
+            opacity: 0.8;
+        }
+
+        .pending-empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .pending-empty i {
+            font-size: 32px;
+            opacity: 0.3;
+            margin-bottom: 12px;
+            display: block;
+        }
     </style>
 </head>
 
@@ -834,6 +1693,9 @@
                 <div class="nav-section">
                     <div class="nav-label">Management</div>
                     <a href="members.php" class="nav-item active"><i class="fas fa-users"></i> <span>Members</span></a>
+                    <a href="#" class="nav-item" onclick="openPendingModal(); return false;"><i
+                            class="fas fa-user-clock"></i> <span>Pending</span><span class="nav-badge"
+                            id="pendingCount">2</span></a>
                     <a href="inventory.php" class="nav-item"><i class="fas fa-boxes-stacked"></i>
                         <span>Inventory</span></a>
                 </div>
@@ -865,21 +1727,31 @@
 
                 <!-- Cell 1: Who's In (Top-Left) -->
                 <div class="grid-cell" data-pos="top-left" onclick="activateCell('top-left')">
+                    <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
+                            class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
                         <div class="icon orange"><i class="fas fa-users"></i></div>
                         <span class="title">Who's In</span>
-                        <span class="badge" id="activeCount">0 Active</span>
-                    </div>
-                    <div class="cell-preview">
-                        <div class="preview-item">
-                            <div class="av">JD</div><span class="nm">John Doe</span><span class="mt">2h ago</span>
+                        <div class="active-indicator" id="activeCount">
+                            <i class="fas fa-user"></i> <span>0</span>
                         </div>
-                        <div class="preview-item">
-                            <div class="av">AS</div><span class="nm">Alice Smith</span><span class="mt">1h ago</span>
-                        </div>
-                        <div class="preview-hint"><i class="fas fa-expand"></i> Click to manage</div>
                     </div>
-                    <div class="cell-content" id="whosInContent">
+
+                    <div class="cell-content" id="whosInContent" onclick="event.stopPropagation();">
+                        <div class="whos-in-search">
+                            <div class="search-wrapper">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="whosInSearch" placeholder="Search member name..."
+                                    oninput="filterWhosIn()">
+                            </div>
+                        </div>
+                        <div class="member-list-header">
+                            <div></div> <!-- Avatar -->
+                            <div>Member Name</div>
+                            <div>Pass Type</div>
+                            <div>Time In</div>
+                            <div>Action</div>
+                        </div>
                         <div id="whosInList" class="member-list"></div>
                     </div>
                 </div>
@@ -943,45 +1815,141 @@
                     <div class="cell-preview">
                         <div class="plan-preview">
                             <div class="plan-mini">
-                                <div class="pn">Day</div>
-                                <div class="pp">₱100</div>
+                                <div class="pn">Daily</div>
+                                <div class="pp">₱60</div>
                             </div>
                             <div class="plan-mini">
-                                <div class="pn">Week</div>
-                                <div class="pp">₱400</div>
-                            </div>
-                            <div class="plan-mini">
-                                <div class="pn">Month</div>
-                                <div class="pp">₱1.5K</div>
-                            </div>
-                            <div class="plan-mini">
-                                <div class="pn">Year</div>
-                                <div class="pp">₱12K</div>
+                                <div class="pn">Monthly</div>
+                                <div class="pp">₱800</div>
                             </div>
                         </div>
-                        <div class="preview-hint"><i class="fas fa-id-card"></i> Click to activate</div>
+                        <div class="preview-hint"><i class="fas fa-id-card"></i> Click to register</div>
                     </div>
                     <div class="cell-content">
-                        <div class="plan-grid">
-                            <div class="plan-card" onclick="event.stopPropagation(); selectPlan(this, 100);">
-                                <div class="plan-name">Day Pass</div>
-                                <div class="plan-price">₱100</div>
+                        <div class="new-member-container" id="newMemberContainer">
+                            <!-- STATE: Choice -->
+                            <div class="nm-state active" id="nmStateChoice">
+                                <div class="choice-cards">
+                                    <div class="choice-card" onclick="event.stopPropagation(); showDailyPassForm();">
+                                        <div class="choice-icon daily"><i class="fas fa-clock"></i></div>
+                                        <div class="choice-title">Daily Pass</div>
+                                        <div class="choice-price">₱60</div>
+                                        <div class="choice-desc">Quick entry for walk-ins<br>Expires at midnight</div>
+                                    </div>
+                                    <div class="choice-card" onclick="event.stopPropagation(); showMembershipForm();">
+                                        <div class="choice-icon membership"><i class="fas fa-id-card"></i></div>
+                                        <div class="choice-title">Membership</div>
+                                        <div class="choice-price">₱800+</div>
+                                        <div class="choice-desc">Full registration<br>Monthly/Annual plans</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="plan-card" onclick="event.stopPropagation(); selectPlan(this, 400);">
-                                <div class="plan-name">Weekly</div>
-                                <div class="plan-price">₱400</div>
+
+                            <!-- STATE: Daily Pass Form -->
+                            <div class="nm-state" id="nmStateDailyForm">
+                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"><i
+                                        class="fas fa-arrow-left"></i> Back</div>
+                                <h4 style="margin-bottom: 16px; color: var(--text-primary); font-size: 14px;"><i
+                                        class="fas fa-clock" style="color: var(--warning); margin-right: 6px;"></i>
+                                    Daily Pass</h4>
+                                <div class="nm-form-group">
+                                    <label>Customer Name</label>
+                                    <input type="text" id="dailyPassName" placeholder="Enter full name..."
+                                        onclick="event.stopPropagation();">
+                                </div>
+                                <div style="margin-top: auto;">
+                                    <button class="btn-primary" onclick="event.stopPropagation(); applyDailyPass();"><i
+                                            class="fas fa-check"></i> APPLY DAILY PASS</button>
+                                </div>
                             </div>
-                            <div class="plan-card" onclick="event.stopPropagation(); selectPlan(this, 1500);">
-                                <div class="plan-name">Monthly</div>
-                                <div class="plan-price">₱1,500</div>
+
+                            <!-- STATE: Daily Pass QR -->
+                            <div class="nm-state" id="nmStateDailyQR">
+                                <div class="qr-display">
+                                    <div class="qr-box"><i class="fas fa-qrcode"></i></div>
+                                    <div class="qr-member-name" id="dailyQRName">Customer</div>
+                                    <div class="qr-member-type">Day Pass</div>
+                                    <div class="qr-expires">Valid until midnight today</div>
+                                </div>
+                                <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();"><i
+                                        class="fas fa-check-circle"></i> DONE</button>
                             </div>
-                            <div class="plan-card" onclick="event.stopPropagation(); selectPlan(this, 12000);">
-                                <div class="plan-name">Annual</div>
-                                <div class="plan-price">₱12,000</div>
+
+                            <!-- STATE: Membership Form -->
+                            <div class="nm-state" id="nmStateMembershipForm">
+                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"><i
+                                        class="fas fa-arrow-left"></i> Back</div>
+                                <h4 style="margin-bottom: 10px; color: var(--text-primary); font-size: 14px;"><i
+                                        class="fas fa-id-card" style="color: var(--success); margin-right: 6px;"></i>
+                                    Membership</h4>
+                                <div style="flex: 1; overflow-y: auto; overflow-x: hidden; padding-right: 4px;">
+                                    <div class="nm-form-split-layout">
+                                        <!-- Left Col: Photo -->
+                                        <div class="photo-upload-container">
+                                            <div class="photo-upload-mini" id="photoUploadBox"
+                                                onclick="event.stopPropagation();">
+                                                <i class="fas fa-camera"></i>
+                                                <span>Click to upload</span>
+                                                <input type="file" id="memberPhoto" accept="image/*"
+                                                    onchange="previewPhoto(this)" onclick="event.stopPropagation();">
+                                            </div>
+                                            <button class="remove-photo-btn" id="removePhotoBtn"
+                                                onclick="removePhoto(event)" title="Remove Photo"><i
+                                                    class="fas fa-times"></i></button>
+                                        </div>
+
+                                        <!-- Right Col: Inputs -->
+                                        <div class="nm-form-inputs">
+                                            <div class="nm-form-group">
+                                                <label>Full Name</label>
+                                                <input type="text" id="memberName" placeholder="Juan Dela Cruz"
+                                                    onclick="event.stopPropagation();">
+                                            </div>
+                                            <div class="nm-form-group">
+                                                <label>Email</label>
+                                                <input type="email" id="memberEmail" placeholder="juan@email.com"
+                                                    onclick="event.stopPropagation();">
+                                            </div>
+                                            <div class="nm-form-group">
+                                                <label>Phone</label>
+                                                <input type="tel" id="memberPhone" placeholder="09XX-XXX-XXXX"
+                                                    onclick="event.stopPropagation();">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nm-form-group">
+                                        <label>Select Plan</label>
+                                        <div class="plan-grid" style="margin-top: 6px;">
+                                            <div class="plan-card"
+                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Monthly', 800);">
+                                                <div class="plan-name">Monthly</div>
+                                                <div class="plan-price">₱800</div>
+                                            </div>
+                                            <div class="plan-card"
+                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Instructor', 1250);">
+                                                <div class="plan-name">+Instructor</div>
+                                                <div class="plan-price">₱1,250</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn-primary" onclick="event.stopPropagation(); activateMembership();"><i
+                                        class="fas fa-bolt"></i> ACTIVATE MEMBERSHIP</button>
+                            </div>
+
+                            <!-- STATE: Membership QR -->
+                            <div class="nm-state" id="nmStateMembershipQR">
+                                <div class="qr-display">
+                                    <div class="qr-box"><i class="fas fa-qrcode"></i></div>
+                                    <div class="qr-member-name" id="memberQRName">Member</div>
+                                    <div class="qr-member-type" id="memberQRPlan">Monthly</div>
+                                    <span class="status-tag active" style="margin-top: 8px;"><i
+                                            class="fas fa-check-circle"></i> Activated</span>
+                                </div>
+                                <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();"><i
+                                        class="fas fa-check-circle"></i> DONE</button>
                             </div>
                         </div>
-                        <button class="btn-primary" onclick="event.stopPropagation(); confirmActivation();"><i
-                                class="fas fa-check-circle"></i> ACTIVATE</button>
                     </div>
                 </div>
 
@@ -1043,18 +2011,26 @@
 
         let currentActive = null;
         let gymMembers = [
-            { id: 1, name: 'John Doe', initials: 'JD', plan: 'Premium', time: '2h ago' },
-            { id: 2, name: 'Alice Smith', initials: 'AS', plan: 'Monthly', time: '1h ago' }
+            { id: 1, name: 'John Doe', initials: 'JD', type: 'membership', plan: 'Premium', time: '08:05 AM', status: 'in' },
+            { id: 2, name: 'Alice Smith', initials: 'AS', type: 'daily', plan: 'Day Pass', time: '08:15 AM', status: 'in' },
+            { id: 3, name: 'Michael Jordan', initials: 'MJ', type: 'membership', plan: 'Standard', time: '08:30 AM', status: 'in' },
+            { id: 4, name: 'Sarah Connor', initials: 'SC', type: 'membership', plan: 'Standard', time: '08:45 AM', status: 'in' },
+            { id: 5, name: 'Tony Stark', initials: 'TS', type: 'daily', plan: 'Day Pass', time: '09:00 AM', status: 'in' },
+            { id: 6, name: 'Bruce Wayne', initials: 'BW', type: 'membership', plan: 'Premium', time: '09:10 AM', status: 'in' },
+            { id: 7, name: 'Clark Kent', initials: 'CK', type: 'membership', plan: 'Standard', time: '09:20 AM', status: 'in' },
+            { id: 8, name: 'Diana Prince', initials: 'DP', type: 'membership', plan: 'Standard', time: '09:30 AM', status: 'in' },
+            { id: 9, name: 'Peter Parker', initials: 'PP', type: 'daily', plan: 'Day Pass', time: '09:45 AM', status: 'in' },
+            { id: 10, name: 'Natasha Romanoff', initials: 'NR', type: 'membership', plan: 'Premium', time: '10:00 AM', status: 'in' },
+            { id: 11, name: 'Steve Rogers', initials: 'SR', type: 'membership', plan: 'Standard', time: '10:15 AM', status: 'in' }
         ];
 
         function activateCell(position) {
             const grid = document.getElementById('membersGrid');
             const cells = document.querySelectorAll('.grid-cell');
 
+            // If this cell is already active, DO NOT toggle it off when clicking inside
+            // Only the minimize button should close it
             if (currentActive === position) {
-                grid.setAttribute('data-active', 'none');
-                cells.forEach(cell => cell.classList.remove('active', 'shrunk'));
-                currentActive = null;
                 return;
             }
 
@@ -1080,32 +2056,83 @@
             });
         }
 
+        function minimizeCell() {
+            const grid = document.getElementById('membersGrid');
+            const cells = document.querySelectorAll('.grid-cell');
+
+            grid.setAttribute('data-active', 'none');
+            cells.forEach(cell => cell.classList.remove('active', 'shrunk'));
+            currentActive = null;
+        }
+
+        // Exit Confirmation Logic
+        let memberToExit = null;
+
+        function openExitConfirmation(id) {
+            memberToExit = id;
+            document.getElementById('exitModal').classList.add('active');
+        }
+
+        function closeExitConfirmation() {
+            document.getElementById('exitModal').classList.remove('active');
+            memberToExit = null;
+        }
+
+        function confirmExit() {
+            if (memberToExit) {
+                gymMembers = gymMembers.filter(m => m.id !== memberToExit);
+                renderWhosIn();
+                closeExitConfirmation();
+            }
+        }
+
+        // Filter Logic
+        function filterWhosIn() {
+            renderWhosIn();
+        }
+
         function renderWhosIn() {
             const list = document.getElementById('whosInList');
             const count = document.getElementById('activeCount');
+            const searchTerm = document.getElementById('whosInSearch') ? document.getElementById('whosInSearch').value.toLowerCase() : '';
 
-            if (gymMembers.length === 0) {
-                list.innerHTML = '<div class="empty-state"><i class="fas fa-user-clock"></i><p>No members checked in</p></div>';
-                count.textContent = '0 Active';
+            // Filter out members who have 'left' and match search
+            const activeMembers = gymMembers.filter(m => {
+                return m.status !== 'left' && m.name.toLowerCase().includes(searchTerm);
+            });
+
+            // Update Count (Always icon + number)
+            count.innerHTML = `<i class="fas fa-user"></i> <span>${activeMembers.length}</span>`;
+
+            if (activeMembers.length === 0) {
+                list.innerHTML = '<div class="empty-state"><i class="fas fa-user-clock"></i><p>No members found</p></div>';
                 return;
             }
 
-            list.innerHTML = gymMembers.map(m => `
+            // Columns: Avatar | Name | Type | Time | Action
+            list.innerHTML = activeMembers.map(m => `
                 <div class="member-item">
                     <div class="avatar">${m.initials}</div>
-                    <div class="info"><div class="name">${m.name}</div><div class="meta">${m.plan} • ${m.time}</div></div>
-                    <button class="action-btn danger" onclick="event.stopPropagation(); removeMember(${m.id});"><i class="fas fa-sign-out-alt"></i></button>
+                    
+                    <div class="col-info">
+                        <span class="main-text">${m.name}</span>
+                    </div>
+
+                    <div class="col-info">
+                        <span class="main-text" style="font-size:12px;">${m.type === 'daily' ? 'Day Pass' : 'Membership'}</span>
+                    </div>
+
+                    <div class="col-info">
+                        <span class="main-text" style="font-size:12px;">${m.time}</span>
+                    </div>
+
+                    <button class="action-btn-left" onclick="event.stopPropagation(); openExitConfirmation(${m.id})">
+                        <i class="fas fa-sign-out-alt"></i> Left
+                    </button>
                 </div>
             `).join('');
 
-            count.textContent = gymMembers.length + ' Active';
-        }
-
-        function removeMember(id) {
-            if (confirm('Mark member as exited?')) {
-                gymMembers = gymMembers.filter(m => m.id !== id);
-                renderWhosIn();
-            }
+            // Removed textContent update since innerHTML was used above
         }
 
         // Scan Result State
@@ -1127,7 +2154,7 @@
         function simulateScanSuccess() {
             const panel = document.getElementById('scanResultPanel');
             const btn = document.getElementById('allowEntryBtn');
-            
+
             // Simulate finding a valid member
             scannedMember = {
                 id: Date.now(),
@@ -1153,7 +2180,7 @@
         function simulateScanFail() {
             const panel = document.getElementById('scanResultPanel');
             const btn = document.getElementById('allowEntryBtn');
-            
+
             scannedMember = null;
 
             panel.className = 'result-panel error';
@@ -1172,11 +2199,11 @@
 
         function allowEntry() {
             if (!scannedMember) return;
-            
+
             gymMembers.unshift(scannedMember);
             renderWhosIn();
             resetScanResult();
-            
+
             // Switch to Who's In to show the new entry
             activateCell('top-left');
         }
@@ -1195,12 +2222,319 @@
             document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
         }
 
+        // ===== NEW MEMBER STATE MANAGEMENT =====
+        function setNmState(stateId) {
+            document.querySelectorAll('.nm-state').forEach(s => s.classList.remove('active'));
+            document.getElementById(stateId).classList.add('active');
+        }
+
+        function showNewMemberChoice() {
+            setNmState('nmStateChoice');
+            // Clear forms
+            document.getElementById('dailyPassName').value = '';
+            document.getElementById('memberName').value = '';
+            document.getElementById('memberEmail').value = '';
+            document.getElementById('memberPhone').value = '';
+            selectedMemberPlan = null;
+            document.querySelectorAll('#nmStateMembershipForm .plan-card').forEach(c => c.classList.remove('selected'));
+        }
+
+        function showDailyPassForm() {
+            setNmState('nmStateDailyForm');
+        }
+
+        function showMembershipForm() {
+            setNmState('nmStateMembershipForm');
+        }
+
+        function applyDailyPass() {
+            const name = document.getElementById('dailyPassName').value.trim();
+            if (!name) {
+                alert('Please enter customer name');
+                return;
+            }
+
+            // Generate initials
+            const parts = name.split(' ');
+            const initials = parts.length >= 2
+                ? parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase()
+                : name.substring(0, 2).toUpperCase();
+
+            // Add to gym members
+            const newMember = {
+                id: Date.now(),
+                name: name,
+                initials: initials,
+                type: 'daily',
+                plan: 'Day Pass',
+                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                status: 'in'
+            };
+            gymMembers.unshift(newMember);
+            renderWhosIn();
+
+            // Update QR display
+            document.getElementById('dailyQRName').textContent = name;
+
+            // Show QR state
+            setNmState('nmStateDailyQR');
+        }
+
+        let selectedMemberPlan = null;
+        function selectMemberPlan(el, planName, price) {
+            document.querySelectorAll('#nmStateMembershipForm .plan-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedMemberPlan = { name: planName, price: price };
+        }
+
+        function activateMembership() {
+            const name = document.getElementById('memberName').value.trim();
+            const email = document.getElementById('memberEmail').value.trim();
+            const phone = document.getElementById('memberPhone').value.trim();
+
+            if (!name) { alert('Please enter full name'); return; }
+            if (!email) { alert('Please enter email'); return; }
+            if (!phone) { alert('Please enter phone number'); return; }
+            if (!selectedMemberPlan) { alert('Please select a plan'); return; }
+
+            // Generate initials
+            const parts = name.split(' ');
+            const initials = parts.length >= 2
+                ? parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase()
+                : name.substring(0, 2).toUpperCase();
+
+            // Add to gym members
+            const newMember = {
+                id: Date.now(),
+                name: name,
+                initials: initials,
+                type: 'membership',
+                plan: selectedMemberPlan.name,
+                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                status: 'in'
+            };
+            gymMembers.unshift(newMember);
+            renderWhosIn();
+
+            // Update QR display
+            document.getElementById('memberQRName').textContent = name;
+            document.getElementById('memberQRPlan').textContent = selectedMemberPlan.name + ' - ₱' + selectedMemberPlan.price.toLocaleString();
+
+            // Show QR state
+            setNmState('nmStateMembershipQR');
+        }
+
+        function finishRegistration() {
+            showNewMemberChoice();
+        }
+
         document.getElementById('menuBtn').addEventListener('click', () => {
             document.getElementById('sidebar').classList.toggle('open');
         });
 
         renderWhosIn();
+
+        // ===== PHOTO UPLOAD =====
+        function previewPhoto(input) {
+            const box = document.getElementById('photoUploadBox');
+            const removeBtn = document.getElementById('removePhotoBtn');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Create or update valid img preview
+                    let img = box.querySelector('.photo-preview');
+                    if (!img) {
+                        img = document.createElement('img');
+                        img.className = 'photo-preview';
+                        box.appendChild(img);
+                    }
+                    img.src = e.target.result;
+
+                    box.classList.add('has-photo');
+                    // Hide icon and text by setting display to none on i and span direct children
+                    const icon = box.querySelector('i');
+                    const span = box.querySelector('span');
+                    if (icon) icon.style.display = 'none';
+                    if (span) span.style.display = 'none';
+
+                    // Show remove button
+                    if (removeBtn) {
+                        removeBtn.style.display = 'flex';
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removePhoto(e) {
+            e.stopPropagation();
+            const input = document.getElementById('memberPhoto');
+            const box = document.getElementById('photoUploadBox');
+            const removeBtn = document.getElementById('removePhotoBtn');
+
+            // Reset input
+            input.value = '';
+
+            // Reset box
+            box.classList.remove('has-photo');
+            const img = box.querySelector('.photo-preview');
+            if (img) img.remove();
+
+            // Show icon and text
+            const icon = box.querySelector('i');
+            const span = box.querySelector('span');
+            if (icon) icon.style.display = '';
+            if (span) span.style.display = '';
+
+            // Hide remove button
+            if (removeBtn) {
+                removeBtn.style.display = 'none';
+            }
+        }
+
+        // ===== PENDING MEMBERSHIPS =====
+        let pendingMembers = [
+            {
+                id: 101,
+                name: 'Carlos Martinez',
+                email: 'carlos@email.com',
+                phone: '0917-123-4567',
+                photo: null,
+                appliedAt: '2 hours ago'
+            },
+            {
+                id: 102,
+                name: 'Ana Reyes',
+                email: 'ana.reyes@email.com',
+                phone: '0918-987-6543',
+                photo: null,
+                appliedAt: '5 hours ago'
+            }
+        ];
+
+        function openPendingModal() {
+            document.getElementById('pendingModal').classList.add('active');
+            renderPendingList();
+        }
+
+        function closePendingModal() {
+            document.getElementById('pendingModal').classList.remove('active');
+        }
+
+        function renderPendingList() {
+            const container = document.getElementById('pendingList');
+            const badge = document.getElementById('pendingCount');
+
+            badge.textContent = pendingMembers.length;
+            if (pendingMembers.length === 0) {
+                badge.style.display = 'none';
+            } else {
+                badge.style.display = 'inline';
+            }
+
+            if (pendingMembers.length === 0) {
+                container.innerHTML = `
+                    <div class="pending-empty">
+                        <i class="fas fa-check-circle"></i>
+                        <p>No pending applications</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = pendingMembers.map(m => `
+                <div class="pending-card" id="pending-${m.id}">
+                    <div class="pending-card-header">
+                        <div class="pending-card-photo">
+                            ${m.photo ? `<img src="${m.photo}" alt="${m.name}">` : `<i class="fas fa-user"></i>`}
+                        </div>
+                        <div class="pending-card-info">
+                            <h4>${m.name}</h4>
+                            <p><i class="fas fa-envelope"></i> ${m.email}</p>
+                            <p><i class="fas fa-phone"></i> ${m.phone}</p>
+                            <p style="color: var(--text-dim);"><i class="fas fa-clock"></i> Applied ${m.appliedAt}</p>
+                        </div>
+                    </div>
+                    <div class="pending-card-actions">
+                        <button class="pending-btn approve" onclick="approvePending(${m.id})"><i class="fas fa-check"></i> Approve</button>
+                        <button class="pending-btn reject" onclick="rejectPending(${m.id})"><i class="fas fa-times"></i> Reject</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function approvePending(id) {
+            const member = pendingMembers.find(m => m.id === id);
+            if (member && confirm(`Approve ${member.name}'s membership application?`)) {
+                // Generate initials
+                const parts = member.name.split(' ');
+                const initials = parts.length >= 2
+                    ? parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase()
+                    : member.name.substring(0, 2).toUpperCase();
+
+                // Add to gym as active member
+                gymMembers.unshift({
+                    id: Date.now(),
+                    name: member.name,
+                    initials: initials,
+                    type: 'membership',
+                    plan: 'Monthly',
+                    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                    status: 'in'
+                });
+                renderWhosIn();
+
+                // Remove from pending
+                pendingMembers = pendingMembers.filter(m => m.id !== id);
+                renderPendingList();
+
+                alert(`${member.name} has been approved and activated!`);
+            }
+        }
+
+        function rejectPending(id) {
+            const member = pendingMembers.find(m => m.id === id);
+            if (member && confirm(`Reject ${member.name}'s application?`)) {
+                pendingMembers = pendingMembers.filter(m => m.id !== id);
+                renderPendingList();
+            }
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('pendingModal').addEventListener('click', function (e) {
+            if (e.target === this) closePendingModal();
+        });
+
+        renderPendingList();
     </script>
+
+    <!-- Pending Memberships Modal -->
+    <div class="pending-modal" id="pendingModal">
+        <div class="pending-modal-content">
+            <div class="pending-modal-header">
+                <h3><i class="fas fa-user-clock" style="color: var(--warning); margin-right: 8px;"></i> Pending
+                    Memberships</h3>
+                <button class="pending-modal-close" onclick="closePendingModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="pending-modal-body" id="pendingList">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+    <!-- Exit Confirmation Modal -->
+    <div class="modal-overlay" id="exitModal">
+        <div class="custom-modal">
+            <div class="modal-icon"><i class="fas fa-sign-out-alt"></i></div>
+            <div class="modal-title">Confirm Exit</div>
+            <div class="modal-text">Are you sure this member has left the gym premises?</div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeExitConfirmation()">Cancel</button>
+                <button class="modal-btn confirm" onclick="confirmExit()">Confirm Exit</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
