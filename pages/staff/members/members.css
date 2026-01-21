@@ -14,7 +14,10 @@
     /* Ensure strict containment */
     grid-template-rows: 1fr 1fr;
     gap: 12px;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    transition: grid-template-columns 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: grid-template-columns, grid-template-rows;
 }
 
 /* Header Date Pill */
@@ -44,7 +47,8 @@
     cursor: pointer;
     overflow: hidden;
     position: relative;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+    /* Removed transition: all to prevent expensive layout animations on children */
     display: flex;
     flex-direction: column;
 }
@@ -112,38 +116,98 @@
     color: var(--success);
 }
 
-/* Full Content (Always Visible for Who's In, others toggled) */
+/* ===== CELL CONTENT & PREVIEW SYSTEM ===== */
+
+/* Cell Content - Hidden by default, shown when active */
 .cell-content {
     flex: 1;
     padding: 16px;
     overflow-y: auto;
     display: none;
-    /* Default hidden for others */
 }
 
-/* Override for Who's In - Always show content */
+/* Cell Preview - Shown by default, hidden when active */
+.cell-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.preview-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.preview-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    background: rgba(184, 150, 12, 0.1);
+    border: 2px solid rgba(184, 150, 12, 0.3);
+    color: var(--gold);
+    transition: all 0.3s;
+}
+
+.preview-icon.scan {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: var(--info);
+}
+
+.preview-icon.member {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: var(--success);
+}
+
+.preview-icon.directory {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.3);
+    color: #8b5cf6;
+}
+
+.preview-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Special override for Who's In - Always shows content */
 [data-pos="top-left"] .cell-content {
     display: flex;
     flex-direction: column;
     padding: 0 12px 12px;
-    /* Adjusted padding */
 }
 
-/* Hide preview logic completely */
-[data-pos="top-right"] .cell-preview {
-    display: none !important;
-}
-
-[data-pos="top-right"] .cell-content,
-[data-pos="bottom-left"] .cell-content,
-[data-pos="bottom-right"] .cell-content {
-    display: flex;
-    /* Always show content (under overlay when inactive) */
-    flex-direction: column;
-    padding: 16px;
-    height: 100%;
-    /* Fill cell */
-}
 
 /* Inactive Overlay for Scan Entry */
 /* Inactive Overlay Shared Styles */
@@ -205,44 +269,32 @@
     display: block;
 }
 
-/* Hide preview when active */
+/* Active cell: hide preview, show content */
 .grid-cell.active .cell-preview {
     display: none;
 }
 
+.grid-cell.active .cell-content {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Inactive cells: show preview, hide content */
+.grid-cell:not(.active) .cell-preview {
+    display: flex;
+}
+
+.grid-cell:not(.active) .cell-content {
+    display: none;
+}
+
 /* Inactive State for Who's In */
-/* Inactive State Hiding (Search, Buttons, etc.) */
-[data-pos="top-left"]:not(.active) .whos-in-search,
+/* Keep original layout, just clip with overflow */
 [data-pos="top-left"]:not(.active) .minimize-btn,
 [data-pos="bottom-left"]:not(.active) .minimize-btn,
 [data-pos="bottom-right"]:not(.active) .minimize-btn,
-[data-pos="top-left"]:not(.active) .member-list-header {
-    /* Hide search and headers when inactive if desired, or keep headers? 
-                User said "time in header should be aligned... same to the other header".
-                User likely wants headers. I'll keep headers, hide search. */
+[data-pos="top-right"]:not(.active) .minimize-btn {
     display: none;
-}
-
-[data-pos="top-left"]:not(.active) .member-list {
-    padding: 0;
-    /* Remove padding when small */
-    gap: 4px;
-}
-
-[data-pos="top-left"]:not(.active) .member-item {
-    padding: 8px 12px;
-    grid-template-columns: 32px 1fr 0.8fr 60px 0px;
-    /* Hide button column effectively or shift */
-}
-
-[data-pos="top-left"]:not(.active) .member-item .action-btn-left {
-    display: none;
-}
-
-[data-pos="top-left"]:not(.active) .avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 11px;
 }
 
 /* ===== PREVIEW WIDGETS ===== */
@@ -429,22 +481,7 @@
     grid-area: 2 / 1 / 3 / 2;
 }
 
-/* Responsive "Who's In" List: Hide columns when squeezed */
-.members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-list-header,
-.members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-list-header,
-.members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-item,
-.members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-item {
-    grid-template-columns: 48px 1fr !important;
-}
 
-.members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-list-header>div:nth-child(n+3),
-.members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-list-header>div:nth-child(n+3),
-.members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-item>div:nth-child(n+3),
-.members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-item>div:nth-child(n+3),
-.members-grid-container[data-active="top-right"] [data-pos="top-left"] .member-item>button,
-.members-grid-container[data-active="bottom-right"] [data-pos="top-left"] .member-item>button {
-    display: none !important;
-}
 
 .members-grid-container[data-active="bottom-right"] [data-pos="bottom-right"] {
     grid-area: 2 / 2 / 3 / 3;
@@ -464,14 +501,8 @@
     border-color: var(--gold);
 }
 
-/* Shrunk cells hide preview detail */
-.grid-cell.shrunk .cell-preview {
-    opacity: 0.5;
-}
 
-.grid-cell.shrunk .preview-hint {
-    display: none;
-}
+
 
 /* ===== FULL CONTENT STYLES ===== */
 .search-box {
@@ -936,10 +967,17 @@
     transition: all 0.15s;
 }
 
-.plan-card:hover,
-.plan-card.selected {
+.plan-card:hover {
     border-color: var(--gold);
     background: rgba(184, 150, 12, 0.08);
+}
+
+.plan-card.selected {
+    border-color: var(--gold);
+    background: rgba(184, 150, 12, 0.2);
+    /* Stronger background */
+    box-shadow: 0 0 0 2px rgba(184, 150, 12, 0.3);
+    /* Ring effect */
 }
 
 .plan-card .plan-name {
@@ -966,6 +1004,16 @@
     font-size: 12px;
     cursor: pointer;
     margin-top: auto;
+    margin-top: auto;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover {
+    transform: none;
+}
+
+.btn-primary:hover {
+    transform: none;
 }
 
 .camera-view {
@@ -1593,13 +1641,19 @@
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 32px 24px;
+    padding: 24px 20px;
+    /* Reduced padding */
     width: 100%;
     max-width: 340px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
+    /* Reduced gap */
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    max-height: 100%;
+    /* Prevent overflow */
+    overflow-y: auto;
+    /* Allow scrolling if needed */
 }
 
 .nm-card-header {
@@ -1673,6 +1727,21 @@
     background: var(--bg-primary);
     border-color: var(--gold);
     box-shadow: 0 0 0 3px rgba(184, 150, 12, 0.15);
+}
+
+.nm-form-group .input-wrapper input.input-error {
+    border-color: var(--danger);
+    background: rgba(220, 38, 38, 0.05);
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 10px;
+    margin-top: 4px;
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* Photo Upload */

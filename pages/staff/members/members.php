@@ -82,6 +82,19 @@
                             In</span>
                     </div>
 
+                    <!-- Preview when inactive -->
+                    <div class="cell-preview">
+                        <div class="preview-content">
+                            <div class="preview-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="preview-stats">
+                                <div class="stat-number" id="previewMemberCount">11</div>
+                                <div class="stat-label">Members Inside</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="cell-content" id="whosInContent" onclick="event.stopPropagation();">
                         <div class="whos-in-search"
                             style="display: flex; gap: 12px; margin-top: 12px; justify-content: center; align-items: center;">
@@ -114,7 +127,20 @@
                         <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Scan
                             Entry</span>
                     </div>
-                    <!-- Preview removed, using content UI -->
+                    
+                    <!-- Preview when inactive -->
+                    <div class="cell-preview">
+                        <div class="preview-content">
+                            <div class="preview-icon scan">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="preview-stats">
+                                <div class="stat-label">QR Scan Entry</div>
+                                <div class="stat-hint">Click to scan member QR</div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="cell-content">
                         <div class="scan-layout">
                             <!-- Camera Section -->
@@ -169,7 +195,20 @@
                         <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">New
                             Member</span>
                     </div>
-                    <!-- Preview removed/Overlay logic used -->
+                    
+                    <!-- Preview when inactive -->
+                    <div class="cell-preview">
+                        <div class="preview-content">
+                            <div class="preview-icon member">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="preview-stats">
+                                <div class="stat-label">New Member</div>
+                                <div class="stat-hint">Daily Pass or Membership</div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="cell-content">
                         <div class="new-member-container" id="newMemberContainer">
                             <!-- STATE: Choice -->
@@ -392,7 +431,20 @@
                         <span class="title"
                             style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Directory</span>
                     </div>
-                    <!-- Preview removed/Overlay logic used -->
+                    
+                    <!-- Preview when inactive -->
+                    <div class="cell-preview">
+                        <div class="preview-content">
+                            <div class="preview-icon directory">
+                                <i class="fas fa-address-book"></i>
+                            </div>
+                            <div class="preview-stats">
+                                <div class="stat-label">Member Directory</div>
+                                <div class="stat-hint">Search and manage</div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="cell-content">
                         <div class="search-box">
                             <i class="fas fa-search"></i>
