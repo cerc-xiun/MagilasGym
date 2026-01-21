@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members | Magilas Gym</title>
+    <title>Front Desk | Magilas Gym</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,8 +39,8 @@
                 </div>
                 <div class="nav-section">
                     <div class="nav-label">Management</div>
-                    <a href="../members/members.php" class="nav-item active"><i class="fas fa-users"></i>
-                        <span>Members</span></a>
+                    <a href="../members/members.php" class="nav-item active"><i class="fas fa-desktop"></i>
+                        <span>Front Desk</span></a>
                     <a href="#" class="nav-item" onclick="openPendingModal(); return false;"><i
                             class="fas fa-user-clock"></i> <span>Pending</span><span class="nav-badge"
                             id="pendingCount">2</span></a>
@@ -65,7 +65,7 @@
             <header class="main-header">
                 <div class="header-left">
                     <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
-                    <h1 class="page-title">Member <span class="text-accent">Hub</span></h1>
+                    <h1 class="page-title">Front Desk <span class="text-accent">Operations</span></h1>
                 </div>
                 <div class="header-date"><i class="fas fa-calendar-alt"></i> <span id="dateDisplay"></span></div>
             </header>
@@ -78,8 +78,8 @@
                     <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
                             class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Who's
-                            In</span>
+                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Active
+                            Visits</span>
                     </div>
 
                     <!-- Preview when inactive -->
@@ -124,8 +124,8 @@
                     <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
                             class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Scan
-                            Entry</span>
+                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Access
+                            Scanner</span>
                     </div>
 
                     <!-- Preview when inactive -->
@@ -192,8 +192,8 @@
                     <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
                             class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">New
-                            Member</span>
+                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Registration
+                            Desk</span>
                     </div>
 
                     <!-- Preview when inactive -->
@@ -428,8 +428,8 @@
                     <button class="minimize-btn" onclick="event.stopPropagation(); minimizeCell();"><i
                             class="fas fa-compress-alt"></i></button>
                     <div class="cell-header">
-                        <span class="title"
-                            style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Directory</span>
+                        <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Member
+                            Lookup</span>
                     </div>
 
                     <!-- Preview when inactive -->
