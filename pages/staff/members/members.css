@@ -2010,3 +2010,395 @@
     margin-bottom: 12px;
     display: block;
 }
+
+/* ===== MEMBER DIRECTORY PANEL STYLES ===== */
+
+/* Container for each state */
+.dir-search-container,
+.dir-result-container,
+.dir-not-found-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 32px;
+}
+
+/* Card base */
+.dir-search-card,
+.dir-result-card,
+.dir-not-found-card {
+    background: rgba(18, 18, 20, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Titles */
+.dir-title {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: 32px;
+    letter-spacing: -0.5px;
+}
+
+.dir-title.error {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Search Form */
+.dir-form-group {
+    margin-bottom: 24px;
+}
+
+.dir-search-card .input-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+
+.dir-search-card .input-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(184, 150, 12, 0.1);
+}
+
+.dir-search-card .input-wrapper i {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.dir-search-card .input-wrapper:focus-within i {
+    color: var(--gold);
+}
+
+.dir-search-card .input-wrapper input {
+    background: transparent;
+    border: none;
+    outline: none;
+    flex: 1;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.dir-search-card .input-wrapper input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Member Result Layout - Compact Horizontal (Scaled Up & Unified) */
+.dir-result-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    width: auto;
+    min-width: 550px;
+    /* Stretch card */
+    background: rgba(18, 18, 20, 0.8);
+    /* Unified card background */
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 24px 32px;
+    /* Inner spacing */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.dir-member-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.dir-member-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Status ring around photo */
+.dir-member-photo::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.dir-member-photo i {
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.dir-member-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dir-member-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+.dir-info-main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.dir-value.name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.dir-meta-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: auto;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    border: none;
+}
+
+.dir-info-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    /* Prevent wrapping */
+}
+
+.dir-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.dir-value {
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.dir-status-badge {
+    display: inline-flex;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: fit-content;
+    line-height: 1;
+}
+
+.dir-status-badge.active {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.dir-status-badge.expired {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Action Buttons */
+.dir-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto;
+    min-width: 120px;
+}
+
+.dir-btn {
+    padding: 8px 24px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    height: 42px;
+    white-space: nowrap;
+
+}
+
+.dir-btn.secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dir-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dir-btn.primary {
+    background: var(--gradient-gold);
+    color: #000;
+}
+
+.dir-btn.primary:hover {
+    opacity: 0.9;
+}
+
+.dir-btn.renew {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+}
+
+.dir-btn.renew:hover {
+    opacity: 0.9;
+}
+
+/* Not Found Message */
+.dir-not-found-message {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.dir-not-found-message span {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dir-not-found-card .dir-btn {
+    width: 100%;
+}
+
+/* QR Code Modal for Directory */
+.qr-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.qr-modal.active {
+    display: flex;
+}
+
+.qr-modal-content {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+}
+
+.qr-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.qr-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.qr-modal-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+}
+
+.qr-code-display {
+    background: #fff;
+    padding: 20px;
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-member-name {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}

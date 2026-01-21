@@ -127,7 +127,7 @@
                         <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Scan
                             Entry</span>
                     </div>
-                    
+
                     <!-- Preview when inactive -->
                     <div class="cell-preview">
                         <div class="preview-content">
@@ -140,7 +140,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="cell-content">
                         <div class="scan-layout">
                             <!-- Camera Section -->
@@ -195,7 +195,7 @@
                         <span class="title" style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">New
                             Member</span>
                     </div>
-                    
+
                     <!-- Preview when inactive -->
                     <div class="cell-preview">
                         <div class="preview-content">
@@ -208,7 +208,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="cell-content">
                         <div class="new-member-container" id="newMemberContainer">
                             <!-- STATE: Choice -->
@@ -431,7 +431,7 @@
                         <span class="title"
                             style="margin: 0 auto; font-size: 18px; letter-spacing: 1px;">Directory</span>
                     </div>
-                    
+
                     <!-- Preview when inactive -->
                     <div class="cell-preview">
                         <div class="preview-content">
@@ -444,38 +444,94 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="cell-content">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search members..." onclick="event.stopPropagation();">
-                        </div>
-                        <div class="member-list">
-                            <div class="member-item">
-                                <div class="avatar">JD</div>
-                                <div class="info">
-                                    <div class="name">John Doe</div>
-                                    <div class="meta">Monthly • Active</div>
-                                </div><button class="action-btn" onclick="event.stopPropagation();"><i
-                                        class="fas fa-eye"></i></button>
-                            </div>
-                            <div class="member-item">
-                                <div class="avatar">AS</div>
-                                <div class="info">
-                                    <div class="name">Alice Smith</div>
-                                    <div class="meta">Weekly • Expiring</div>
-                                </div><button class="action-btn" onclick="event.stopPropagation();"><i
-                                        class="fas fa-eye"></i></button>
-                            </div>
-                            <div class="member-item">
-                                <div class="avatar">MJ</div>
-                                <div class="info">
-                                    <div class="name">Mike Johnson</div>
-                                    <div class="meta">Annual • Active</div>
-                                </div><button class="action-btn" onclick="event.stopPropagation();"><i
-                                        class="fas fa-eye"></i></button>
+                        <!-- STATE 1: Search Form -->
+                        <div class="dir-search-container" id="dirSearchState">
+                            <div class="dir-search-card">
+                                <h3 class="dir-title">Find a Member</h3>
+                                <div class="dir-form-group">
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="dirSearchInput" placeholder="Enter member name..."
+                                            onclick="event.stopPropagation();">
+                                    </div>
+                                </div>
+                                <button class="btn-primary" onclick="event.stopPropagation(); searchDirectoryMember();">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
                             </div>
                         </div>
+
+                        <!-- STATE 2: Member Found Result -->
+                        <div class="dir-result-container" id="dirResultState" style="display: none;">
+                            <div class="dir-result-card">
+                                <!-- Replaced header with profile-centric layout -->
+                                <div class="dir-member-layout">
+                                    <div class="dir-member-photo" id="dirMemberPhoto">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+
+                                    <div class="dir-member-details">
+                                        <div class="dir-info-main">
+                                            <div class="dir-value name" id="dirMemberName">John Doe</div>
+                                            <span class="dir-status-badge" id="dirMemberStatus">Active</span>
+                                        </div>
+
+                                        <div class="dir-meta-grid">
+                                            <div class="dir-info-item">
+                                                <span class="dir-label">Plan</span>
+                                                <span class="dir-value" id="dirMemberPlan">Premium</span>
+                                            </div>
+                                            <div class="dir-info-item">
+                                                <span class="dir-label" id="dirExpiryLabel">Expires</span>
+                                                <span class="dir-value" id="dirMemberExpiry">Feb 15, 2026</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Action Buttons -->
+                                <div class="dir-actions">
+                                    <button class="dir-btn secondary"
+                                        onclick="event.stopPropagation(); closeDirectoryResult();">
+                                        <i class="fas fa-arrow-left"></i> Close
+                                    </button>
+                                    <button class="dir-btn primary" id="dirActionBtn"
+                                        onclick="event.stopPropagation(); handleDirectoryAction();">
+                                        <i class="fas fa-qrcode"></i> Show QR
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STATE 3: Not Found -->
+                        <div class="dir-not-found-container" id="dirNotFoundState" style="display: none;">
+                            <div class="dir-not-found-card">
+                                <h3 class="dir-title error">Not Found</h3>
+                                <p class="dir-not-found-message" id="dirNotFoundMessage">
+                                    "<span id="dirSearchedName">Name</span>" was not applied for any kind of
+                                    membership or day pass in the gym
+                                </p>
+                                <button class="dir-btn secondary"
+                                    onclick="event.stopPropagation(); closeDirectoryResult();">
+                                    <i class="fas fa-arrow-left"></i> Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code Modal for Directory -->
+                <div class="qr-modal" id="dirQRModal" onclick="closeDirQRModal()">
+                    <div class="qr-modal-content" onclick="event.stopPropagation();">
+                        <button class="qr-close-btn" onclick="closeDirQRModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <h3>Member QR Code</h3>
+                        <div class="qr-code-display">
+                            <div id="dirQRCodeCanvas"></div>
+                        </div>
+                        <p class="qr-member-name" id="dirQRMemberName">Member Name</p>
                     </div>
                 </div>
 
