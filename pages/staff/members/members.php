@@ -20,7 +20,7 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
-    <link rel="stylesheet" href="members.css">
+    <link rel="stylesheet" href="members.css?v=8">
 </head>
 
 <body class="dashboard-body">
@@ -212,19 +212,77 @@
                     <div class="cell-content">
                         <div class="new-member-container" id="newMemberContainer">
                             <!-- STATE: Choice -->
-                            <div class="nm-state active" id="nmStateChoice">
-                                <div class="choice-cards">
-                                    <div class="choice-card" onclick="event.stopPropagation(); showDailyPassForm();">
-                                        <div class="choice-icon daily"><i class="fas fa-clock"></i></div>
-                                        <div class="choice-title">Daily Pass</div>
-                                        <div class="choice-price">₱60</div>
-                                        <div class="choice-desc">Quick entry for walk-ins<br>Expires at midnight</div>
+                            <div class="nm-state active" id="nmStateChoice" style="width: 100%; height: 100%;">
+                                <div class="registration-tabs">
+                                    <!-- CARD 1: Membership Registration -->
+                                    <div class="flip-card">
+                                        <div class="flip-card-inner">
+                                            <!-- FRONT -->
+                                            <div class="flip-card-front">
+                                                <div class="icon-wrapper">
+                                                    <i class="fas fa-id-card"></i>
+                                                </div>
+                                                <h2>Membership<br>Registration</h2>
+                                            </div>
+                                            <!-- BACK -->
+                                            <div class="flip-card-back">
+                                                <h3>Available Plans</h3>
+                                                <ul class="fc-price-list">
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">Daily Pass</span>
+                                                        <span class="fc-price-val">₱60</span>
+                                                    </li>
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">Student Monthly</span>
+                                                        <span class="fc-price-val">₱600</span>
+                                                    </li>
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">Regular Monthly</span>
+                                                        <span class="fc-price-val">₱800</span>
+                                                    </li>
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">Senior Monthly</span>
+                                                        <span class="fc-price-val">₱500</span>
+                                                    </li>
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">Fitness Instructor</span>
+                                                        <span class="fc-price-val">₱1,250</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="choice-card" onclick="event.stopPropagation(); showMembershipForm();">
-                                        <div class="choice-icon membership"><i class="fas fa-id-card"></i></div>
-                                        <div class="choice-title">Membership</div>
-                                        <div class="choice-price">₱800+</div>
-                                        <div class="choice-desc">Full registration<br>Monthly/Annual plans</div>
+
+                                    <!-- CARD 2: Renewal / Addition -->
+                                    <div class="flip-card">
+                                        <div class="flip-card-inner">
+                                            <!-- FRONT -->
+                                            <div class="flip-card-front">
+                                                <div class="icon-wrapper">
+                                                    <i class="fas fa-arrows-rotate"></i>
+                                                </div>
+                                                <h2>Renewal<br>& Additions</h2>
+                                            </div>
+                                            <!-- BACK -->
+                                            <div class="flip-card-back">
+                                                <h3>Services</h3>
+                                                <ul class="fc-price-list">
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">Membership Renewal</span>
+                                                        <span class="fc-tag">Monthly</span>
+                                                    </li>
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">Membership Plans</span>
+                                                        <span class="fc-tag">Monthly</span>
+                                                    </li>
+                                                    <li class="fc-price-item">
+                                                        <span class="fc-price-label">+Instructor
+                                                            Plans</span>
+                                                        <span class="fc-tag">Monthly</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

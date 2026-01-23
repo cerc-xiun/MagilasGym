@@ -2402,3 +2402,160 @@
     color: var(--text-secondary);
     font-weight: 600;
 }
+
+/* ===== REGISTRATION DESK FLIP CARDS ===== */
+.registration-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    /* Standardized gap */
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.registration-tabs * {
+    box-sizing: border-box;
+}
+
+.flip-card {
+    position: relative;
+    background-color: transparent;
+    width: 300px;
+    height: 400px;
+    perspective: 1000px;
+    cursor: pointer;
+    z-index: 1;
+    /* Base z-index */
+    flex-shrink: 0;
+    /* Prevent shrinking/touching */
+}
+
+.flip-card:hover {
+    z-index: 50;
+    /* High z-index on hover to prevent clipping */
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transform: translateZ(0);
+}
+
+/* Front Styling */
+.flip-card-front {
+    background: linear-gradient(145deg, #2a2a2a, #202020);
+    gap: 16px;
+    z-index: 2;
+}
+
+.flip-card-front h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.1rem;
+    /* Adjusted for width */
+    color: var(--text-primary);
+    letter-spacing: 1.5px;
+    margin: 0;
+    line-height: 1;
+}
+
+.flip-card-front .icon-wrapper {
+    font-size: 2.4rem;
+    color: var(--gold);
+    background: rgba(184, 150, 12, 0.1);
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(184, 150, 12, 0.3);
+}
+
+/* Back Styling */
+.flip-card-back {
+    background: linear-gradient(145deg, #181818, #222);
+    transform: rotateY(180deg);
+    justify-content: flex-start;
+    padding-top: 24px;
+}
+
+.flip-card-back h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    width: 100%;
+}
+
+.fc-price-list {
+    width: 100%;
+    text-align: left;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.fc-price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fc-price-item:last-child {
+    border-bottom: none;
+}
+
+.fc-price-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.fc-price-val {
+    color: var(--text-primary);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+}
+
+.fc-tag {
+    background: rgba(184, 150, 12, 0.15);
+    color: var(--gold);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
