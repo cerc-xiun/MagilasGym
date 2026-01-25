@@ -440,17 +440,20 @@
 
                                         <div class="step-progress">
                                             <div class="step-item active">
-                                                <div class="step-circle">1</div>
+                                                <div class="step-circle"
+                                                    onclick="event.stopPropagation(); goToStep(1);">1</div>
                                                 <span class="step-label">Plan</span>
                                             </div>
                                             <div class="step-line"></div>
                                             <div class="step-item">
-                                                <div class="step-circle">2</div>
+                                                <div class="step-circle"
+                                                    onclick="event.stopPropagation(); goToStep(2);">2</div>
                                                 <span class="step-label">Info</span>
                                             </div>
                                             <div class="step-line"></div>
                                             <div class="step-item">
-                                                <div class="step-circle">3</div>
+                                                <div class="step-circle"
+                                                    onclick="event.stopPropagation(); goToStep(3);">3</div>
                                                 <span class="step-label">Payment</span>
                                             </div>
                                         </div>
