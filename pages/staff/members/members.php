@@ -21,6 +21,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
     <link rel="stylesheet" href="members.css">
+    <link rel="stylesheet" href="step_design.css">
 </head>
 
 <body class="dashboard-body">
@@ -250,8 +251,8 @@
                                         </div>
                                     </div>
 
-                                    <!-- Flip Card 2: Renewal & Additions (Placeholder for future) -->
-                                    <div class="flip-card disabled">
+                                    <!-- Flip Card 2: Renewal & Additions -->
+                                    <div class="flip-card" onclick="event.stopPropagation(); showRenewalForm();">
                                         <div class="flip-card-inner">
                                             <div class="flip-card-front">
                                                 <div class="flip-icon">
@@ -259,37 +260,199 @@
                                                 </div>
                                                 <div class="flip-title">Renewal & Additions</div>
                                                 <div class="flip-subtitle">Extend or Upgrade</div>
-                                                <div class="coming-soon">Coming Soon</div>
+                                            </div>
+                                            <div class="flip-card-back">
+                                                <div class="flip-back-header">Member Services</div>
+                                                <div class="flip-price-list">
+                                                    <div class="flip-price-item">
+                                                        <span>Membership Renewal</span>
+                                                        <strong><i class="fas fa-arrow-right"></i></strong>
+                                                    </div>
+                                                    <div class="flip-price-item">
+                                                        <span>Add Instructor</span>
+                                                        <strong>₱1,250</strong>
+                                                    </div>
+                                                    <div class="flip-price-item">
+                                                        <span>Reactivate Account</span>
+                                                        <strong><i class="fas fa-check"></i></strong>
+                                                    </div>
+                                                    <div class="flip-price-item">
+                                                        <span>Check Status</span>
+                                                        <strong><i class="fas fa-search"></i></strong>
+                                                    </div>
+                                                </div>
+                                                <div class="flip-cta">Click to Proceed →</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- STATE: Step-Based Registration Flow -->
-                            <div class="reg-state" id="regStepFlow">
+                            <!-- STATE: Renewal Flow -->
+                            <div class="reg-state" id="regRenewalFlow">
                                 <div class="step-flow-container">
-                                    <!-- Back Button -->
                                     <button class="step-back-btn"
                                         onclick="event.stopPropagation(); navigateBackToCards();">
                                         <i class="fas fa-arrow-left"></i>
                                     </button>
 
-                                    <!-- Step Progress Indicator -->
-                                    <div class="step-progress">
-                                        <div class="step-item active">
-                                            <div class="step-circle">1</div>
-                                            <span class="step-label">Plan</span>
+                                    <!-- Renewal Step 1: Search -->
+                                    <div class="renewal-search-container" id="renewalStep1">
+                                        <div class="glass-card centered-card"
+                                            style="max-width: 400px; padding: 40px 30px;">
+                                            <div class="icon-circle gold"
+                                                style="margin: 0 auto 20px auto; width: 70px; height: 70px; font-size: 28px;">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                            <h3 style="text-align: center; margin-bottom: 8px;">Find Member</h3>
+                                            <p
+                                                style="text-align: center; color: var(--text-secondary); margin-bottom: 24px; font-size: 14px;">
+                                                Enter name or ID to check status</p>
+
+                                            <div class="form-group-modern">
+                                                <div class="input-glass">
+                                                    <i class="fas fa-user-tag"></i>
+                                                    <input type="text" id="renewalSearchInput"
+                                                        placeholder="Member Name or ID"
+                                                        onclick="event.stopPropagation();"
+                                                        onkeypress="handleRenewalSearchEnter(event)">
+                                                </div>
+                                            </div>
+
+                                            <button class="btn-primary"
+                                                onclick="event.stopPropagation(); searchMemberForRenewal();"
+                                                style="margin-top: 16px; width: 100%; justify-content: center;">
+                                                Search Record <i class="fas fa-arrow-right"></i>
+                                            </button>
                                         </div>
-                                        <div class="step-line"></div>
-                                        <div class="step-item">
-                                            <div class="step-circle">2</div>
-                                            <span class="step-label">Info</span>
+                                    </div>
+
+                                    <!-- Renewal Step 2: Member Dashboard -->
+                                    <div class="renewal-dashboard-container" id="renewalStep2" style="display: none;">
+                                        <div class="glass-card">
+                                            <!-- Member Profile Header -->
+                                            <div class="renewal-profile-header">
+                                                <div class="profile-photo-ring">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                                <div class="profile-info">
+                                                    <h3 id="renewMemberName">John Doe</h3>
+                                                    <div class="profile-meta">
+                                                        <span class="meta-badge" id="renewMemberPlan">Regular
+                                                            Monthly</span>
+                                                        <span class="status-badge" id="renewMemberStatus">Active</span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-expiry">
+                                                    <span class="label">Current Expiry</span>
+                                                    <strong id="renewMemberExpiry">Feb 25, 2026</strong>
+                                                </div>
+                                            </div>
+
+                                            <div class="divider-glass"></div>
+
+                                            <h4 class="section-title">Available Actions</h4>
+
+                                            <div class="renewal-options-grid">
+                                                <!-- Extend Membership -->
+                                                <div class="renewal-option-card active" id="optExtend"
+                                                    onclick="selectRenewalOption('extend')">
+                                                    <div class="opt-icon"><i class="fas fa-calendar-plus"></i></div>
+                                                    <div class="opt-details">
+                                                        <h5>Extend Membership</h5>
+                                                        <p>Add more months</p>
+                                                    </div>
+                                                    <div class="opt-arrow"><i class="fas fa-chevron-right"></i></div>
+                                                </div>
+
+                                                <!-- Add Instructor -->
+                                                <div class="renewal-option-card" id="optInstructor"
+                                                    onclick="selectRenewalOption('instructor')">
+                                                    <div class="opt-icon"><i class="fas fa-user-tie"></i></div>
+                                                    <div class="opt-details">
+                                                        <h5>Add Instructor</h5>
+                                                        <p>Sessions & Training</p>
+                                                    </div>
+                                                    <div class="opt-arrow"><i class="fas fa-chevron-right"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Extension Form (Hidden by default) -->
+                                            <div class="renewal-action-form" id="formExtend"
+                                                style="display: block; margin-top: 24px;">
+                                                <label class="duration-label">Select Duration to Add</label>
+                                                <div class="duration-stepper">
+                                                    <button class="stepper-btn"
+                                                        onclick="event.stopPropagation(); adjustRenewalDuration(-1);">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <div class="duration-display">
+                                                        <span class="duration-value" id="renewDurationVal">1</span>
+                                                        <span class="duration-unit">Month</span>
+                                                    </div>
+                                                    <button class="stepper-btn"
+                                                        onclick="event.stopPropagation(); adjustRenewalDuration(1);">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="new-expiry-preview">
+                                                    <span>New Expiry:</span>
+                                                    <strong id="renewNewExpiry" class="gold">March 25, 2026</strong>
+                                                </div>
+                                            </div>
+
+                                            <!-- Payment & Confirm -->
+                                            <div class="renewal-payment-section" style="margin-top: 24px;">
+                                                <label class="payment-label">Payment Method</label>
+                                                <div class="payment-options-glass compact">
+                                                    <div class="payment-option-glass active" data- rpay="gcash"
+                                                        onclick="selectRenewalPayment('gcash')">GCash</div>
+                                                    <div class="payment-option-glass" data-rpay="cash"
+                                                        onclick="selectRenewalPayment('cash')">Cash</div>
+                                                </div>
+
+                                                <div class="renewal-total-row">
+                                                    <span>Total Amount</span>
+                                                    <strong id="renewTotalAmount">₱800</strong>
+                                                </div>
+
+                                                <button class="btn-primary" onclick="processRenewalComplete()"
+                                                    style="width: 100%; justify-content: center; margin-top: 16px;">
+                                                    Confirm & Pay <i class="fas fa-check-circle"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="step-line"></div>
-                                        <div class="step-item">
-                                            <div class="step-circle">3</div>
-                                            <span class="step-label">Payment</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- STATE: Step-Based Registration Flow -->
+                            <div class="reg-state" id="regStepFlow">
+                                <div class="step-flow-container">
+
+                                    <!-- Step Header with Back Button -->
+                                    <div class="step-header">
+                                        <button class="step-back-btn"
+                                            onclick="event.stopPropagation(); navigateBackToCards();">
+                                            <i class="fas fa-arrow-left"></i>
+                                        </button>
+
+                                        <div class="step-progress">
+                                            <div class="step-item active">
+                                                <div class="step-circle">1</div>
+                                                <span class="step-label">Plan</span>
+                                            </div>
+                                            <div class="step-line"></div>
+                                            <div class="step-item">
+                                                <div class="step-circle">2</div>
+                                                <span class="step-label">Info</span>
+                                            </div>
+                                            <div class="step-line"></div>
+                                            <div class="step-item">
+                                                <div class="step-circle">3</div>
+                                                <span class="step-label">Payment</span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -389,8 +552,7 @@
                                             <!-- Instructor Add-on (Hidden for day pass) -->
                                             <div class="instructor-section" id="instructorSection"
                                                 style="display: none;">
-                                                <div class="addon-card"
-                                                    onclick="event.stopPropagation(); toggleInstructor();">
+                                                <div class="addon-card">
                                                     <div class="addon-info">
                                                         <i class="fas fa-user-tie"></i>
                                                         <div>
@@ -401,7 +563,7 @@
                                                     <div class="addon-price">₱1,250</div>
                                                     <label class="addon-toggle">
                                                         <input type="checkbox" id="instructorCheckbox"
-                                                            onclick="event.stopPropagation();">
+                                                            onchange="toggleInstructor()">
                                                         <span class="toggle-slider"></span>
                                                     </label>
                                                 </div>
@@ -684,8 +846,6 @@
                                     </button>
                                 </div>
                             </div>
-
-
                         </div><!-- End new-member-container -->
                     </div><!-- End cell-content -->
                 </div><!-- End Cell 3: Registration Desk -->

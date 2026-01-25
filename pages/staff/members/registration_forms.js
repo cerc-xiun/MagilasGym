@@ -19,7 +19,11 @@ function showRegistrationForm() {
 
 function navigateBackToCards() {
     hideAllRegStates();
-    document.getElementById('regCardSelection').classList.add('active');
+    const cardSelection = document.getElementById('regCardSelection');
+    if (cardSelection) {
+        cardSelection.classList.add('active');
+        cardSelection.style.display = 'flex';
+    }
     resetRegistrationFlow();
 }
 
@@ -30,6 +34,7 @@ function resetToCards() {
 function hideAllRegStates() {
     document.querySelectorAll('.reg-state').forEach(state => {
         state.classList.remove('active');
+        state.style.display = 'none'; // Robust fix
     });
 }
 
@@ -313,8 +318,9 @@ function isValidEmail(email) {
 }
 
 // Photo Upload
+// Photo Upload Fix
 function previewPhotoModern(input) {
-    const preview = document.getElementById('photoPreviewGlass');
+    const box = document.getElementById('photoPreviewGlass');
     const removeBtn = document.getElementById('removePhotoModern');
 
     if (!input.files || !input.files[0]) return;
@@ -322,8 +328,24 @@ function previewPhotoModern(input) {
     const reader = new FileReader();
 
     reader.onload = function (e) {
-        preview.innerHTML = `<img src="${e.target.result}" alt="Photo Preview">`;
-        preview.classList.add('has-photo');
+        // Do NOT overwrite innerHTML (keeps input alive)
+
+        // Hide placeholder elements (icon and span)
+        const icon = box.querySelector('.fa-camera');
+        const span = box.querySelector('span');
+        if (icon) icon.style.display = 'none';
+        if (span) span.style.display = 'none';
+
+        // Show/Create Image
+        let img = box.querySelector('img');
+        if (!img) {
+            img = document.createElement('img');
+            box.appendChild(img);
+        }
+        img.src = e.target.result;
+        img.style.display = 'block';
+
+        box.classList.add('has-photo');
         if (removeBtn) removeBtn.style.display = 'flex';
     };
 
@@ -332,14 +354,25 @@ function previewPhotoModern(input) {
 
 function removePhotoModern() {
     const photoInput = document.getElementById('memberPhotoModern');
-    const preview = document.getElementById('photoPreviewGlass');
+    const box = document.getElementById('photoPreviewGlass');
     const removeBtn = document.getElementById('removePhotoModern');
 
     if (photoInput) photoInput.value = '';
-    if (preview) {
-        preview.innerHTML = '<i class="fas fa-camera"></i><span>Upload Photo</span>';
-        preview.classList.remove('has-photo');
+
+    if (box) {
+        box.classList.remove('has-photo');
+
+        // Remove or hide image
+        const img = box.querySelector('img');
+        if (img) img.style.display = 'none';
+
+        // Show placeholder
+        const icon = box.querySelector('.fa-camera');
+        const span = box.querySelector('span');
+        if (icon) icon.style.display = 'block';
+        if (span) span.style.display = 'block';
     }
+
     if (removeBtn) removeBtn.style.display = 'none';
 }
 
@@ -541,3 +574,201 @@ function showNotification(message, type = 'info') {
 document.addEventListener('DOMContentLoaded', function () {
     console.log('Modern Registration System Initialized');
 });
+
+// ===== RENEWAL SYSTEM LOGIC =====
+
+// Mock Database for Renewal Demo
+const renewalMockDB = [
+    { id: '1001', name: 'John Doe', plan: 'Regular Monthly', status: 'Active', expiry: '2026-02-25', planPrice: 800 },
+    { id: '1002', name: 'Sarah Connor', plan: 'Student Monthly', status: 'Expired', expiry: '2026-01-10', planPrice: 600 },
+    { id: '1003', name: 'Mike Ross', plan: 'Senior Monthly', status: 'Active', expiry: '2026-03-01', planPrice: 650 }
+];
+
+let currentRenewMember = null;
+let renewalDuration = 1;
+let renewalType = 'extend'; // 'extend' or 'instructor'
+let renewalPayment = 'gcash';
+
+function showRenewalForm() {
+    hideAllRegStates();
+    const renewalFlow = document.getElementById('regRenewalFlow');
+    if (renewalFlow) {
+        renewalFlow.classList.add('active');
+        renewalFlow.style.display = 'block';
+    }
+
+    // Reset state
+    document.getElementById('renewalStep1').style.display = 'block';
+    document.getElementById('renewalStep2').style.display = 'none';
+    document.getElementById('renewalSearchInput').value = '';
+    document.getElementById('renewalSearchInput').focus();
+}
+
+function handleRenewalSearchEnter(e) {
+    if (e.key === 'Enter') searchMemberForRenewal();
+}
+
+function searchMemberForRenewal() {
+    const query = document.getElementById('renewalSearchInput').value.trim().toLowerCase();
+
+    if (!query) {
+        showNotification('Please enter a name or ID', 'error');
+        return;
+    }
+
+    // Simulate Search
+    const found = renewalMockDB.find(m =>
+        m.name.toLowerCase().includes(query) || m.id === query
+    );
+
+    if (found) {
+        loadRenewalDashboard(found);
+    } else {
+        showNotification('Member not found', 'error');
+    }
+}
+
+function loadRenewalDashboard(member) {
+    currentRenewMember = member;
+    renewalDuration = 1;
+    renewalType = 'extend';
+
+    // Populate Profile
+    document.getElementById('renewMemberName').textContent = member.name;
+    document.getElementById('renewMemberPlan').textContent = member.plan;
+
+    const statusBadge = document.getElementById('renewMemberStatus');
+    statusBadge.textContent = member.status;
+    statusBadge.className = `status-badge ${member.status.toLowerCase()}`;
+
+    document.getElementById('renewMemberExpiry').textContent = formatDate(member.expiry);
+
+    // Switch Views
+    document.getElementById('renewalStep1').style.display = 'none';
+    document.getElementById('renewalStep2').style.display = 'block';
+
+    // Reset to Extend Option
+    selectRenewalOption('extend');
+    updateRenewalCalculations();
+}
+
+function selectRenewalOption(type) {
+    renewalType = type;
+
+    // Visual Toggle
+    document.querySelectorAll('.renewal-option-card').forEach(c => c.classList.remove('active'));
+
+    if (type === 'extend') {
+        document.getElementById('optExtend').classList.add('active');
+        document.getElementById('formExtend').style.display = 'block';
+        // Hide instructor specific forms if any
+    } else {
+        document.getElementById('optInstructor').classList.add('active');
+        document.getElementById('formExtend').style.display = 'none';
+        // specific instructor logic
+        showNotification('Instructor Add-on coming in next update', 'info');
+        // Revert for demo
+        setTimeout(() => selectRenewalOption('extend'), 1000);
+        return;
+    }
+
+    updateRenewalCalculations();
+}
+
+function adjustRenewalDuration(delta) {
+    if (renewalDuration + delta >= 1 && renewalDuration + delta <= 12) {
+        renewalDuration += delta;
+        document.getElementById('renewDurationVal').textContent = renewalDuration;
+        updateRenewalCalculations();
+    }
+}
+
+function updateRenewalCalculations() {
+    if (!currentRenewMember) return;
+
+    // Calculate Price
+    const total = currentRenewMember.planPrice * renewalDuration;
+    document.getElementById('renewTotalAmount').textContent = `₱${total.toLocaleString()}`;
+
+    // Calculate New Expiry
+    const currentExpiry = new Date(currentRenewMember.expiry);
+    const today = new Date();
+
+    // If expired, start from today. If active, add to current expiry.
+    let baseDate = currentExpiry < today ? today : currentExpiry;
+
+    const newExpiry = new Date(baseDate);
+    newExpiry.setMonth(newExpiry.getMonth() + renewalDuration);
+
+    document.getElementById('renewNewExpiry').textContent = newExpiry.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+}
+
+function selectRenewalPayment(method) {
+    renewalPayment = method;
+    document.querySelectorAll('.payment-option-glass').forEach(opt => {
+        if (opt.dataset.rpay === method) opt.classList.add('active');
+        else opt.classList.remove('active');
+    });
+}
+
+function processRenewalComplete() {
+    // Show loading
+    const btn = event.currentTarget;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+
+        // Show Success (Reuse membership success screen for now or create generic one)
+        showRenewalSuccess();
+    }, 1500);
+}
+
+function showRenewalSuccess() {
+    hideAllRegStates();
+
+    // Populate Success Screen reused from Membership
+    // Ideally create a specific one, but for now reuse Layout
+
+    const successName = document.getElementById('successNameMember');
+    const successPlan = document.getElementById('successPlan');
+    const successExpiry = document.getElementById('successExpiration');
+    const successAmount = document.getElementById('successAmount');
+
+    if (successName) successName.textContent = currentRenewMember.name;
+    if (successPlan) successPlan.textContent = 'Renewal - ' + currentRenewMember.plan;
+    if (successExpiry) successExpiry.textContent = document.getElementById('renewNewExpiry').textContent;
+    if (successAmount) successAmount.textContent = document.getElementById('renewTotalAmount').textContent;
+
+    document.getElementById('regSuccessMembership').classList.add('active');
+}
+
+function formatDate(dateStr) {
+    return new Date(dateStr).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+}
+
+
+// ===== INSTRUCTOR TOGGLE (Simplified) =====
+function toggleInstructor() {
+    const checkbox = document.getElementById('instructorCheckbox');
+    const quantity = document.getElementById('instructorQuantity');
+
+    if (!checkbox || !quantity) return;
+
+    // Show/hide quantity based on checkbox state
+    if (checkbox.checked) {
+        quantity.style.display = 'block';
+    } else {
+        quantity.style.display = 'none';
+    }
+}
+

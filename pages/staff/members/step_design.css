@@ -1,0 +1,128 @@
+/* ========================================
+   CLEAN STEP BAR DESIGN
+   ======================================== */
+
+/* Flow Container - Simple Scrollable */
+.step-flow-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 30px 20px !important;
+}
+
+/* Step Header - Clean Design */
+.step-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 700px !important;
+    margin-bottom: 40px !important;
+    gap: 30px !important;
+}
+
+/* Back Button - Minimal & Clean */
+.step-back-btn {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 50% !important;
+    width: 44px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    color: var(--text-secondary) !important;
+    transition: all 0.3s ease !important;
+    flex-shrink: 0 !important;
+}
+
+.step-back-btn:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--gold) !important;
+    transform: translateX(-2px) !important;
+}
+
+/* Step Progress - Premium Design */
+.step-progress {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    flex: 1 !important;
+    max-width: 500px !important;
+    padding: 16px 24px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 50px !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* Step Items */
+.step-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* Step Circle - Enhanced */
+.step-circle {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    color: var(--text-muted) !important;
+    transition: all 0.4s ease !important;
+}
+
+.step-item.active .step-circle {
+    background: linear-gradient(135deg, rgba(184, 150, 12, 0.9), rgba(184, 150, 12, 0.7)) !important;
+    border-color: var(--gold) !important;
+    color: #000 !important;
+    box-shadow: 0 4px 16px rgba(184, 150, 12, 0.4) !important;
+}
+
+/* Step Label */
+.step-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: var(--text-muted) !important;
+    transition: color 0.3s !important;
+}
+
+.step-item.active .step-label {
+    color: var(--gold) !important;
+}
+
+/* Step Line */
+.step-line {
+    width: 50px !important;
+    height: 2px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.step-item.active+.step-line::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 50% !important;
+    height: 100% !important;
+    background: var(--gold) !important;
+}
