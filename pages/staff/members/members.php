@@ -20,7 +20,7 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
-    <link rel="stylesheet" href="members.css?v=8">
+    <link rel="stylesheet" href="members.css">
 </head>
 
 <body class="dashboard-body">
@@ -211,275 +211,484 @@
 
                     <div class="cell-content">
                         <div class="new-member-container" id="newMemberContainer">
-                            <!-- STATE: Choice -->
-                            <div class="nm-state active" id="nmStateChoice" style="width: 100%; height: 100%;">
-                                <div class="registration-tabs">
-                                    <!-- CARD 1: Membership Registration -->
-                                    <div class="flip-card">
+
+                            <!-- STATE: Flip Card Selection -->
+                            <div class="reg-state active" id="regCardSelection">
+                                <div class="flip-cards-container">
+                                    <!-- Flip Card 1: Access Plans -->
+                                    <div class="flip-card" onclick="event.stopPropagation(); showRegistrationForm();">
                                         <div class="flip-card-inner">
-                                            <!-- FRONT -->
                                             <div class="flip-card-front">
-                                                <div class="icon-wrapper">
-                                                    <i class="fas fa-id-card"></i>
+                                                <div class="flip-icon">
+                                                    <i class="fas fa-user-plus"></i>
                                                 </div>
-                                                <h2>Membership<br>Registration</h2>
+                                                <div class="flip-title">Access Plans</div>
+                                                <div class="flip-subtitle">Day Pass & Membership</div>
                                             </div>
-                                            <!-- BACK -->
                                             <div class="flip-card-back">
-                                                <h3>Available Plans</h3>
-                                                <ul class="fc-price-list">
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">Daily Pass</span>
-                                                        <span class="fc-price-val">₱60</span>
-                                                    </li>
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">Student Monthly</span>
-                                                        <span class="fc-price-val">₱600</span>
-                                                    </li>
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">Regular Monthly</span>
-                                                        <span class="fc-price-val">₱800</span>
-                                                    </li>
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">Senior Monthly</span>
-                                                        <span class="fc-price-val">₱500</span>
-                                                    </li>
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">Fitness Instructor</span>
-                                                        <span class="fc-price-val">₱1,250</span>
-                                                    </li>
-                                                </ul>
+                                                <div class="flip-back-header">Available Plans</div>
+                                                <div class="flip-price-list">
+                                                    <div class="flip-price-item">
+                                                        <span>Day Pass</span>
+                                                        <strong>₱60</strong>
+                                                    </div>
+                                                    <div class="flip-price-item">
+                                                        <span>Student Monthly</span>
+                                                        <strong>₱600</strong>
+                                                    </div>
+                                                    <div class="flip-price-item">
+                                                        <span>Regular Monthly</span>
+                                                        <strong>₱800</strong>
+                                                    </div>
+                                                    <div class="flip-price-item">
+                                                        <span>Senior Monthly</span>
+                                                        <strong>₱650</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="flip-cta">Click to Start →</div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- CARD 2: Renewal / Addition -->
-                                    <div class="flip-card">
+                                    <!-- Flip Card 2: Renewal & Additions (Placeholder for future) -->
+                                    <div class="flip-card disabled">
                                         <div class="flip-card-inner">
-                                            <!-- FRONT -->
                                             <div class="flip-card-front">
-                                                <div class="icon-wrapper">
-                                                    <i class="fas fa-arrows-rotate"></i>
+                                                <div class="flip-icon">
+                                                    <i class="fas fa-sync-alt"></i>
                                                 </div>
-                                                <h2>Renewal<br>& Additions</h2>
-                                            </div>
-                                            <!-- BACK -->
-                                            <div class="flip-card-back">
-                                                <h3>Services</h3>
-                                                <ul class="fc-price-list">
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">Membership Renewal</span>
-                                                        <span class="fc-tag">Monthly</span>
-                                                    </li>
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">Membership Plans</span>
-                                                        <span class="fc-tag">Monthly</span>
-                                                    </li>
-                                                    <li class="fc-price-item">
-                                                        <span class="fc-price-label">+Instructor
-                                                            Plans</span>
-                                                        <span class="fc-tag">Monthly</span>
-                                                    </li>
-                                                </ul>
+                                                <div class="flip-title">Renewal & Additions</div>
+                                                <div class="flip-subtitle">Extend or Upgrade</div>
+                                                <div class="coming-soon">Coming Soon</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- STATE: Daily Pass Form -->
-                            <!-- STATE: Daily Pass Form -->
-                            <div class="nm-state" id="nmStateDailyForm"
-                                style="justify-content: center; align-items: center; position: relative;">
-                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"
-                                    style="position: absolute; top: 0; left: 0;">
-                                    <i class="fas fa-arrow-left"></i> Back
-                                </div>
-
-                                <div class="nm-modern-card">
-                                    <div class="nm-card-header">
-                                        <div class="icon-circle warning">
-                                            <i class="fas fa-clock"></i>
-                                        </div>
-                                        <h4>Daily Pass</h4>
-                                        <p>Single day access for walk-ins</p>
-                                    </div>
-
-                                    <div class="nm-form-group">
-                                        <label>Full Name</label>
-                                        <div class="input-wrapper">
-                                            <i class="fas fa-user"></i>
-                                            <input type="text" id="dailyPassName" placeholder="Enter customer name..."
-                                                onclick="event.stopPropagation();">
-                                        </div>
-                                    </div>
-
-                                    <button class="btn-primary" onclick="event.stopPropagation(); applyDailyPass();">
-                                        Apply Pass <i class="fas fa-arrow-right"></i>
+                            <!-- STATE: Step-Based Registration Flow -->
+                            <div class="reg-state" id="regStepFlow">
+                                <div class="step-flow-container">
+                                    <!-- Back Button -->
+                                    <button class="step-back-btn"
+                                        onclick="event.stopPropagation(); navigateBackToCards();">
+                                        <i class="fas fa-arrow-left"></i>
                                     </button>
+
+                                    <!-- Step Progress Indicator -->
+                                    <div class="step-progress">
+                                        <div class="step-item active">
+                                            <div class="step-circle">1</div>
+                                            <span class="step-label">Plan</span>
+                                        </div>
+                                        <div class="step-line"></div>
+                                        <div class="step-item">
+                                            <div class="step-circle">2</div>
+                                            <span class="step-label">Info</span>
+                                        </div>
+                                        <div class="step-line"></div>
+                                        <div class="step-item">
+                                            <div class="step-circle">3</div>
+                                            <span class="step-label">Payment</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- STEP 1: Plan Selection -->
+                                    <div class="step-content active" id="step1">
+                                        <div class="glass-card">
+                                            <h3 class="step-title">Select Your Plan</h3>
+
+                                            <!-- Plan Selection Grid -->
+                                            <div class="plan-selection-grid">
+                                                <!-- Day Pass -->
+                                                <div class="plan-card-modern" data-plan="day-pass"
+                                                    onclick="event.stopPropagation(); selectPlanModern('day-pass', 60);">
+                                                    <div class="plan-icon"><i class="fas fa-clock"></i></div>
+                                                    <div class="plan-info">
+                                                        <h4>Day Pass</h4>
+                                                        <p class="plan-desc">Single day access</p>
+                                                    </div>
+                                                    <div class="plan-pricing">
+                                                        <span class="plan-price">₱60</span>
+                                                        <span class="plan-period">/day</span>
+                                                    </div>
+                                                    <div class="plan-check"><i class="fas fa-check"></i></div>
+                                                </div>
+
+                                                <!-- Student Monthly -->
+                                                <div class="plan-card-modern" data-plan="student"
+                                                    onclick="event.stopPropagation(); selectPlanModern('student', 600);">
+                                                    <div class="plan-icon"><i class="fas fa-graduation-cap"></i></div>
+                                                    <div class="plan-info">
+                                                        <h4>Student Monthly</h4>
+                                                        <p class="plan-desc">For students with ID</p>
+                                                    </div>
+                                                    <div class="plan-pricing">
+                                                        <span class="plan-price">₱600</span>
+                                                        <span class="plan-period">/mo</span>
+                                                    </div>
+                                                    <div class="plan-check"><i class="fas fa-check"></i></div>
+                                                </div>
+
+                                                <!-- Regular Monthly -->
+                                                <div class="plan-card-modern" data-plan="regular"
+                                                    onclick="event.stopPropagation(); selectPlanModern('regular', 800);">
+                                                    <div class="plan-icon"><i class="fas fa-dumbbell"></i></div>
+                                                    <div class="plan-info">
+                                                        <h4>Regular Monthly</h4>
+                                                        <p class="plan-desc">Standard membership</p>
+                                                    </div>
+                                                    <div class="plan-pricing">
+                                                        <span class="plan-price">₱800</span>
+                                                        <span class="plan-period">/mo</span>
+                                                    </div>
+                                                    <div class="plan-check"><i class="fas fa-check"></i></div>
+                                                </div>
+
+                                                <!-- Senior Monthly -->
+                                                <div class="plan-card-modern" data-plan="senior"
+                                                    onclick="event.stopPropagation(); selectPlanModern('senior', 650);">
+                                                    <div class="plan-icon"><i class="fas fa-heart"></i></div>
+                                                    <div class="plan-info">
+                                                        <h4>Senior Monthly</h4>
+                                                        <p class="plan-desc">60+ with valid ID</p>
+                                                    </div>
+                                                    <div class="plan-pricing">
+                                                        <span class="plan-price">₱650</span>
+                                                        <span class="plan-period">/mo</span>
+                                                    </div>
+                                                    <div class="plan-check"><i class="fas fa-check"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Duration Selector (Hidden for day pass) -->
+                                            <div class="duration-section" id="durationSection" style="display: none;">
+                                                <label class="duration-label">Membership Duration</label>
+                                                <div class="duration-stepper">
+                                                    <button class="stepper-btn"
+                                                        onclick="event.stopPropagation(); decrementDuration();">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <div class="duration-display">
+                                                        <span class="duration-value" id="durationValue">1</span>
+                                                        <span class="duration-unit">Month<span
+                                                                id="monthPlural"></span></span>
+                                                    </div>
+                                                    <button class="stepper-btn"
+                                                        onclick="event.stopPropagation(); incrementDuration();">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="expiration-info">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                    <span>Expires: <strong id="expirationDate">Feb 25,
+                                                            2026</strong></span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Instructor Add-on (Hidden for day pass) -->
+                                            <div class="instructor-section" id="instructorSection"
+                                                style="display: none;">
+                                                <div class="addon-card"
+                                                    onclick="event.stopPropagation(); toggleInstructor();">
+                                                    <div class="addon-info">
+                                                        <i class="fas fa-user-tie"></i>
+                                                        <div>
+                                                            <h5>Add Fitness Instructor</h5>
+                                                            <p>Personal training sessions</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="addon-price">₱1,250</div>
+                                                    <label class="addon-toggle">
+                                                        <input type="checkbox" id="instructorCheckbox"
+                                                            onclick="event.stopPropagation();">
+                                                        <span class="toggle-slider"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="instructor-quantity" id="instructorQuantity"
+                                                    style="display: none;">
+                                                    <label>Number of Sessions</label>
+                                                    <div class="quantity-stepper">
+                                                        <button
+                                                            onclick="event.stopPropagation(); decrementInstructor();"><i
+                                                                class="fas fa-minus"></i></button>
+                                                        <span id="instructorQty">1</span>
+                                                        <button
+                                                            onclick="event.stopPropagation(); incrementInstructor();"><i
+                                                                class="fas fa-plus"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Step Navigation -->
+                                            <div class="step-nav-buttons">
+                                                <button class="btn-step-next"
+                                                    onclick="event.stopPropagation(); goToStep(2);">
+                                                    Continue <i class="fas fa-arrow-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- STEP 2: Customer Information -->
+                                    <div class="step-content" id="step2">
+                                        <div class="glass-card">
+                                            <h3 class="step-title">Customer Information</h3>
+
+                                            <!-- Day Pass Form (Simple) -->
+                                            <div id="dayPassInfoForm" style="display: none;">
+                                                <div class="form-group-modern">
+                                                    <label>Full Name</label>
+                                                    <div class="input-glass">
+                                                        <i class="fas fa-user"></i>
+                                                        <input type="text" id="dayPassCustomerName"
+                                                            placeholder="Enter customer name"
+                                                            onclick="event.stopPropagation();">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Membership Form (Full) -->
+                                            <!-- Membership Form (Horizontal Layout) -->
+                                            <div id="membershipInfoForm" style="display: none;">
+                                                <div class="form-horizontal-container">
+                                                    <!-- Col 1: Photo -->
+                                                    <div class="form-column">
+                                                        <div class="photo-upload-modern">
+                                                            <div class="photo-preview-glass" id="photoPreviewGlass"
+                                                                onclick="document.getElementById('memberPhotoModern').click();">
+                                                                <i class="fas fa-camera"></i>
+                                                                <span>Upload Photo</span>
+                                                                <input type="file" id="memberPhotoModern"
+                                                                    accept="image/*" onchange="previewPhotoModern(this)"
+                                                                    onclick="event.stopPropagation();">
+                                                            </div>
+                                                            <button class="remove-photo-modern" id="removePhotoModern"
+                                                                onclick="event.stopPropagation(); removePhotoModern();">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Col 2: Info Fields -->
+                                                    <div class="form-column" style="flex: 2;">
+                                                        <div class="form-group-modern">
+                                                            <label>Full Name</label>
+                                                            <div class="input-glass">
+                                                                <i class="fas fa-user"></i>
+                                                                <input type="text" id="memberNameModern"
+                                                                    placeholder="Enter full name"
+                                                                    onclick="event.stopPropagation();">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group-modern">
+                                                            <label>Email Address</label>
+                                                            <div class="input-glass">
+                                                                <i class="fas fa-envelope"></i>
+                                                                <input type="email" id="memberEmailModern"
+                                                                    placeholder="email@example.com"
+                                                                    onclick="event.stopPropagation();">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group-modern">
+                                                            <label>Phone Number</label>
+                                                            <div class="input-glass">
+                                                                <i class="fas fa-phone"></i>
+                                                                <input type="tel" id="memberPhoneModern"
+                                                                    placeholder="09XX XXX XXXX"
+                                                                    onclick="event.stopPropagation();">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Step Navigation -->
+                                            <div class="step-nav-buttons">
+                                                <button class="btn-step-back"
+                                                    onclick="event.stopPropagation(); goToStep(1);">
+                                                    <i class="fas fa-arrow-left"></i> Back
+                                                </button>
+                                                <button class="btn-step-next"
+                                                    onclick="event.stopPropagation(); goToStep(3);">
+                                                    Continue <i class="fas fa-arrow-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- STEP 3: Payment & Confirmation -->
+                                    <div class="step-content" id="step3">
+                                        <div class="glass-card">
+                                            <h3 class="step-title">Payment & Confirmation</h3>
+
+                                            <!-- Order Summary -->
+                                            <div class="order-summary-glass">
+                                                <h4>Order Summary</h4>
+                                                <div class="summary-row">
+                                                    <span>Plan</span>
+                                                    <strong id="summaryPlan">Regular Monthly</strong>
+                                                </div>
+                                                <div class="summary-row" id="summaryDurationRow">
+                                                    <span>Duration</span>
+                                                    <strong id="summaryDuration">1 Month</strong>
+                                                </div>
+                                                <div class="summary-row" id="summaryInstructorRow"
+                                                    style="display: none;">
+                                                    <span>Instructor Sessions</span>
+                                                    <strong id="summaryInstructor">1 Session (₱1,250)</strong>
+                                                </div>
+                                                <div class="summary-divider"></div>
+                                                <div class="summary-row total">
+                                                    <span>Total Amount</span>
+                                                    <strong id="summaryTotal">₱800</strong>
+                                                </div>
+                                            </div>
+
+                                            <!-- Payment Method Selection -->
+                                            <div class="payment-method-section">
+                                                <label class="payment-label">Select Payment Method</label>
+                                                <div class="payment-options-glass">
+                                                    <div class="payment-option-glass active" data-payment="gcash"
+                                                        onclick="event.stopPropagation(); selectPaymentModern('gcash');">
+                                                        <i class="fab fa-google-wallet"></i>
+                                                        <span>GCash</span>
+                                                        <div class="payment-check"><i class="fas fa-check"></i></div>
+                                                    </div>
+                                                    <div class="payment-option-glass" data-payment="cash"
+                                                        onclick="event.stopPropagation(); selectPaymentModern('cash');">
+                                                        <i class="fas fa-money-bill-wave"></i>
+                                                        <span>Cash</span>
+                                                        <div class="payment-check"><i class="fas fa-check"></i></div>
+                                                    </div>
+                                                    <div class="payment-option-glass" data-payment="bank"
+                                                        onclick="event.stopPropagation(); selectPaymentModern('bank');">
+                                                        <i class="fas fa-university"></i>
+                                                        <span>Bank</span>
+                                                        <div class="payment-check"><i class="fas fa-check"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Step Navigation -->
+                                            <div class="step-nav-buttons">
+                                                <button class="btn-step-back"
+                                                    onclick="event.stopPropagation(); goToStep(2);">
+                                                    <i class="fas fa-arrow-left"></i> Back
+                                                </button>
+                                                <button class="btn-step-complete"
+                                                    onclick="event.stopPropagation(); completeRegistration();">
+                                                    <i class="fas fa-check"></i> Complete Registration
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- STATE: Daily Pass Success (No QR) -->
-                            <div class="nm-state" id="nmStateDailySuccess"
-                                style="justify-content: center; align-items: center;">
-                                <div class="nm-modern-card" style="text-align: center; max-width: 320px;">
-                                    <div class="nm-card-header">
-                                        <div class="icon-circle success"
-                                            style="width: 80px; height: 80px; font-size: 32px; margin-bottom: 8px;">
+                            <!-- SUCCESS: Day Pass (Horizontal Receipt) -->
+                            <div class="reg-state" id="regSuccessDayPass">
+                                <div class="success-screen-modern">
+                                    <div class="success-header-glass">
+                                        <div class="success-icon-modern">
                                             <i class="fas fa-check"></i>
                                         </div>
-                                        <h4 style="font-size: 20px;">Daily Pass Availed!</h4>
-                                        <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">
-                                            Successfully availed for <span id="dailySuccessName"
-                                                style="color: var(--gold); font-weight: 700;">Client</span>
+                                        <h2>Day Pass Activated!</h2>
+                                        <p>Valid for today's access</p>
+                                    </div>
+
+                                    <div class="receipt-grid-horizontal">
+                                        <div class="receipt-col">
+                                            <span class="receipt-label">Customer</span>
+                                            <span class="receipt-value" id="successNameDay">John Doe</span>
+                                        </div>
+                                        <div class="receipt-col">
+                                            <span class="receipt-label">Amount</span>
+                                            <span class="receipt-value gold">₱60</span>
+                                        </div>
+                                        <div class="receipt-col">
+                                            <span class="receipt-label">Payment</span>
+                                            <span class="receipt-value" id="successPaymentDay">GCash</span>
+                                        </div>
+                                        <div class="receipt-col">
+                                            <span class="receipt-label">Valid Until</span>
+                                            <span class="receipt-value" id="successValidityDay">Jan 26, 12:00 AM</span>
                                         </div>
                                     </div>
 
-                                    <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();"
-                                        style="width: 100%; justify-content: center;">
-                                        <i class="fas fa-arrow-left"></i> Back
+                                    <button class="btn-done-modern" onclick="event.stopPropagation(); resetToCards();">
+                                        <i class="fas fa-check-circle"></i> Done
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- STATE: Membership Form -->
-                            <div class="nm-state" id="nmStateMembershipForm"
-                                style="justify-content: center; align-items: center; position: relative;">
-                                <div class="nm-back-link" onclick="event.stopPropagation(); showNewMemberChoice();"
-                                    style="position: absolute; top: 0; left: 0;">
-                                    <i class="fas fa-arrow-left"></i> Back
-                                </div>
-
-                                <div class="nm-modern-card" style="max-width: 500px; padding: 24px;">
-                                    <div class="nm-card-header" style="margin-bottom: 8px;">
-                                        <div class="icon-circle success">
-                                            <i class="fas fa-id-card"></i>
-                                        </div>
-                                        <h4>Full Membership</h4>
-                                        <p>Create a new member profile</p>
-                                    </div>
-
-                                    <div class="nm-form-split-layout"
-                                        style="display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: start;">
-                                        <!-- Left Col: Photo -->
-                                        <div class="photo-upload-container">
-                                            <div class="photo-upload-mini" id="photoUploadBox"
-                                                onclick="event.stopPropagation();"
-                                                style="height: 140px; border-radius: 16px; background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1);">
-                                                <i class="fas fa-camera"
-                                                    style="font-size: 24px; margin-bottom: 8px; color: var(--text-muted);"></i>
-                                                <span style="font-size: 11px; color: var(--text-muted);">Upload
-                                                    Photo</span>
-                                                <input type="file" id="memberPhoto" accept="image/*"
-                                                    onchange="previewPhoto(this)" onclick="event.stopPropagation();">
-                                            </div>
-                                            <button class="remove-photo-btn" id="removePhotoBtn"
-                                                onclick="removePhoto(event)" title="Remove Photo"><i
-                                                    class="fas fa-times"></i></button>
-                                        </div>
-
-                                        <!-- Right Col: Inputs -->
-                                        <div class="nm-form-inputs"
-                                            style="display: flex; flex-direction: column; gap: 12px;">
-                                            <div class="nm-form-group">
-                                                <div class="input-wrapper">
-                                                    <i class="fas fa-user"></i>
-                                                    <input type="text" id="memberName" placeholder="Full Name"
-                                                        onclick="event.stopPropagation();">
-                                                </div>
-                                            </div>
-                                            <div class="nm-form-group">
-                                                <div class="input-wrapper">
-                                                    <i class="fas fa-envelope"></i>
-                                                    <input type="email" id="memberEmail" placeholder="Email Address"
-                                                        onclick="event.stopPropagation();">
-                                                </div>
-                                            </div>
-                                            <div class="nm-form-group">
-                                                <div class="input-wrapper">
-                                                    <i class="fas fa-phone"></i>
-                                                    <input type="tel" id="memberPhone" placeholder="Phone Number"
-                                                        onclick="event.stopPropagation();">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="nm-form-group">
-                                        <label style="margin-left: 4px; margin-bottom: 8px;">Select Plan</label>
-                                        <div class="plan-grid"
-                                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                                            <div class="plan-card"
-                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Monthly', 800);"
-                                                style="background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s;">
-                                                <div class="plan-name"
-                                                    style="font-size: 13px; font-weight: 600; color: var(--text-primary);">
-                                                    Monthly</div>
-                                                <div class="plan-price"
-                                                    style="font-size: 16px; font-weight: 700; color: var(--gold); margin-top: 4px;">
-                                                    ₱800</div>
-                                            </div>
-                                            <div class="plan-card"
-                                                onclick="event.stopPropagation(); selectMemberPlan(this, 'Instructor', 1250);"
-                                                style="background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s;">
-                                                <div class="plan-name"
-                                                    style="font-size: 13px; font-weight: 600; color: var(--text-primary);">
-                                                    +Instructor</div>
-                                                <div class="plan-price"
-                                                    style="font-size: 16px; font-weight: 700; color: var(--gold); margin-top: 4px;">
-                                                    ₱1,250</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button class="btn-primary" onclick="event.stopPropagation(); activateMembership();"
-                                        style="margin-top: 8px;">
-                                        Activate Membership <i class="fas fa-bolt"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- STATE: Membership Success (No QR) -->
-                            <div class="nm-state" id="nmStateMembershipQR"
-                                style="justify-content: center; align-items: center;">
-                                <div class="nm-modern-card" style="text-align: center; max-width: 340px;">
-                                    <div class="nm-card-header">
-                                        <div class="icon-circle success"
-                                            style="width: 80px; height: 80px; font-size: 32px; margin-bottom: 8px;">
+                            <!-- SUCCESS: Membership (Two-Column with QR) -->
+                            <div class="reg-state" id="regSuccessMembership">
+                                <div class="success-screen-modern">
+                                    <div class="success-header-glass">
+                                        <div class="success-icon-modern">
                                             <i class="fas fa-check-circle"></i>
                                         </div>
-                                        <h4 style="font-size: 20px;">Membership Activated!</h4>
+                                        <h2>Membership Activated!</h2>
                                         <p>Welcome to the club</p>
                                     </div>
 
-                                    <div class="sc-details"
-                                        style="background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 12px; margin-top: 8px; text-align: left;">
-                                        <div class="sc-box"
-                                            style="display: flex; justify-content: space-between; align-items: center;">
-                                            <span class="label"
-                                                style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">Member</span>
-                                            <span class="val" id="memberQRName"
-                                                style="color: var(--text-primary); font-weight: 600;">Name</span>
+                                    <div class="membership-success-layout">
+                                        <!-- Left: Receipt Details -->
+                                        <div class="receipt-details-side">
+                                            <div class="receipt-grid-compact">
+                                                <div class="receipt-row-compact">
+                                                    <span class="receipt-label">Member</span>
+                                                    <strong id="successNameMember">John Doe</strong>
+                                                </div>
+                                                <div class="receipt-row-compact">
+                                                    <span class="receipt-label">Plan</span>
+                                                    <strong id="successPlan">Regular Monthly</strong>
+                                                </div>
+                                                <div class="receipt-row-compact">
+                                                    <span class="receipt-label">Duration</span>
+                                                    <strong id="successDuration">1 Month</strong>
+                                                </div>
+                                                <div class="receipt-row-compact">
+                                                    <span class="receipt-label">Expiration</span>
+                                                    <strong id="successExpiration">February 25, 2026</strong>
+                                                </div>
+                                                <div class="receipt-row-compact">
+                                                    <span class="receipt-label">Payment</span>
+                                                    <strong id="successPaymentMember">GCash</strong>
+                                                </div>
+                                                <div class="receipt-row-compact" id="instructorRow"
+                                                    style="display: none;">
+                                                    <span class="receipt-label">Instructor</span>
+                                                    <strong id="successInstructor">1 Session (₱1,250)</strong>
+                                                </div>
+                                                <div class="receipt-divider-compact"></div>
+                                                <div class="receipt-row-compact total">
+                                                    <span class="receipt-label">Total</span>
+                                                    <strong class="gold" id="successAmount">₱800</strong>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="sc-box"
-                                            style="display: flex; justify-content: space-between; align-items: center;">
-                                            <span class="label"
-                                                style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">Plan</span>
-                                            <span class="val" id="memberQRPlan"
-                                                style="color: var(--gold); font-weight: 700;">Plan Details</span>
+
+                                        <!-- Right: QR Code -->
+                                        <div class="qr-side-glass">
+                                            <div class="qr-placeholder-modern">
+                                                <i class="fas fa-qrcode"></i>
+                                            </div>
+                                            <p class="qr-hint">Scan to verify membership</p>
                                         </div>
                                     </div>
 
-                                    <button class="btn-primary" onclick="event.stopPropagation(); finishRegistration();"
-                                        style="width: 100%; justify-content: center; margin-top: 8px;">
-                                        <i class="fas fa-check"></i> Done
+                                    <button class="btn-done-modern" onclick="event.stopPropagation(); resetToCards();">
+                                        <i class="fas fa-check-circle"></i> Done
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+
+
+                        </div><!-- End new-member-container -->
+                    </div><!-- End cell-content -->
+                </div><!-- End Cell 3: Registration Desk -->
 
                 <!-- Cell 4: Directory (Bottom-Right) -->
                 <div class="grid-cell" data-pos="bottom-right" onclick="activateCell('bottom-right')">
@@ -622,6 +831,8 @@
         </div>
     </div>
 
+
+    <script src="registration_forms.js"></script>
     <script src="members.js"></script>
 </body>
 
