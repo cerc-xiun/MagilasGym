@@ -22,6 +22,7 @@
     <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
     <link rel="stylesheet" href="members.css">
     <link rel="stylesheet" href="step_design.css">
+    <link rel="stylesheet" href="renewal_enhanced.css">
 </head>
 
 <body class="dashboard-body">
@@ -296,131 +297,231 @@
                                         <i class="fas fa-arrow-left"></i>
                                     </button>
 
-                                    <!-- Renewal Step 1: Search -->
+                                    <!-- Renewal Step 1: Premium Search -->
                                     <div class="renewal-search-container" id="renewalStep1">
-                                        <div class="glass-card centered-card"
-                                            style="max-width: 400px; padding: 40px 30px;">
-                                            <div class="icon-circle gold"
-                                                style="margin: 0 auto 20px auto; width: 70px; height: 70px; font-size: 28px;">
-                                                <i class="fas fa-search"></i>
-                                            </div>
-                                            <h3 style="text-align: center; margin-bottom: 8px;">Find Member</h3>
-                                            <p
-                                                style="text-align: center; color: var(--text-secondary); margin-bottom: 24px; font-size: 14px;">
-                                                Enter name or ID to check status</p>
-
-                                            <div class="form-group-modern">
-                                                <div class="input-glass">
-                                                    <i class="fas fa-user-tag"></i>
-                                                    <input type="text" id="renewalSearchInput"
-                                                        placeholder="Member Name or ID"
-                                                        onclick="event.stopPropagation();"
-                                                        onkeypress="handleRenewalSearchEnter(event)">
+                                        <div class="glass-card renewal-search-premium">
+                                            <!-- Premium Search Header -->
+                                            <div class="search-header-premium">
+                                                <div class="search-icon-large">
+                                                    <i class="fas fa-search"></i>
                                                 </div>
+                                                <h2>Find Member</h2>
+                                                <p>Search by name or member ID to view status and options</p>
+                                            </div>
+
+                                            <!-- Premium Search Input -->
+                                            <div class="search-input-premium">
+                                                <i class="fas fa-search"></i>
+                                                <input type="text" id="renewalSearchInput"
+                                                    placeholder="Enter member name or ID..."
+                                                    onclick="event.stopPropagation();"
+                                                    onkeypress="handleRenewalSearchEnter(event)">
                                             </div>
 
                                             <button class="btn-primary"
                                                 onclick="event.stopPropagation(); searchMemberForRenewal();"
-                                                style="margin-top: 16px; width: 100%; justify-content: center;">
-                                                Search Record <i class="fas fa-arrow-right"></i>
+                                                style="width: 100%; justify-content: center;">
+                                                <i class="fas fa-search"></i> Search Member
                                             </button>
+
+                                            <!-- Member Card Result (Hidden until search) -->
+                                            <div class="member-card-result" id="memberCardResult">
+                                                <div class="member-header">
+                                                    <div class="member-avatar">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div class="member-info">
+                                                        <h3 id="memberCardName">John Doe</h3>
+                                                        <span class="member-id" id="memberCardId">MG-001</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="member-details-grid">
+                                                    <div class="detail-item">
+                                                        <span class="detail-label">Current Plan</span>
+                                                        <span class="detail-value" id="memberCardPlan">Regular Monthly</span>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <span class="detail-label">Status</span>
+                                                        <span class="detail-value success" id="memberCardStatus">Active</span>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <span class="detail-label">Expires</span>
+                                                        <span class="detail-value gold" id="memberCardExpiry">Feb 25, 2026</span>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <span class="detail-label">Instructor Sessions</span>
+                                                        <span class="detail-value" id="memberCardInstructor">3 months remaining</span>
+                                                    </div>
+                                                </div>
+
+                                                <button class="btn-primary"
+                                                    onclick="event.stopPropagation(); proceedToRenewalOptions();"
+                                                    style="width: 100%; justify-content: center; margin-top: 20px;">
+                                                    Continue <i class="fas fa-arrow-right"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Renewal Step 2: Member Dashboard -->
+                                    <!-- Renewal Step 2: Tabbed Dashboard -->
                                     <div class="renewal-dashboard-container" id="renewalStep2" style="display: none;">
-                                        <div class="glass-card">
-                                            <!-- Member Profile Header -->
+                                        
+                                        <!-- Member Profile Summary (Always Visible) -->
+                                        <div class="glass-card" style="margin-bottom: 24px;">
                                             <div class="renewal-profile-header">
                                                 <div class="profile-photo-ring">
                                                     <i class="fas fa-user"></i>
                                                 </div>
                                                 <div class="profile-info">
-                                                    <h3 id="renewMemberName">John Doe</h3>
+                                                    <h3 id="renewDashboardName">John Doe</h3>
                                                     <div class="profile-meta">
-                                                        <span class="meta-badge" id="renewMemberPlan">Regular
-                                                            Monthly</span>
-                                                        <span class="status-badge" id="renewMemberStatus">Active</span>
+                                                        <span class="meta-badge" id="renewDashboardPlan">Regular Monthly</span>
+                                                        <span class="status-badge" id="renewDashboardStatus">Active</span>
                                                     </div>
                                                 </div>
-                                                <div class="profile-expiry">
-                                                    <span class="label">Current Expiry</span>
-                                                    <strong id="renewMemberExpiry">Feb 25, 2026</strong>
-                                                </div>
-                                            </div>
-
-                                            <div class="divider-glass"></div>
-
-                                            <h4 class="section-title">Available Actions</h4>
-
-                                            <div class="renewal-options-grid">
-                                                <!-- Extend Membership -->
-                                                <div class="renewal-option-card active" id="optExtend"
-                                                    onclick="selectRenewalOption('extend')">
-                                                    <div class="opt-icon"><i class="fas fa-calendar-plus"></i></div>
-                                                    <div class="opt-details">
-                                                        <h5>Extend Membership</h5>
-                                                        <p>Add more months</p>
-                                                    </div>
-                                                    <div class="opt-arrow"><i class="fas fa-chevron-right"></i></div>
-                                                </div>
-
-                                                <!-- Add Instructor -->
-                                                <div class="renewal-option-card" id="optInstructor"
-                                                    onclick="selectRenewalOption('instructor')">
-                                                    <div class="opt-icon"><i class="fas fa-user-tie"></i></div>
-                                                    <div class="opt-details">
-                                                        <h5>Add Instructor</h5>
-                                                        <p>Sessions & Training</p>
-                                                    </div>
-                                                    <div class="opt-arrow"><i class="fas fa-chevron-right"></i></div>
+                                                <div class="profile-expiration">
+                                                    <small>Current Expiry</small>
+                                                    <strong id="renewDashboardExpiry">Feb 25, 2026</strong>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <!-- Extension Form (Hidden by default) -->
-                                            <div class="renewal-action-form" id="formExtend"
-                                                style="display: block; margin-top: 24px;">
-                                                <label class="duration-label">Select Duration to Add</label>
-                                                <div class="duration-stepper">
-                                                    <button class="stepper-btn"
-                                                        onclick="event.stopPropagation(); adjustRenewalDuration(-1);">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                    <div class="duration-display">
-                                                        <span class="duration-value" id="renewDurationVal">1</span>
-                                                        <span class="duration-unit">Month</span>
+                                        <!-- Tab Navigation -->
+                                        <div class="renewal-tabs">
+                                            <button class="renewal-tab active" onclick="switchRenewalTab('renewal')">
+                                                <i class="fas fa-sync-alt"></i> Membership Renewal
+                                            </button>
+                                            <button class="renewal-tab" onclick="switchRenewalTab('addon')">
+                                                <i class="fas fa-dumbbell"></i> Add-Ons
+                                            </button>
+                                        </div>
+
+                                        <!-- TAB 1: MEMBERSHIP RENEWAL -->
+                                        <div class="tab-content active" id="tabRenewal">
+                                            <div class="glass-card">
+                                                <div class="feature-header">
+                                                    <div>
+                                                        <h4>Extend Membership</h4>
+                                                        <p>Renew your current plan or switch to a new one</p>
                                                     </div>
-                                                    <button class="stepper-btn"
-                                                        onclick="event.stopPropagation(); adjustRenewalDuration(1);">
-                                                        <i class="fas fa-plus"></i>
+                                                    <button class="btn-secondary compact" onclick="toggleChangePlanMode()" id="btnChangePlan">
+                                                        Change Plan
                                                     </button>
                                                 </div>
-                                                <div class="new-expiry-preview">
-                                                    <span>New Expiry:</span>
-                                                    <strong id="renewNewExpiry" class="gold">March 25, 2026</strong>
+                                                
+                                                <!-- MODE A: Extend Current -->
+                                                <div id="modeExtend">
+                                                    <div class="renewal-action-form" style="display: block; margin-top: 20px;">
+                                                        <label class="duration-label">Select Duration to Add</label>
+                                                        <div class="duration-stepper">
+                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustRenewalDuration(-1);">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                            <div class="duration-display">
+                                                                <span class="duration-value" id="renewDurationVal">1</span>
+                                                                <span class="duration-unit">Month</span>
+                                                            </div>
+                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustRenewalDuration(1);">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="new-expiry-preview">
+                                                            <span>New Expiry:</span>
+                                                            <strong id="renewNewExpiry" class="gold">March 25, 2026</strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MODE B: Change Plan -->
+                                                <div id="modeChangePlan" style="display: none;">
+                                                    <div class="plan-change-section">
+                                                        <h5>Select New Plan</h5>
+                                                        <div class="plan-grid-compact" id="renewalPlanGrid">
+                                                            <!-- Plans injected by JS -->
+                                                        </div>
+                                                        <div class="validation-message" id="studentIdNote" style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #3b82f6;">
+                                                            <i class="fas fa-info-circle"></i> Verification Required: Please verify valid Student/Senior ID.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- TAB 2: ADD-ONS (Instructor) -->
+                                        <div class="tab-content" id="tabAddon">
+                                            <div class="glass-card">
+                                                <div class="instructor-addon-section">
+                                                    <div class="addon-toggle-row">
+                                                        <div class="addon-info">
+                                                            <h4>Fitness Instructor</h4>
+                                                            <p>Personal training sessions (₱1,250/month)</p>
+                                                        </div>
+                                                        <label class="addon-toggle">
+                                                            <input type="checkbox" id="renewInstructorCheck" onchange="toggleRenewInstructor()">
+                                                            <span class="toggle-slider"></span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div id="renewInstructorControls" style="display: none; margin-top: 20px;">
+                                                        <label class="duration-label">Number of Months</label>
+                                                        <div class="duration-stepper">
+                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustInstructorDuration(-1);">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                            <div class="duration-display">
+                                                                <span class="duration-value" id="instructorDurationVal">1</span>
+                                                                <span class="duration-unit">Month</span>
+                                                            </div>
+                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustInstructorDuration(1);">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Payment & Summary (Shared) -->
+                                        <div class="glass-card" style="margin-top: 24px;">
+                                            <h4 style="margin-bottom: 16px;">Payment Details</h4>
+                                            
+                                            <div class="payment-options-enhanced">
+                                                <div class="payment-option-enhanced active" data-rpay="cash" onclick="selectRenewalPayment('cash')">
+                                                    <i class="fas fa-money-bill-wave"></i>
+                                                    Cash
+                                                </div>
+                                                <div class="payment-option-enhanced" data-rpay="gcash" onclick="selectRenewalPayment('gcash')">
+                                                    <i class="fas fa-mobile-alt"></i>
+                                                    GCash
+                                                </div>
+                                                <div class="payment-option-enhanced" data-rpay="card" onclick="selectRenewalPayment('card')">
+                                                    <i class="fas fa-credit-card"></i>
+                                                    Card
+                                                </div>
+                                                <div class="payment-option-enhanced" data-rpay="bank" onclick="selectRenewalPayment('bank')">
+                                                    <i class="fas fa-university"></i>
+                                                    Bank Transfer
                                                 </div>
                                             </div>
 
-                                            <!-- Payment & Confirm -->
-                                            <div class="renewal-payment-section" style="margin-top: 24px;">
-                                                <label class="payment-label">Payment Method</label>
-                                                <div class="payment-options-glass compact">
-                                                    <div class="payment-option-glass active" data- rpay="gcash"
-                                                        onclick="selectRenewalPayment('gcash')">GCash</div>
-                                                    <div class="payment-option-glass" data-rpay="cash"
-                                                        onclick="selectRenewalPayment('cash')">Cash</div>
+                                            <div id="bankRefInput" style="display: none; margin-top: 16px;">
+                                                <div class="input-glass">
+                                                    <i class="fas fa-hashtag"></i>
+                                                    <input type="text" placeholder="Enter Reference Number" onclick="event.stopPropagation();">
                                                 </div>
-
-                                                <div class="renewal-total-row">
-                                                    <span>Total Amount</span>
-                                                    <strong id="renewTotalAmount">₱800</strong>
-                                                </div>
-
-                                                <button class="btn-primary" onclick="processRenewalComplete()"
-                                                    style="width: 100%; justify-content: center; margin-top: 16px;">
-                                                    Confirm & Pay <i class="fas fa-check-circle"></i>
-                                                </button>
                                             </div>
+
+                                            <div class="divider-glass" style="margin: 20px 0;"></div>
+
+                                            <div class="renewal-total-row">
+                                                <span>Total Amount</span>
+                                                <strong id="renewTotalAmount">₱800</strong>
+                                            </div>
+
+                                            <button class="btn-primary" onclick="proceedRenewalPayment()" style="width: 100%; justify-content: center; margin-top: 20px;">
+                                                Proceed to Payment <i class="fas fa-check-circle"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -996,6 +1097,7 @@
 
 
     <script src="registration_forms.js"></script>
+    <script src="renewal_enhanced.js"></script>
     <script src="members.js"></script>
 </body>
 

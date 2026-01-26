@@ -64,27 +64,15 @@ function resetRegistrationFlow() {
     if (instructorSection) instructorSection.style.display = 'none';
     if (instructorQuantity) instructorQuantity.style.display = 'none';
 
-    // Reset photo (DON'T destroy the input!)
+    // Reset photo
     const photoInput = document.getElementById('memberPhotoModern');
-    const box = document.getElementById('photoPreviewGlass');
+    const preview = document.getElementById('photoPreviewGlass');
     const removeBtn = document.getElementById('removePhotoModern');
-
     if (photoInput) photoInput.value = '';
-
-    if (box) {
-        box.classList.remove('has-photo');
-
-        // Hide image if it exists
-        const img = box.querySelector('img');
-        if (img) img.style.display = 'none';
-
-        // Show placeholder elements
-        const icon = box.querySelector('.fa-camera');
-        const span = box.querySelector('span');
-        if (icon) icon.style.display = 'block';
-        if (span) span.style.display = 'block';
+    if (preview) {
+        preview.innerHTML = '<i class="fas fa-camera"></i><span>Upload Photo</span>';
+        preview.classList.remove('has-photo');
     }
-
     if (removeBtn) removeBtn.style.display = 'none';
 
     // Clear active states

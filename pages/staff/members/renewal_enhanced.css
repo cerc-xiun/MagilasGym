@@ -1,0 +1,418 @@
+/* =======================================================
+   RENEWAL & ADDITIONS - PREMIUM ENHANCEMENTS
+   ======================================================= */
+
+/* ===== PREMIUM SEARCH UI ===== */
+
+.renewal-search-premium {
+    max-width: 700px !important;
+    width: 100% !important;
+    padding: 50px 40px !important;
+}
+
+.search-header-premium {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.search-icon-large {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, rgba(184, 150, 12, 0.15), rgba(184, 150, 12, 0.05));
+    border: 2px solid rgba(184, 150, 12, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    color: var(--gold);
+}
+
+.search-header-premium h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 10px 0;
+}
+
+.search-header-premium p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Premium Search Input */
+.search-input-premium {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.search-input-premium input {
+    width: 100%;
+    padding: 18px 20px 18px 56px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: all 0.3s;
+    box-sizing: border-box;
+    /* Fix overflow */
+}
+
+.search-input-premium input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--gold);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(184, 150, 12, 0.1);
+}
+
+.search-input-premium i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+/* Member Card Display */
+.member-card-result {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-top: 24px;
+    display: none;
+}
+
+.member-card-result.active {
+    display: block;
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.member-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.member-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), rgba(184, 150, 12, 0.7));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #000;
+    flex-shrink: 0;
+}
+
+.member-info h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.member-id {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.member-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.detail-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.detail-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.detail-value.gold {
+    color: var(--gold);
+}
+
+.detail-value.success {
+    color: var(--success);
+}
+
+/* ===== TABBED INTERFACE ===== */
+
+.renewal-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px;
+    border-radius: 16px;
+}
+
+.renewal-tab {
+    flex: 1;
+    padding: 14px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.renewal-tab:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.renewal-tab.active {
+    background: linear-gradient(135deg, rgba(184, 150, 12, 0.2), rgba(184, 150, 12, 0.1));
+    color: var(--gold);
+    box-shadow: 0 2px 8px rgba(184, 150, 12, 0.2);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===== PLAN CHANGE UI ===== */
+
+.plan-change-section {
+    margin-top: 24px;
+}
+
+.plan-change-section h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 16px 0;
+}
+
+.plan-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.plan-option-compact {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.plan-option-compact:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(184, 150, 12, 0.3);
+}
+
+.plan-option-compact.current {
+    border-color: var(--success);
+    background: rgba(5, 150, 105, 0.05);
+}
+
+.plan-option-compact.selected {
+    border-color: var(--gold);
+    background: rgba(184, 150, 12, 0.1);
+}
+
+.plan-option-compact h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.plan-option-compact .price {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gold);
+}
+
+/* ===== INSTRUCTOR ADD-ON TAB ===== */
+
+.instructor-addon-section {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+}
+
+.addon-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.addon-info h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+}
+
+.addon-info p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ===== PAYMENT OPTIONS ===== */
+
+.payment-options-enhanced {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.payment-option-enhanced {
+    padding: 16px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: all 0.3s;
+}
+
+.payment-option-enhanced:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(184, 150, 12, 0.3);
+}
+
+.payment-option-enhanced.active {
+    border-color: var(--gold);
+    background: rgba(184, 150, 12, 0.1);
+    color: var(--gold);
+}
+
+.payment-option-enhanced i {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+/* ===== FEATURE HEADER ===== */
+
+.feature-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.feature-header h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.feature-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.btn-secondary.compact {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* ===== VALIDATION MESSAGE ===== */
+
+.validation-message {
+    padding: 14px 18px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    color: #ef4444;
+    font-size: 14px;
+    margin-top: 16px;
+    display: none;
+}
+
+.validation-message.show {
+    display: block;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
