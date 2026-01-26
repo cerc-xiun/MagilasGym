@@ -339,19 +339,23 @@
                                                 <div class="member-details-grid">
                                                     <div class="detail-item">
                                                         <span class="detail-label">Current Plan</span>
-                                                        <span class="detail-value" id="memberCardPlan">Regular Monthly</span>
+                                                        <span class="detail-value" id="memberCardPlan">Regular
+                                                            Monthly</span>
                                                     </div>
                                                     <div class="detail-item">
                                                         <span class="detail-label">Status</span>
-                                                        <span class="detail-value success" id="memberCardStatus">Active</span>
+                                                        <span class="detail-value success"
+                                                            id="memberCardStatus">Active</span>
                                                     </div>
                                                     <div class="detail-item">
                                                         <span class="detail-label">Expires</span>
-                                                        <span class="detail-value gold" id="memberCardExpiry">Feb 25, 2026</span>
+                                                        <span class="detail-value gold" id="memberCardExpiry">Feb 25,
+                                                            2026</span>
                                                     </div>
                                                     <div class="detail-item">
                                                         <span class="detail-label">Instructor Sessions</span>
-                                                        <span class="detail-value" id="memberCardInstructor">3 months remaining</span>
+                                                        <span class="detail-value" id="memberCardInstructor">3 months
+                                                            remaining</span>
                                                     </div>
                                                 </div>
 
@@ -366,7 +370,7 @@
 
                                     <!-- Renewal Step 2: Tabbed Dashboard -->
                                     <div class="renewal-dashboard-container" id="renewalStep2" style="display: none;">
-                                        
+
                                         <!-- Member Profile Summary (Always Visible) -->
                                         <div class="glass-card" style="margin-bottom: 24px;">
                                             <div class="renewal-profile-header">
@@ -376,8 +380,10 @@
                                                 <div class="profile-info">
                                                     <h3 id="renewDashboardName">John Doe</h3>
                                                     <div class="profile-meta">
-                                                        <span class="meta-badge" id="renewDashboardPlan">Regular Monthly</span>
-                                                        <span class="status-badge" id="renewDashboardStatus">Active</span>
+                                                        <span class="meta-badge" id="renewDashboardPlan">Regular
+                                                            Monthly</span>
+                                                        <span class="status-badge"
+                                                            id="renewDashboardStatus">Active</span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-expiration">
@@ -405,30 +411,36 @@
                                                         <h4>Extend Membership</h4>
                                                         <p>Renew your current plan or switch to a new one</p>
                                                     </div>
-                                                    <button class="btn-secondary compact" onclick="toggleChangePlanMode()" id="btnChangePlan">
+                                                    <button class="btn-secondary compact"
+                                                        onclick="toggleChangePlanMode()" id="btnChangePlan">
                                                         Change Plan
                                                     </button>
                                                 </div>
-                                                
+
                                                 <!-- MODE A: Extend Current -->
                                                 <div id="modeExtend">
-                                                    <div class="renewal-action-form" style="display: block; margin-top: 20px;">
+                                                    <div class="renewal-action-form"
+                                                        style="display: block; margin-top: 20px;">
                                                         <label class="duration-label">Select Duration to Add</label>
                                                         <div class="duration-stepper">
-                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustRenewalDuration(-1);">
+                                                            <button class="stepper-btn"
+                                                                onclick="event.stopPropagation(); adjustRenewalDuration(-1);">
                                                                 <i class="fas fa-minus"></i>
                                                             </button>
                                                             <div class="duration-display">
-                                                                <span class="duration-value" id="renewDurationVal">1</span>
+                                                                <span class="duration-value"
+                                                                    id="renewDurationVal">1</span>
                                                                 <span class="duration-unit">Month</span>
                                                             </div>
-                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustRenewalDuration(1);">
+                                                            <button class="stepper-btn"
+                                                                onclick="event.stopPropagation(); adjustRenewalDuration(1);">
                                                                 <i class="fas fa-plus"></i>
                                                             </button>
                                                         </div>
                                                         <div class="new-expiry-preview">
                                                             <span>New Expiry:</span>
-                                                            <strong id="renewNewExpiry" class="gold">March 25, 2026</strong>
+                                                            <strong id="renewNewExpiry" class="gold">March 25,
+                                                                2026</strong>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -440,8 +452,10 @@
                                                         <div class="plan-grid-compact" id="renewalPlanGrid">
                                                             <!-- Plans injected by JS -->
                                                         </div>
-                                                        <div class="validation-message" id="studentIdNote" style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #3b82f6;">
-                                                            <i class="fas fa-info-circle"></i> Verification Required: Please verify valid Student/Senior ID.
+                                                        <div class="validation-message" id="studentIdNote"
+                                                            style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #3b82f6;">
+                                                            <i class="fas fa-info-circle"></i> Verification Required:
+                                                            Please verify valid Student/Senior ID.
                                                         </div>
                                                     </div>
                                                 </div>
@@ -458,22 +472,27 @@
                                                             <p>Personal training sessions (₱1,250/month)</p>
                                                         </div>
                                                         <label class="addon-toggle">
-                                                            <input type="checkbox" id="renewInstructorCheck" onchange="toggleRenewInstructor()">
+                                                            <input type="checkbox" id="renewInstructorCheck"
+                                                                onchange="toggleRenewInstructor()">
                                                             <span class="toggle-slider"></span>
                                                         </label>
                                                     </div>
 
-                                                    <div id="renewInstructorControls" style="display: none; margin-top: 20px;">
+                                                    <div id="renewInstructorControls"
+                                                        style="display: none; margin-top: 20px;">
                                                         <label class="duration-label">Number of Months</label>
                                                         <div class="duration-stepper">
-                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustInstructorDuration(-1);">
+                                                            <button class="stepper-btn"
+                                                                onclick="event.stopPropagation(); adjustInstructorDuration(-1);">
                                                                 <i class="fas fa-minus"></i>
                                                             </button>
                                                             <div class="duration-display">
-                                                                <span class="duration-value" id="instructorDurationVal">1</span>
+                                                                <span class="duration-value"
+                                                                    id="instructorDurationVal">1</span>
                                                                 <span class="duration-unit">Month</span>
                                                             </div>
-                                                            <button class="stepper-btn" onclick="event.stopPropagation(); adjustInstructorDuration(1);">
+                                                            <button class="stepper-btn"
+                                                                onclick="event.stopPropagation(); adjustInstructorDuration(1);">
                                                                 <i class="fas fa-plus"></i>
                                                             </button>
                                                         </div>
@@ -485,21 +504,25 @@
                                         <!-- Payment & Summary (Shared) -->
                                         <div class="glass-card" style="margin-top: 24px;">
                                             <h4 style="margin-bottom: 16px;">Payment Details</h4>
-                                            
+
                                             <div class="payment-options-enhanced">
-                                                <div class="payment-option-enhanced active" data-rpay="cash" onclick="selectRenewalPayment('cash')">
+                                                <div class="payment-option-enhanced active" data-rpay="cash"
+                                                    onclick="selectRenewalPayment('cash')">
                                                     <i class="fas fa-money-bill-wave"></i>
                                                     Cash
                                                 </div>
-                                                <div class="payment-option-enhanced" data-rpay="gcash" onclick="selectRenewalPayment('gcash')">
+                                                <div class="payment-option-enhanced" data-rpay="gcash"
+                                                    onclick="selectRenewalPayment('gcash')">
                                                     <i class="fas fa-mobile-alt"></i>
                                                     GCash
                                                 </div>
-                                                <div class="payment-option-enhanced" data-rpay="card" onclick="selectRenewalPayment('card')">
+                                                <div class="payment-option-enhanced" data-rpay="card"
+                                                    onclick="selectRenewalPayment('card')">
                                                     <i class="fas fa-credit-card"></i>
                                                     Card
                                                 </div>
-                                                <div class="payment-option-enhanced" data-rpay="bank" onclick="selectRenewalPayment('bank')">
+                                                <div class="payment-option-enhanced" data-rpay="bank"
+                                                    onclick="selectRenewalPayment('bank')">
                                                     <i class="fas fa-university"></i>
                                                     Bank Transfer
                                                 </div>
@@ -508,7 +531,8 @@
                                             <div id="bankRefInput" style="display: none; margin-top: 16px;">
                                                 <div class="input-glass">
                                                     <i class="fas fa-hashtag"></i>
-                                                    <input type="text" placeholder="Enter Reference Number" onclick="event.stopPropagation();">
+                                                    <input type="text" placeholder="Enter Reference Number"
+                                                        onclick="event.stopPropagation();">
                                                 </div>
                                             </div>
 
@@ -519,7 +543,8 @@
                                                 <strong id="renewTotalAmount">₱800</strong>
                                             </div>
 
-                                            <button class="btn-primary" onclick="proceedRenewalPayment()" style="width: 100%; justify-content: center; margin-top: 20px;">
+                                            <button class="btn-primary" onclick="proceedRenewalPayment()"
+                                                style="width: 100%; justify-content: center; margin-top: 20px;">
                                                 Proceed to Payment <i class="fas fa-check-circle"></i>
                                             </button>
                                         </div>
@@ -527,6 +552,64 @@
                                 </div>
                             </div>
 
+
+                            <!-- Receipt Modal -->
+                            <div class="receipt-modal-overlay" id="renewalReceiptModal">
+                                <div class="receipt-container">
+                                    <div class="receipt-header">
+                                        <i class="fas fa-check-circle"></i>
+                                        <h2>Payment Successful</h2>
+                                        <p>Transaction completed</p>
+                                    </div>
+
+                                    <div class="receipt-body">
+                                        <!-- Member Info -->
+                                        <div class="receipt-section">
+                                            <div class="receipt-label">Member Information</div>
+                                            <div class="receipt-value" id="receiptMemberName">John Doe</div>
+                                            <div style="font-size: 13px; color: #999; margin-top: 4px;"
+                                                id="receiptMemberId">MG-001</div>
+                                        </div>
+
+                                        <!-- Transaction Details -->
+                                        <div class="receipt-section">
+                                            <div class="receipt-label">Transaction Details</div>
+                                            <div id="receiptItems">
+                                                <!-- Populated by JS -->
+                                            </div>
+                                        </div>
+
+                                        <!-- Payment Info -->
+                                        <div class="receipt-section">
+                                            <div class="receipt-row">
+                                                <span class="label">Payment Method</span>
+                                                <span class="value" id="receiptPaymentMethod">Cash</span>
+                                            </div>
+                                            <div class="receipt-row">
+                                                <span class="label">Date & Time</span>
+                                                <span class="value" id="receiptDateTime">Jan 26, 2026 5:30 PM</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Total -->
+                                        <div class="receipt-total">
+                                            <div class="receipt-row">
+                                                <span class="label">Total Paid</span>
+                                                <span class="value" id="receiptTotal">₱800</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="receipt-footer">
+                                        <button class="btn-print" onclick="printReceipt()">
+                                            <i class="fas fa-print"></i> Print
+                                        </button>
+                                        <button class="btn-done-receipt" onclick="closeReceiptAndReset()">
+                                            Done
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- STATE: Step-Based Registration Flow -->
                             <div class="reg-state" id="regStepFlow">
@@ -951,6 +1034,65 @@
                                 </div>
                             </div>
                         </div><!-- End new-member-container -->
+
+                        <!-- Registration Receipt Modal -->
+                        <div class="receipt-modal-overlay" id="registrationReceiptModal">
+                            <div class="receipt-container">
+                                <div class="receipt-header">
+                                    <i class="fas fa-check-circle"></i>
+                                    <h2>Registration Successful</h2>
+                                    <p>Welcome to Magilas Gym</p>
+                                </div>
+
+                                <div class="receipt-body">
+                                    <!-- Member Info -->
+                                    <div class="receipt-section">
+                                        <div class="receipt-label">Member Information</div>
+                                        <div class="receipt-value" id="regReceiptMemberName">John Doe</div>
+                                        <div style="font-size: 13px; color: #999; margin-top: 4px;"
+                                            id="regReceiptMemberId">NEW REGISTRATION</div>
+                                    </div>
+
+                                    <!-- Transaction Details -->
+                                    <div class="receipt-section">
+                                        <div class="receipt-label">Transaction Details</div>
+                                        <div id="regReceiptItems">
+                                            <!-- Populated by JS -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Payment Info -->
+                                    <div class="receipt-section">
+                                        <div class="receipt-row">
+                                            <span class="label">Payment Method</span>
+                                            <span class="value" id="regReceiptPaymentMethod">Cash</span>
+                                        </div>
+                                        <div class="receipt-row">
+                                            <span class="label">Date & Time</span>
+                                            <span class="value" id="regReceiptDateTime">Jan 26, 2026 5:30 PM</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Total -->
+                                    <div class="receipt-total">
+                                        <div class="receipt-row">
+                                            <span class="label">Total Paid</span>
+                                            <span class="value" id="regReceiptTotal">₱800</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="receipt-footer">
+                                    <button class="btn-print" onclick="printRegistrationReceipt()">
+                                        <i class="fas fa-print"></i> Print
+                                    </button>
+                                    <button class="btn-done-receipt" onclick="closeRegistrationReceiptAndReset()">
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div><!-- End cell-content -->
                 </div><!-- End Cell 3: Registration Desk -->
 

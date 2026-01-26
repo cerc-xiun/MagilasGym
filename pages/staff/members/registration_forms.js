@@ -723,29 +723,88 @@ function processRenewalComplete() {
 
     setTimeout(() => {
         btn.innerHTML = originalText;
-
-        // Show Success (Reuse membership success screen for now or create generic one)
-        showRenewalSuccess();
+        displayRegistrationReceipt();
     }, 1500);
 }
 
-function showRenewalSuccess() {
-    hideAllRegStates();
+function displayRegistrationReceipt() {
+    // Get member name
+    const memberName = document.getElementById('memberNameModern')?.value || 'New Member';
 
-    // Populate Success Screen reused from Membership
-    // Ideally create a specific one, but for now reuse Layout
+    // Populate member info
+    document.getElementById('regReceiptMemberName').textContent = memberName;
+    document.getElementById('regReceiptMemberId').textContent = 'NEW REGISTRATION';
 
-    const successName = document.getElementById('successNameMember');
-    const successPlan = document.getElementById('successPlan');
-    const successExpiry = document.getElementById('successExpiration');
-    const successAmount = document.getElementById('successAmount');
+    // Build transaction items
+    const itemsContainer = document.getElementById('regReceiptItems');
+    itemsContainer.innerHTML = '';
 
-    if (successName) successName.textContent = currentRenewMember.name;
-    if (successPlan) successPlan.textContent = 'Renewal - ' + currentRenewMember.plan;
-    if (successExpiry) successExpiry.textContent = document.getElementById('renewNewExpiry').textContent;
-    if (successAmount) successAmount.textContent = document.getElementById('renewTotalAmount').textContent;
+    let total = 0;
 
-    document.getElementById('regSuccessMembership').classList.add('active');
+    // Add plan item
+    if (selectedPlanType && selectedPlanPrice) {
+        const price = selectedPlanPrice * membershipDuration;
+        total += price;
+
+        const itemRow = document.createElement('div');
+        itemRow.className = 'receipt-row';
+        itemRow.innerHTML = `
+            <span class="label">${selectedPlanName} (${membershipDuration} month${membershipDuration > 1 ? 's' : ''})</span>
+            <span class="value">₱${price.toLocaleString()}</span>
+        `;
+        itemsContainer.appendChild(itemRow);
+    }
+
+    // Add instructor item if selected
+    const instructorCheckbox = document.getElementById('instructorCheckbox');
+    if (instructorCheckbox && instructorCheckbox.checked) {
+        const price = 1250 * instructorSessions;
+        total += price;
+
+        const itemRow = document.createElement('div');
+        itemRow.className = 'receipt-row';
+        itemRow.innerHTML = `
+            <span class="label">Instructor Sessions (${instructorSessions} month${instructorSessions > 1 ? 's' : ''})</span>
+            <span class="value">₱${price.toLocaleString()}</span>
+        `;
+        itemsContainer.appendChild(itemRow);
+    }
+
+    // Payment method
+    const paymentMethods = {
+        'cash': 'Cash',
+        'gcash': 'GCash',
+        'card': 'Credit/Debit Card',
+        'bank': 'Bank Transfer'
+    };
+    document.getElementById('regReceiptPaymentMethod').textContent = paymentMethods[selectedPaymentMethod] || 'Cash';
+
+    // Date & time
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    document.getElementById('regReceiptDateTime').textContent = `${dateStr} ${timeStr}`;
+
+    // Total
+    document.getElementById('regReceiptTotal').textContent = '₱' + total.toLocaleString();
+
+    // Show modal
+    document.getElementById('registrationReceiptModal').classList.add('active');
+
+    // Hide step flow
+    document.getElementById('regStepFlow').style.display = 'none';
+}
+
+function printRegistrationReceipt() {
+    window.print();
+}
+
+function closeRegistrationReceiptAndReset() {
+    // Hide receipt
+    document.getElementById('registrationReceiptModal').classList.remove('active');
+
+    // Reset to cards
+    navigateBackToCards();
 }
 
 function formatDate(dateStr) {

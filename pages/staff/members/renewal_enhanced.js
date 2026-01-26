@@ -267,11 +267,108 @@ function calculateRenewalTotal() {
 }
 
 function proceedRenewalPayment() {
-    showNotification('Processing Payment...', 'info');
+    // Calculate what was purchased
+    const planKey = renewalState.isChangingPlan ? renewalState.selectedNewPlan : renewalState.member.planKey;
+    const hasMembership = (planKey && RENEWAL_PLANS[planKey]);
+    const hasInstructor = renewalState.renewInstructor;
+
+    if (!hasMembership && !hasInstructor) {
+        safeNotify('Please select at least one service', 'error');
+        return;
+    }
+
+    // Show processing
+    safeNotify('Processing Payment...', 'info');
+
     setTimeout(() => {
-        showNotification('Renewal Successful!', 'success');
-        navigateBackToCards();
-    }, 1500);
+        displayReceipt();
+        safeNotify('Payment Successful!', 'success');
+    }, 1000);
+}
+
+function displayReceipt() {
+    // Populate member info
+    document.getElementById('receiptMemberName').textContent = renewalState.member.name;
+    document.getElementById('receiptMemberId').textContent = `ID: ${renewalState.member.id}`;
+
+    // Build transaction items
+    const itemsContainer = document.getElementById('receiptItems');
+    itemsContainer.innerHTML = '';
+
+    let total = 0;
+
+    // Add membership item
+    const planKey = renewalState.isChangingPlan ? renewalState.selectedNewPlan : renewalState.member.planKey;
+    if (planKey && RENEWAL_PLANS[planKey]) {
+        const plan = RENEWAL_PLANS[planKey];
+        const price = plan.price * renewalState.renewalDuration;
+        total += price;
+
+        const itemRow = document.createElement('div');
+        itemRow.className = 'receipt-row';
+        itemRow.innerHTML = `
+            <span class="label">${plan.name} (${renewalState.renewalDuration} month${renewalState.renewalDuration > 1 ? 's' : ''})</span>
+            <span class="value">₱${price.toLocaleString()}</span>
+        `;
+        itemsContainer.appendChild(itemRow);
+    }
+
+    // Add instructor item
+    if (renewalState.renewInstructor) {
+        const price = INSTRUCTOR_PRICE * renewalState.instructorDuration;
+        total += price;
+
+        const itemRow = document.createElement('div');
+        itemRow.className = 'receipt-row';
+        itemRow.innerHTML = `
+            <span class="label">Instructor Sessions (${renewalState.instructorDuration} month${renewalState.instructorDuration > 1 ? 's' : ''})</span>
+            <span class="value">₱${price.toLocaleString()}</span>
+        `;
+        itemsContainer.appendChild(itemRow);
+    }
+
+    // Payment method
+    const paymentMethods = {
+        'cash': 'Cash',
+        'gcash': 'GCash',
+        'card': 'Credit/Debit Card',
+        'bank': 'Bank Transfer'
+    };
+    document.getElementById('receiptPaymentMethod').textContent = paymentMethods[renewalState.paymentMethod] || 'Cash';
+
+    // Date & time
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    document.getElementById('receiptDateTime').textContent = `${dateStr} ${timeStr}`;
+
+    // Total
+    document.getElementById('receiptTotal').textContent = '₱' + total.toLocaleString();
+
+    // Show modal
+    document.getElementById('renewalReceiptModal').classList.add('active');
+
+    // Hide renewal flow
+    document.getElementById('renewalStep2').style.display = 'none';
+}
+
+function printReceipt() {
+    window.print();
+}
+
+function closeReceiptAndReset() {
+    // Hide receipt
+    document.getElementById('renewalReceiptModal').classList.remove('active');
+
+    // Reset to cards
+    document.getElementById('regRenewalFlow').style.display = 'none';
+    document.querySelector('.flip-cards-container').style.display = 'flex';
+
+    // Reset search
+    document.getElementById('renewalSearchInput').value = '';
+    document.getElementById('memberCardResult').style.display = 'none';
+    document.getElementById('renewalStep1').style.display = 'block';
+    document.getElementById('renewalStep2').style.display = 'none';
 }
 
 // Helpers
