@@ -688,15 +688,26 @@ function processRenewalComplete() {
 }
 
 function displayRegistrationReceipt() {
-    // Get member name
-    const memberName = document.getElementById('memberNameModern')?.value || 'New Member';
+    // Determine context based on plan type
+    const isDayPass = (selectedPlanType === 'day-pass');
 
-    // Generate member ID (simulate)
-    const memberId = 'MG-' + String(Math.floor(Math.random() * 9000) + 1000);
+    // Get Name & ID based on context
+    let memberName, memberIdLabel;
+
+    if (isDayPass) {
+        // Day Pass Logic
+        memberName = document.getElementById('dayPassCustomerName')?.value || 'Guest';
+        memberIdLabel = 'Day Pass Holder';
+    } else {
+        // Membership Logic
+        memberName = document.getElementById('memberNameModern')?.value || 'New Member';
+        // Generate pseudo ID
+        memberIdLabel = 'MG-' + String(Math.floor(Math.random() * 9000) + 1000);
+    }
 
     // Populate member info
     document.getElementById('regReceiptMemberName').textContent = memberName;
-    document.getElementById('regReceiptMemberId').textContent = memberId;
+    document.getElementById('regReceiptMemberId').textContent = memberIdLabel;
 
     // Build transaction items
     const itemsContainer = document.getElementById('regReceiptItems');
@@ -706,13 +717,25 @@ function displayRegistrationReceipt() {
 
     // Add plan item
     if (selectedPlanType && selectedPlanPrice) {
-        const price = selectedPlanPrice * membershipDuration;
+        // Calculate price
+        let price = selectedPlanPrice;
+        if (!isDayPass) {
+            price = selectedPlanPrice * membershipDuration;
+        }
         total += price;
+
+        // Format label
+        let durationLabel = '';
+        if (isDayPass) {
+            durationLabel = '(Single Access)';
+        } else {
+            durationLabel = `(${membershipDuration} month${membershipDuration > 1 ? 's' : ''})`;
+        }
 
         const itemRow = document.createElement('div');
         itemRow.className = 'receipt-row';
         itemRow.innerHTML = `
-            <span class="label">${selectedPlanName} (${membershipDuration} month${membershipDuration > 1 ? 's' : ''})</span>
+            <span class="label">${selectedPlanName} ${durationLabel}</span>
             <span class="value">₱${price.toLocaleString()}</span>
         `;
         itemsContainer.appendChild(itemRow);
@@ -771,7 +794,7 @@ function displayRegistrationReceipt() {
             ).join('')}
                     </div>
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 4px; border: 2px solid #b8960c; border-radius: 4px;">
-                        <div style="font-size: 10px; font-weight: bold; color: #b8960c;">${memberId}</div>
+                        <div style="font-size: 10px; font-weight: bold; color: #b8960c;">${memberIdLabel}</div>
                     </div>
                 </div>
             `;
