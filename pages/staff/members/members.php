@@ -808,10 +808,11 @@
                                                                 onclick="document.getElementById('memberPhotoModern').click();">
                                                                 <i class="fas fa-camera"></i>
                                                                 <span>Upload Photo</span>
-                                                                <input type="file" id="memberPhotoModern"
-                                                                    accept="image/*" onchange="previewPhotoModern(this)"
-                                                                    onclick="event.stopPropagation();">
                                                             </div>
+                                                            <input type="file" id="memberPhotoModern" accept="image/*"
+                                                                onchange="previewPhotoModern(this)"
+                                                                onclick="event.stopPropagation();"
+                                                                style="display: none;">
                                                             <button class="remove-photo-modern" id="removePhotoModern"
                                                                 onclick="event.stopPropagation(); removePhotoModern();">
                                                                 <i class="fas fa-times"></i>
