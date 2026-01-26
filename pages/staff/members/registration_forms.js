@@ -438,13 +438,13 @@ function selectPaymentModern(method) {
 // ===== COMPLETE REGISTRATION =====
 
 function completeRegistration() {
-    hideAllRegStates();
+    // Show loading indicator
+    showNotification('Processing registration...', 'info');
 
-    if (selectedPlanType === 'day-pass') {
-        showDayPassSuccess();
-    } else {
-        showMembershipSuccess();
-    }
+    setTimeout(() => {
+        displayRegistrationReceipt();
+        showNotification('Registration successful!', 'success');
+    }, 1500);
 }
 
 function showDayPassSuccess() {
@@ -462,48 +462,8 @@ function showDayPassSuccess() {
 }
 
 function showMembershipSuccess() {
-    const successNameMember = document.getElementById('successNameMember');
-    const successPlan = document.getElementById('successPlan');
-    const successDuration = document.getElementById('successDuration');
-    const successExpiration = document.getElementById('successExpiration');
-    const successPaymentMember = document.getElementById('successPaymentMember');
-    const successInstructor = document.getElementById('successInstructor');
-    const instructorRow = document.getElementById('instructorRow');
-    const successAmount = document.getElementById('successAmount');
-
-    const memberName = document.getElementById('memberNameModern').value;
-
-    // Calculate expiration
-    const expirationDate = new Date();
-    expirationDate.setMonth(expirationDate.getMonth() + membershipDuration);
-    const expiration = expirationDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-
-    // Calculate total
-    let total = selectedPlanPrice * membershipDuration;
-    const instructorCheckbox = document.getElementById('instructorCheckbox');
-    if (instructorCheckbox && instructorCheckbox.checked) {
-        total += 1250 * instructorSessions;
-    }
-
-    if (successNameMember) successNameMember.textContent = memberName;
-    if (successPlan) successPlan.textContent = selectedPlanName;
-    if (successDuration) successDuration.textContent = `${membershipDuration} Month${membershipDuration > 1 ? 's' : ''}`;
-    if (successExpiration) successExpiration.textContent = expiration;
-    if (successPaymentMember) successPaymentMember.textContent = formatPaymentMethod(selectedPaymentMethod);
-    if (successAmount) successAmount.textContent = `₱${total.toLocaleString()}`;
-
-    if (instructorCheckbox && instructorCheckbox.checked) {
-        if (successInstructor) successInstructor.textContent = `${instructorSessions} Session${instructorSessions > 1 ? 's' : ''} (₱${(1250 * instructorSessions).toLocaleString()})`;
-        if (instructorRow) instructorRow.style.display = 'flex';
-    } else {
-        if (instructorRow) instructorRow.style.display = 'none';
-    }
-
-    document.getElementById('regSuccessMembership').classList.add('active');
+    // Deprecated - now using receipt modal
+    displayRegistrationReceipt();
 }
 
 // ===== UTILITY FUNCTIONS =====
@@ -731,9 +691,12 @@ function displayRegistrationReceipt() {
     // Get member name
     const memberName = document.getElementById('memberNameModern')?.value || 'New Member';
 
+    // Generate member ID (simulate)
+    const memberId = 'MG-' + String(Math.floor(Math.random() * 9000) + 1000);
+
     // Populate member info
     document.getElementById('regReceiptMemberName').textContent = memberName;
-    document.getElementById('regReceiptMemberId').textContent = 'NEW REGISTRATION';
+    document.getElementById('regReceiptMemberId').textContent = memberId;
 
     // Build transaction items
     const itemsContainer = document.getElementById('regReceiptItems');
@@ -787,6 +750,33 @@ function displayRegistrationReceipt() {
 
     // Total
     document.getElementById('regReceiptTotal').textContent = '₱' + total.toLocaleString();
+
+    // QR Code Section - Only for Memberships (not Day Pass)
+    const qrSection = document.querySelector('#registrationReceiptModal .receipt-section[style*="text-align: center"]');
+    const qrContainer = document.getElementById('regReceiptQRCode');
+
+    if (selectedPlanType === 'day-pass') {
+        // Hide QR code for day pass
+        if (qrSection) qrSection.style.display = 'none';
+    } else {
+        // Show pseudo QR code for memberships
+        if (qrSection) qrSection.style.display = 'block';
+        if (qrContainer) {
+            // Create pseudo QR code (visual placeholder)
+            qrContainer.innerHTML = `
+                <div style="width: 150px; height: 150px; background: #000; padding: 10px; border: 3px solid #b8960c; border-radius: 8px; position: relative;">
+                    <div style="background: white; width: 100%; height: 100%; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr); gap: 1px;">
+                        ${Array(100).fill(0).map(() =>
+                `<div style="background: ${Math.random() > 0.5 ? '#000' : '#fff'};"></div>`
+            ).join('')}
+                    </div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 4px; border: 2px solid #b8960c; border-radius: 4px;">
+                        <div style="font-size: 10px; font-weight: bold; color: #b8960c;">${memberId}</div>
+                    </div>
+                </div>
+            `;
+        }
+    }
 
     // Show modal
     document.getElementById('registrationReceiptModal').classList.add('active');

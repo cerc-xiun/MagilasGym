@@ -1061,6 +1061,15 @@
                                         </div>
                                     </div>
 
+                                    <!-- QR Code -->
+                                    <div class="receipt-section" style="text-align: center;">
+                                        <div class="receipt-label">Member QR Code</div>
+                                        <div id="regReceiptQRCode" style="margin: 16px auto; display: inline-block;">
+                                        </div>
+                                        <p style="font-size: 12px; color: #999; margin-top: 8px;">Scan this code for gym
+                                            access</p>
+                                    </div>
+
                                     <!-- Payment Info -->
                                     <div class="receipt-section">
                                         <div class="receipt-row">
