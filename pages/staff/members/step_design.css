@@ -160,3 +160,14 @@
 .step-circle:hover {
     transform: scale(1.05) !important;
 }
+
+/* Done Button - Better Spacing */
+.btn-done-modern {
+    margin-top: 30px !important;
+}
+
+/* Receipt Total - Add bottom spacing */
+.receipt-row-compact.total,
+.summary-row.total {
+    margin-bottom: 20px !important;
+}
