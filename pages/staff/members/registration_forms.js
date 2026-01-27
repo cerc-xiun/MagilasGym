@@ -833,26 +833,36 @@ function formatDate(dateStr) {
 // ==========================================
 
 let pendingCheckinMember = null;
+let onCheckinComplete = null; // Callback for when check-in flow ends
 
-function showCheckinPrompt() {
-    // Get member data based on context
-    const isDayPass = (selectedPlanType === 'day-pass');
+/**
+ * Shows the check-in prompt.
+ * @param {Object|null} explicitMemberData - Optional data for renewals/other flows { name, type, planName, isDayPass }
+ * @param {Function|null} onComplete - Optional callback to run after check-in/skip (replaces default reset)
+ */
+function showCheckinPrompt(explicitMemberData = null, onComplete = null) {
+    onCheckinComplete = onComplete; // Store callback
 
-    // Get info
-    const memberName = isDayPass
-        ? (document.getElementById('dayPassCustomerName')?.value || 'Guest')
-        : (document.getElementById('memberNameModern')?.value || 'New Member');
+    if (explicitMemberData) {
+        // Use provided data (Renewal Flow)
+        pendingCheckinMember = explicitMemberData;
+    } else {
+        // Scrape from Registration Form (Default Flow)
+        const isDayPass = (selectedPlanType === 'day-pass');
+        const memberName = isDayPass
+            ? (document.getElementById('dayPassCustomerName')?.value || 'Guest')
+            : (document.getElementById('memberNameModern')?.value || 'New Member');
 
-    // Store for check-in
-    pendingCheckinMember = {
-        name: memberName,
-        type: selectedPlanType,
-        planName: selectedPlanName,
-        isDayPass: isDayPass
-    };
+        pendingCheckinMember = {
+            name: memberName,
+            type: selectedPlanType,
+            planName: selectedPlanName,
+            isDayPass: isDayPass
+        };
+    }
 
     // Update prompt text
-    document.getElementById('checkinMemberName').textContent = memberName;
+    document.getElementById('checkinMemberName').textContent = pendingCheckinMember.name;
 
     // Show prompt
     document.getElementById('checkinPromptModal').classList.add('active');
@@ -862,9 +872,14 @@ function skipCheckin() {
     // Hide prompt
     document.getElementById('checkinPromptModal').classList.remove('active');
 
-    // Return to cards
-    resetRegistrationFlow();
-    navigateBackToCards();
+    // Execute completion logic
+    if (onCheckinComplete) {
+        onCheckinComplete();
+    } else {
+        // Default Registration Reset
+        resetRegistrationFlow();
+        navigateBackToCards();
+    }
 }
 
 function proceedCheckin() {
@@ -874,9 +889,14 @@ function proceedCheckin() {
     // Add member to active visits
     addMemberToActiveVisits(pendingCheckinMember);
 
-    // Return to cards
-    resetRegistrationFlow();
-    navigateBackToCards();
+    // Execute completion logic
+    if (onCheckinComplete) {
+        onCheckinComplete();
+    } else {
+        // Default Registration Reset
+        resetRegistrationFlow();
+        navigateBackToCards();
+    }
 }
 
 function addMemberToActiveVisits(member) {

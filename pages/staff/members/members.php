@@ -526,13 +526,7 @@
                                                 </div>
                                             </div>
 
-                                            <div id="bankRefInput" style="display: none; margin-top: 16px;">
-                                                <div class="input-glass">
-                                                    <i class="fas fa-hashtag"></i>
-                                                    <input type="text" placeholder="Enter Reference Number"
-                                                        onclick="event.stopPropagation();">
-                                                </div>
-                                            </div>
+
 
                                             <div class="divider-glass" style="margin: 20px 0;"></div>
 

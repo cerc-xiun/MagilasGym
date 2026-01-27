@@ -360,15 +360,31 @@ function closeReceiptAndReset() {
     // Hide receipt
     document.getElementById('renewalReceiptModal').classList.remove('active');
 
-    // Reset to cards
-    document.getElementById('regRenewalFlow').style.display = 'none';
-    document.querySelector('.flip-cards-container').style.display = 'flex';
+    // Prepare data for check-in prompt
+    const renewalMemberData = {
+        name: renewalState.member.name,
+        type: 'membership', // Renewals are always memberships
+        planName: renewalState.member.plan,
+        isDayPass: false
+    };
 
-    // Reset search
-    document.getElementById('renewalSearchInput').value = '';
-    document.getElementById('memberCardResult').style.display = 'none';
-    document.getElementById('renewalStep1').style.display = 'block';
-    document.getElementById('renewalStep2').style.display = 'none';
+    // Show prompt with callback
+    showCheckinPrompt(renewalMemberData, () => {
+        // ACTUAL RESET LOGIC (Called after check-in/skip)
+
+        // Reset to cards
+        document.getElementById('regRenewalFlow').style.display = 'none';
+        document.querySelector('.flip-cards-container').style.display = 'flex';
+
+        // Reset search
+        document.getElementById('renewalSearchInput').value = '';
+        document.getElementById('memberCardResult').style.display = 'none';
+        document.getElementById('renewalStep1').style.display = 'block';
+        document.getElementById('renewalStep2').style.display = 'none';
+
+        // Reset state
+        renewalState.member = null;
+    });
 }
 
 // Helpers
