@@ -4109,3 +4109,109 @@ input[type="checkbox"]:checked+.toggle-slider::before {
     left: 15px !important;
     z-index: 150 !important;
 }
+
+/* Check-In Prompt Modal */
+.checkin-prompt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.checkin-prompt-overlay.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.checkin-prompt-container {
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.95), rgba(10, 10, 10, 0.98));
+    border: 1px solid rgba(184, 150, 12, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.4s ease;
+}
+
+.prompt-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(184, 150, 12, 0.2), rgba(184, 150, 12, 0.1));
+    border: 2px solid rgba(184, 150, 12, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: var(--gold);
+}
+
+.checkin-prompt-container h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 12px 0;
+}
+
+.checkin-prompt-container p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin: 0 0 32px 0;
+    line-height: 1.6;
+}
+
+.checkin-prompt-container p strong {
+    color: var(--gold);
+}
+
+.prompt-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-skip,
+.btn-checkin {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-skip {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-skip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.btn-checkin {
+    background: linear-gradient(135deg, #b8960c, #d4af37);
+    color: white;
+}
+
+.btn-checkin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(184, 150, 12, 0.4);
+}

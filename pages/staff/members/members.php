@@ -1101,6 +1101,27 @@
                             </div>
                         </div>
 
+                        <!-- Check-In Prompt Modal -->
+                        <div class="checkin-prompt-overlay" id="checkinPromptModal">
+                            <div class="checkin-prompt-container">
+                                <div class="prompt-icon">
+                                    <i class="fas fa-door-open"></i>
+                                </div>
+                                <h3>Check Member into Gym?</h3>
+                                <p>Would you like to add <strong id="checkinMemberName"></strong> to the active visits
+                                    panel?</p>
+
+                                <div class="prompt-buttons">
+                                    <button class="btn-skip" onclick="skipCheckin()">
+                                        <i class="fas fa-times"></i> No, Skip
+                                    </button>
+                                    <button class="btn-checkin" onclick="proceedCheckin()">
+                                        <i class="fas fa-check"></i> Yes, Check In
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div><!-- End cell-content -->
                 </div><!-- End Cell 3: Registration Desk -->
 

@@ -816,8 +816,8 @@ function closeRegistrationReceiptAndReset() {
     // Hide receipt
     document.getElementById('registrationReceiptModal').classList.remove('active');
 
-    // Reset to cards
-    navigateBackToCards();
+    // Show check-in prompt instead of immediate reset
+    showCheckinPrompt();
 }
 
 function formatDate(dateStr) {
@@ -826,6 +826,143 @@ function formatDate(dateStr) {
         day: 'numeric',
         year: 'numeric'
     });
+}
+
+// ==========================================
+// CHECK-IN PROMPT LOGIC
+// ==========================================
+
+let pendingCheckinMember = null;
+
+function showCheckinPrompt() {
+    // Get member data based on context
+    const isDayPass = (selectedPlanType === 'day-pass');
+
+    // Get info
+    const memberName = isDayPass
+        ? (document.getElementById('dayPassCustomerName')?.value || 'Guest')
+        : (document.getElementById('memberNameModern')?.value || 'New Member');
+
+    // Store for check-in
+    pendingCheckinMember = {
+        name: memberName,
+        type: selectedPlanType,
+        planName: selectedPlanName,
+        isDayPass: isDayPass
+    };
+
+    // Update prompt text
+    document.getElementById('checkinMemberName').textContent = memberName;
+
+    // Show prompt
+    document.getElementById('checkinPromptModal').classList.add('active');
+}
+
+function skipCheckin() {
+    // Hide prompt
+    document.getElementById('checkinPromptModal').classList.remove('active');
+
+    // Return to cards
+    resetRegistrationFlow();
+    navigateBackToCards();
+}
+
+function proceedCheckin() {
+    // Hide prompt
+    document.getElementById('checkinPromptModal').classList.remove('active');
+
+    // Add member to active visits
+    addMemberToActiveVisits(pendingCheckinMember);
+
+    // Return to cards
+    resetRegistrationFlow();
+    navigateBackToCards();
+}
+
+function addMemberToActiveVisits(member) {
+    if (!member) return;
+
+    // Get "Who's In" container
+    const whosInList = document.querySelector('#whosInList');
+    if (!whosInList) return;
+    // Remove empty state if present
+    const emptyState = whosInList.querySelector('.empty-state');
+    if (emptyState) emptyState.style.display = 'none';
+
+    // ============================================================
+    // BACKEND INTEGRATION GUIDE
+    // ============================================================
+    // TODO: Connect this to your backend API
+    // Refer to backend_integration_guide.md for full details.
+    // 
+    // Quick Snippet:
+    // fetch('/api/check-in.php', {
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //        member_id: member.id, // You'll need to store/pass the real ID
+    //        check_in_time: new Date().toISOString(),
+    //        pass_type: member.type
+    //     })
+    // });
+    // ============================================================
+
+    // Create visitor item using EXACT structure from members.js
+    const visitorItem = document.createElement('div');
+    visitorItem.className = 'member-item';
+
+    // Generate initials (e.g., "John Doe" -> "JD")
+    const initials = member.name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .substring(0, 2);
+
+    // Determine Type Label
+    const typeLabel = member.isDayPass ? 'Day Pass' : 'Membership';
+
+    // Get current time
+    const now = new Date();
+    const timeIn = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    visitorItem.innerHTML = `
+        <div class="avatar">${initials}</div>
+        
+        <div class="col-info">
+            <span class="main-text">${member.name}</span>
+        </div>
+
+        <div class="col-info">
+            <span class="main-text" style="font-size:12px;">${typeLabel}</span>
+        </div>
+
+        <div class="col-info">
+            <span class="main-text" style="font-size:12px;">${timeIn}</span>
+        </div>
+
+        <button class="action-btn-left" onclick="event.stopPropagation();">
+            <i class="fas fa-sign-out-alt"></i> Left
+        </button>
+    `;
+
+    // Add to list (at top)
+    whosInList.insertBefore(visitorItem, whosInList.firstChild);
+
+    // Update count in Preview
+    const previewCount = document.getElementById('previewMemberCount');
+    if (previewCount) {
+        let count = parseInt(previewCount.textContent || '0');
+        previewCount.textContent = count + 1;
+    }
+
+    // Update count in Header
+    const activeCountSpan = document.querySelector('#activeCount span:first-child');
+    if (activeCountSpan) {
+        let count = parseInt(activeCountSpan.textContent || '0');
+        activeCountSpan.textContent = count + 1;
+    }
+
+    console.log('Member added to active visits:', member);
 }
 
 
