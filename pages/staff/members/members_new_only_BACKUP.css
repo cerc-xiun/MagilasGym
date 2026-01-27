@@ -595,6 +595,10 @@ input[type="checkbox"]:checked+.toggle-slider::before {
 
 .photo-upload-modern {
     position: relative;
+    width: 120px;
+    /* Match preview width to constrain absolute button */
+    height: 120px;
+    margin-bottom: 20px;
 }
 
 .photo-preview-glass {

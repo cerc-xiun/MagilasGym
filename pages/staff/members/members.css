@@ -3000,6 +3000,9 @@ input[type="checkbox"]:checked+.toggle-slider::before {
 
 .photo-upload-modern {
     position: relative;
+    width: 120px;
+    height: 120px;
+    margin-right: 20px;
 }
 
 .photo-preview-glass {
@@ -3054,8 +3057,8 @@ input[type="checkbox"]:checked+.toggle-slider::before {
 
 .remove-photo-modern {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -4px;
+    right: -4px;
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -3205,7 +3208,7 @@ input[type="checkbox"]:checked+.toggle-slider::before {
     height: 20px;
     border-radius: 50%;
     background: var(--gold);
-    color: var(--bg-primary);
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3213,6 +3216,14 @@ input[type="checkbox"]:checked+.toggle-slider::before {
     opacity: 0;
     transform: scale(0.8);
     transition: all 0.3s ease;
+    z-index: 5;
+}
+
+/* Explicitly style the icon inside */
+.payment-check i {
+    color: #ffffff !important;
+    font-size: 10px !important;
+    display: block !important;
 }
 
 .payment-option-glass.active .payment-check {
@@ -4040,9 +4051,11 @@ input[type="checkbox"]:checked+.toggle-slider::before {
     align-items: center;
     justify-content: center;
 }
+
 /* ===== UI REFINEMENTS (Step Bar & Form) ===== */
 .step-flow-container {
-    padding-top: 20px; /* Space for back button */
+    padding-top: 20px;
+    /* Space for back button */
     position: relative;
 }
 
@@ -4050,15 +4063,19 @@ input[type="checkbox"]:checked+.toggle-slider::before {
     position: absolute;
     top: 20px;
     left: 20px;
-    z-index: 100; /* Ensure clickable */
-    background: rgba(0,0,0,0.5); /* Background for visibility */
-    border: 1px solid rgba(255,255,255,0.1);
+    z-index: 100;
+    /* Ensure clickable */
+    background: rgba(0, 0, 0, 0.5);
+    /* Background for visibility */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .form-horizontal-container {
-    max-width: 700px; /* Constrain width */
-    margin: 0 auto;   /* Center it */
-    background: rgba(0,0,0,0.2);
+    max-width: 700px;
+    /* Constrain width */
+    margin: 0 auto;
+    /* Center it */
+    background: rgba(0, 0, 0, 0.2);
     padding: 24px;
     border-radius: 16px;
 }
@@ -4079,7 +4096,8 @@ input[type="checkbox"]:checked+.toggle-slider::before {
 
 /* Adjust step progress to avoid back button */
 .step-progress {
-    margin-left: 60px; /* Push away from back button */
+    margin-left: 60px;
+    /* Push away from back button */
     margin-right: auto;
     width: calc(100% - 80px);
 }
