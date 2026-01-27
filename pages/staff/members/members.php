@@ -505,26 +505,24 @@
                                         <div class="glass-card" style="margin-top: 24px;">
                                             <h4 style="margin-bottom: 16px;">Payment Details</h4>
 
-                                            <div class="payment-options-enhanced">
-                                                <div class="payment-option-enhanced active" data-rpay="cash"
+                                            <div class="payment-options-glass">
+                                                <div class="payment-option-glass active" data-rpay="gcash"
+                                                    onclick="selectRenewalPayment('gcash')">
+                                                    <i class="fab fa-google-wallet"></i>
+                                                    <span>GCash</span>
+                                                    <div class="payment-check"><i class="fas fa-check"></i></div>
+                                                </div>
+                                                <div class="payment-option-glass" data-rpay="cash"
                                                     onclick="selectRenewalPayment('cash')">
                                                     <i class="fas fa-money-bill-wave"></i>
-                                                    Cash
+                                                    <span>Cash</span>
+                                                    <div class="payment-check"><i class="fas fa-check"></i></div>
                                                 </div>
-                                                <div class="payment-option-enhanced" data-rpay="gcash"
-                                                    onclick="selectRenewalPayment('gcash')">
-                                                    <i class="fas fa-mobile-alt"></i>
-                                                    GCash
-                                                </div>
-                                                <div class="payment-option-enhanced" data-rpay="card"
-                                                    onclick="selectRenewalPayment('card')">
-                                                    <i class="fas fa-credit-card"></i>
-                                                    Card
-                                                </div>
-                                                <div class="payment-option-enhanced" data-rpay="bank"
+                                                <div class="payment-option-glass" data-rpay="bank"
                                                     onclick="selectRenewalPayment('bank')">
                                                     <i class="fas fa-university"></i>
-                                                    Bank Transfer
+                                                    <span>Bank</span>
+                                                    <div class="payment-check"><i class="fas fa-check"></i></div>
                                                 </div>
                                             </div>
 

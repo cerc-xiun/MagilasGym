@@ -236,7 +236,7 @@ function toggleRenewInstructor() {
 function selectRenewalPayment(method) {
     renewalState.paymentMethod = method;
 
-    document.querySelectorAll('.payment-option-enhanced').forEach(opt => {
+    document.querySelectorAll('.payment-option-glass').forEach(opt => {
         opt.classList.remove('active');
         if (opt.dataset.rpay === method) opt.classList.add('active');
     });
