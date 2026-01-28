@@ -154,6 +154,32 @@ function closeDirQRModal() {
     document.getElementById('dirQRModal').classList.remove('active');
 }
 
+// Check In from Directory
+function directoryCheckIn() {
+    if (!currentDirectoryMember) return;
+
+    const isDayPass = (currentDirectoryMember.plan === 'Day Pass');
+
+    const memberData = {
+        name: currentDirectoryMember.name,
+        type: isDayPass ? 'day-pass' : 'membership',
+        planName: currentDirectoryMember.plan,
+        isDayPass: isDayPass
+    };
+
+    // Show prompt
+    // Assuming showCheckinPrompt is globally available
+    if (typeof showCheckinPrompt === 'function') {
+        showCheckinPrompt(memberData, () => {
+            // After check-in (Yes or No), close result and return to search
+            closeDirectoryResult();
+        });
+    } else {
+        console.error('showCheckinPrompt function not found!');
+        alert('Check-in system not ready.');
+    }
+}
+
 // Add Enter key support for search
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('dirSearchInput');

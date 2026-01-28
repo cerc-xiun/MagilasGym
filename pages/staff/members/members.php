@@ -1196,6 +1196,10 @@
                                         onclick="event.stopPropagation(); handleDirectoryAction();">
                                         <i class="fas fa-qrcode"></i> Show QR
                                     </button>
+                                    <button class="dir-btn checkin"
+                                        onclick="event.stopPropagation(); directoryCheckIn();">
+                                        <i class="fas fa-door-open"></i> Check In
+                                    </button>
                                 </div>
                             </div>
                         </div>
