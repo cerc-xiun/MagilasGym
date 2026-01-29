@@ -3,7 +3,7 @@
 // or denied access via .htaccess
 return [
     'DB_HOST' => 'localhost',
-    'DB_NAME' => 'magilas_gym_db',
+    'DB_NAME' => 'gym_db',
     'DB_USER' => 'root',
     'DB_PASS' => ''
 ];
