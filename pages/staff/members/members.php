@@ -23,10 +23,56 @@
     <link rel="stylesheet" href="members.css">
     <link rel="stylesheet" href="step_design.css">
     <link rel="stylesheet" href="renewal_enhanced.css">
+    <link rel="stylesheet" href="sidebar_premium.css">
 </head>
 
 <body class="dashboard-body">
     <div class="dashboard-container">
+        <!-- Staff Portal Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="../../../assets/images/logo.png" alt="Magilas Gym Logo" class="sidebar-logo">
+                <div class="sidebar-brand">
+                    <span class="brand-main">STAFF'S</span>
+                    <span class="brand-sub">PORTAL</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item" onclick="alert('Dashboard - Coming Soon'); return false;">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="members.php" class="nav-item active">
+                    <i class="fas fa-desktop"></i>
+                    <span>Front Desk Operations</span>
+                </a>
+
+                <a href="#" class="nav-item" onclick="alert('Pending List - Coming Soon'); return false;">
+                    <i class="fas fa-clock"></i>
+                    <span>Pending List</span>
+                </a>
+
+                <a href="#" class="nav-item" onclick="alert('Inventory - Coming Soon'); return false;">
+                    <i class="fas fa-boxes-stacked"></i>
+                    <span>Inventory</span>
+                </a>
+
+                <a href="#" class="nav-item" onclick="alert('Maintenance - Coming Soon'); return false;">
+                    <i class="fas fa-wrench"></i>
+                    <span>Maintenance</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="../../auth/login.php" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
         <!-- Main Content -->
         <main class="main-content">
             <header class="main-header">
