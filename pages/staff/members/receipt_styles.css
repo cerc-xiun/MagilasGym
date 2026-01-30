@@ -1,14 +1,33 @@
-/* Receipt Styles (Registration Desk Matching) */
+/* Receipt Styles (Matching Registration Desk) */
+.receipt-container {
+    background: #fff;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
 .receipt-header {
+    background: linear-gradient(135deg, #b8960c, #d4af37);
     text-align: center;
     padding: 32px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px 20px 0 0;
 }
 
 .receipt-header i {
     font-size: 48px;
-    color: #10b981;
+    color: #fff;
+    background: #fff;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 16px;
+    color: #b8960c;
 }
 
 .receipt-header h2 {
@@ -19,18 +38,19 @@
 }
 
 .receipt-header p {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
 }
 
 .receipt-body {
     padding: 24px 32px;
+    background: #fff;
 }
 
 .receipt-section {
     margin-bottom: 24px;
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .receipt-section:last-child {
@@ -42,14 +62,14 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--gold);
-    margin-bottom: 12px;
+    color: #6b7280;
+    margin-bottom: 8px;
 }
 
 .receipt-value {
     font-size: 20px;
     font-weight: 700;
-    color: #fff;
+    color: #111827;
     margin-bottom: 4px;
 }
 
@@ -60,23 +80,27 @@
     margin-bottom: 12px;
 }
 
+.receipt-row:last-child {
+    margin-bottom: 0;
+}
+
 .receipt-row .label {
-    color: rgba(255, 255, 255, 0.6);
+    color: #6b7280;
     font-size: 14px;
 }
 
 .receipt-row .value {
-    color: #fff;
+    color: #111827;
     font-weight: 600;
     font-size: 14px;
 }
 
 .receipt-total {
-    background: rgba(184, 150, 12, 0.1);
-    border: 1px solid rgba(184, 150, 12, 0.3);
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 20px;
-    margin-top: 24px;
+    margin-top: 8px;
 }
 
 .receipt-total .receipt-row {
@@ -84,15 +108,15 @@
 }
 
 .receipt-total .label {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--gold) !important;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280 !important;
 }
 
 .receipt-total .value {
     font-size: 28px;
     font-weight: 700;
-    color: var(--gold) !important;
+    color: #b8960c !important;
 }
 
 /* Receipt Footer */
@@ -100,7 +124,8 @@
     display: flex;
     gap: 12px;
     padding: 24px 32px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: #fff;
+    border-radius: 0 0 20px 20px;
 }
 
 .btn-print,
@@ -120,33 +145,21 @@
 }
 
 .btn-print {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #f3f4f6;
+    color: #111827;
+    border: 1px solid #e5e7eb;
 }
 
 .btn-print:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: #e5e7eb;
 }
 
 .btn-done-receipt {
-    background: linear-gradient(135deg, var(--gold), #d4af37);
-    color: #000;
+    background: linear-gradient(135deg, #b8960c, #d4af37);
+    color: #fff;
 }
 
 .btn-done-receipt:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(184, 150, 12, 0.4);
-}
-
-/* Receipt Container (matches registration desk) */
-.receipt-container {
-    background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.95));
-    border: 1px solid rgba(184, 150, 12, 0.3);
-    border-radius: 20px;
-    max-width: 600px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
 }

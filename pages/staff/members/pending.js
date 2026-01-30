@@ -408,9 +408,11 @@ function showReceipt() {
         <div class="receipt-body">
             <!-- Member Info -->
             <div class="receipt-section">
-                <div class="receipt-label">Member Information</div>
-                <div class="receipt-value">${currentApplication.fullName}</div>
-                <div style="font-size: 13px; color: #999; margin-top: 4px;">${memberId}</div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                    <div class="receipt-label" style="margin-bottom: 0;">Member Information</div>
+                    <div class="receipt-value" style="margin-bottom: 0; font-size: 16px;">${currentApplication.fullName}</div>
+                </div>
+                <div style="font-size: 13px; color: #6b7280;">${memberId}</div>
             </div>
 
             <!-- Transaction Details -->
@@ -423,13 +425,13 @@ function showReceipt() {
 
             <!-- QR Code -->
             <div class="receipt-section" style="text-align: center;">
-                <div class="receipt-label">Member QR Code</div>
+                <div class="receipt-label" style="text-align: center;">Member QR Code</div>
                 <div id="receiptQRCode" style="margin: 16px auto; display: inline-block;">
                     <div style="width: 150px; height: 150px; background: rgba(255, 255, 255, 0.05); border: 2px dashed rgba(184, 150, 12, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-qrcode" style="font-size: 48px; color: rgba(184, 150, 12, 0.4);"></i>
                     </div>
                 </div>
-                <p style="font-size: 12px; color: #999; margin-top: 8px;">Scan this code for gym access</p>
+                <p style="font-size: 12px; color: #9ca3af; margin-top: 8px;">Scan this code for gym access</p>
             </div>
 
             <!-- Payment Info -->
