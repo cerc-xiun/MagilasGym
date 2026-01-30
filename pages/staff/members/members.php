@@ -49,7 +49,7 @@
                     <span>Front Desk Operations</span>
                 </a>
 
-                <a href="#" class="nav-item" onclick="alert('Pending List - Coming Soon'); return false;">
+                <a href="pending.php" class="nav-item">
                     <i class="fas fa-clock"></i>
                     <span>Pending List</span>
                 </a>

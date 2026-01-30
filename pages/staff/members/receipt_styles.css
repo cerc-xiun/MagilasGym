@@ -1,0 +1,152 @@
+/* Receipt Styles (Registration Desk Matching) */
+.receipt-header {
+    text-align: center;
+    padding: 32px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.receipt-header i {
+    font-size: 48px;
+    color: #10b981;
+    margin-bottom: 16px;
+}
+
+.receipt-header h2 {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.receipt-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+}
+
+.receipt-body {
+    padding: 24px 32px;
+}
+
+.receipt-section {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.receipt-section:last-child {
+    border-bottom: none;
+}
+
+.receipt-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.receipt-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.receipt-row .label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+}
+
+.receipt-row .value {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.receipt-total {
+    background: rgba(184, 150, 12, 0.1);
+    border: 1px solid rgba(184, 150, 12, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 24px;
+}
+
+.receipt-total .receipt-row {
+    margin-bottom: 0;
+}
+
+.receipt-total .label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold) !important;
+}
+
+.receipt-total .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold) !important;
+}
+
+/* Receipt Footer */
+.receipt-footer {
+    display: flex;
+    gap: 12px;
+    padding: 24px 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-print,
+.btn-done-receipt {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-print {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-print:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-done-receipt {
+    background: linear-gradient(135deg, var(--gold), #d4af37);
+    color: #000;
+}
+
+.btn-done-receipt:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(184, 150, 12, 0.4);
+}
+
+/* Receipt Container (matches registration desk) */
+.receipt-container {
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.95));
+    border: 1px solid rgba(184, 150, 12, 0.3);
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
