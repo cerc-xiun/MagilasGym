@@ -2,17 +2,17 @@
 
 // Directory mock data (includes Who's In members + expired members)
 const directoryMembers = [
-    { name: "John Doe", status: "active", plan: "Premium", expiryDate: "2026-02-15", qrCode: "QR-JD-001", image: null },
-    { name: "Alice Smith", status: "expired", plan: "Day Pass", expiryDate: "2026-01-10", qrCode: null, image: null },
-    { name: "Michael Jordan", status: "active", plan: "Standard", expiryDate: "2026-03-01", qrCode: "QR-MJ-001", image: null },
-    { name: "Sarah Connor", status: "active", plan: "Standard", expiryDate: "2026-02-20", qrCode: "QR-SC-001", image: null },
-    { name: "Tony Stark", status: "expired", plan: "Premium", expiryDate: "2025-12-31", qrCode: null, image: null },
-    { name: "Bruce Wayne", status: "active", plan: "Premium", expiryDate: "2026-04-15", qrCode: "QR-BW-001", image: null },
-    { name: "Clark Kent", status: "active", plan: "Standard", expiryDate: "2026-02-28", qrCode: "QR-CK-001", image: null },
-    { name: "Diana Prince", status: "expired", plan: "Standard", expiryDate: "2026-01-05", qrCode: null, image: null },
-    { name: "Peter Parker", status: "active", plan: "Day Pass", expiryDate: "Today", qrCode: "QR-PP-001", image: null },
-    { name: "Natasha Romanoff", status: "active", plan: "Premium", expiryDate: "2026-03-10", qrCode: "QR-NR-001", image: null },
-    { name: "Steve Rogers", status: "active", plan: "Standard", expiryDate: "2026-02-25", qrCode: "QR-SR-001", image: null }
+    { id: "MG-001", name: "John Doe", status: "active", plan: "Regular Monthly", expiryDate: "Feb 25, 2026", instructor: "3 months remaining", qrCode: "QR-JD-001", image: null },
+    { id: "MG-002", name: "Alice Smith", status: "expired", plan: "Day Pass", expiryDate: "Jan 10, 2026", instructor: "None", qrCode: null, image: null },
+    { id: "MG-003", name: "Michael Jordan", status: "active", plan: "Standard", expiryDate: "Mar 01, 2026", instructor: "1 month remaining", qrCode: "QR-MJ-001", image: null },
+    { id: "MG-004", name: "Sarah Connor", status: "active", plan: "Standard", expiryDate: "Feb 20, 2026", instructor: "None", qrCode: "QR-SC-001", image: null },
+    { id: "MG-005", name: "Tony Stark", status: "expired", plan: "Premium", expiryDate: "Dec 31, 2025", instructor: "None", qrCode: null, image: null },
+    { id: "MG-006", name: "Bruce Wayne", status: "active", plan: "Premium", expiryDate: "Apr 15, 2026", instructor: "6 months remaining", qrCode: "QR-BW-001", image: null },
+    { id: "MG-007", name: "Clark Kent", status: "active", plan: "Standard", expiryDate: "Feb 28, 2026", instructor: "None", qrCode: "QR-CK-001", image: null },
+    { id: "MG-008", name: "Diana Prince", status: "expired", plan: "Standard", expiryDate: "Jan 05, 2026", instructor: "None", qrCode: null, image: null },
+    { id: "MG-009", name: "Peter Parker", status: "active", plan: "Day Pass", expiryDate: "Today", instructor: "None", qrCode: "QR-PP-001", image: null },
+    { id: "MG-010", name: "Natasha Romanoff", status: "active", plan: "Premium", expiryDate: "Mar 10, 2026", instructor: "None", qrCode: "QR-NR-001", image: null },
+    { id: "MG-011", name: "Steve Rogers", status: "active", plan: "Standard", expiryDate: "Feb 25, 2026", instructor: "None", qrCode: "QR-SR-001", image: null }
 ];
 
 let currentDirectoryMember = null;
@@ -29,7 +29,8 @@ function searchDirectoryMember() {
     // Search for member (case-insensitive)
     const found = directoryMembers.find(m =>
         m.name.toLowerCase() === searchName.toLowerCase() ||
-        m.name.toLowerCase().includes(searchName.toLowerCase())
+        m.name.toLowerCase().includes(searchName.toLowerCase()) ||
+        (m.id && m.id.toLowerCase() === searchName.toLowerCase())
     );
 
     if (found) {
@@ -52,29 +53,49 @@ function showDirectoryResult(member) {
 
     // Populate member details
     document.getElementById('dirMemberName').textContent = member.name;
+    const idEl = document.getElementById('dirMemberId');
+    if (idEl) idEl.textContent = member.id || 'N/A';
+
+    document.getElementById('dirMemberPlan').textContent = member.plan;
     document.getElementById('dirMemberExpiry').textContent = member.expiryDate;
+
+    // Instructor Stats
+    const instrEl = document.getElementById('dirInstructorStats');
+    if (instrEl) instrEl.textContent = member.instructor || 'None';
 
     // Set status badge
     const statusBadge = document.getElementById('dirMemberStatus');
     statusBadge.textContent = member.status === 'active' ? 'Active' : 'Expired';
-    statusBadge.className = 'dir-status-badge ' + member.status;
+    // Remove old classes first
+    statusBadge.className = 'dir-status-text';
+    if (member.status === 'active') statusBadge.classList.add('active');
+    else statusBadge.classList.add('expired');
 
     // Update expiry label based on plan
     const expiryLabel = document.getElementById('dirExpiryLabel');
-    if (member.plan === 'Day Pass') {
-        expiryLabel.textContent = 'Valid Until';
-    } else {
-        expiryLabel.textContent = member.status === 'expired' ? 'Expired On' : 'Expires';
+    if (expiryLabel) {
+        if (member.plan === 'Day Pass') {
+            expiryLabel.textContent = 'VALID UNTIL';
+        } else {
+            expiryLabel.textContent = member.status === 'expired' ? 'EXPIRED' : 'EXPIRES';
+        }
     }
 
     // Set action button
     const actionBtn = document.getElementById('dirActionBtn');
-    if (member.status === 'active') {
-        actionBtn.innerHTML = '<i class="fas fa-qrcode"></i> Show QR';
-        actionBtn.className = 'dir-btn primary';
-    } else {
-        actionBtn.innerHTML = '<i class="fas fa-sync"></i> Renew';
-        actionBtn.className = 'dir-btn renew';
+    if (actionBtn) {
+        if (member.status === 'active') {
+            // Keep default "Continue" text/style for specific design
+            // Or ensure it says "Continue"
+            actionBtn.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+            actionBtn.className = 'dir-btn continue-btn';
+        } else {
+            actionBtn.innerHTML = '<i class="fas fa-sync"></i> Renew';
+            actionBtn.className = 'dir-btn continue-btn renew-mode'; // Using continue-btn base for size
+            // We might need specific style for renew
+            actionBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            actionBtn.style.color = '#fff';
+        }
     }
 
     // Set member photo (placeholder for now)
@@ -82,7 +103,7 @@ function showDirectoryResult(member) {
     if (member.image) {
         photo.innerHTML = `<img src="${member.image}" alt="${member.name}">`;
     } else {
-        photo.innerHTML = '<i class="fas fa-user"></i>';
+        photo.innerHTML = `<i class="fas fa-user"></i>`;
     }
 }
 

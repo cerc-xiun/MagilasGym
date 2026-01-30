@@ -862,15 +862,30 @@ function showCheckinPrompt(explicitMemberData = null, onComplete = null) {
     }
 
     // Update prompt text
-    document.getElementById('checkinMemberName').textContent = pendingCheckinMember.name;
+    const nameEl = document.getElementById('checkinMemberName');
+    if (nameEl && pendingCheckinMember) {
+        nameEl.textContent = pendingCheckinMember.name;
+    }
 
     // Show prompt
-    document.getElementById('checkinPromptModal').classList.add('active');
+    const modal = document.getElementById('checkinPromptModal');
+    if (modal) {
+        console.log('Showing checkin prompt for:', pendingCheckinMember);
+        modal.classList.add('active');
+        modal.style.display = 'flex'; // Force visibility
+    } else {
+        console.error('Check-in modal element not found!');
+        alert('Error: Check-in modal missing.');
+    }
 }
 
 function skipCheckin() {
     // Hide prompt
-    document.getElementById('checkinPromptModal').classList.remove('active');
+    const modal = document.getElementById('checkinPromptModal');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none'; // Force hide
+    }
 
     // Execute completion logic
     if (onCheckinComplete) {
@@ -884,7 +899,11 @@ function skipCheckin() {
 
 function proceedCheckin() {
     // Hide prompt
-    document.getElementById('checkinPromptModal').classList.remove('active');
+    const modal = document.getElementById('checkinPromptModal');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none'; // Force hide
+    }
 
     // Add member to active visits
     addMemberToActiveVisits(pendingCheckinMember);

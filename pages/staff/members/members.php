@@ -1162,41 +1162,51 @@
                         <!-- STATE 2: Member Found Result -->
                         <div class="dir-result-container" id="dirResultState" style="display: none;">
                             <div class="dir-result-card">
-                                <!-- Replaced header with profile-centric layout -->
-                                <div class="dir-member-layout">
-                                    <div class="dir-member-photo" id="dirMemberPhoto">
+                                <!-- Top: Header -->
+                                <div class="dir-card-header">
+                                    <div class="dir-avatar-circle" id="dirMemberPhoto">
                                         <i class="fas fa-user"></i>
                                     </div>
-
-                                    <div class="dir-member-details">
-                                        <div class="dir-info-main">
-                                            <div class="dir-value name" id="dirMemberName">John Doe</div>
-                                            <span class="dir-status-badge" id="dirMemberStatus">Active</span>
-                                        </div>
-
-                                        <div class="dir-meta-grid">
-                                            <div class="dir-info-item">
-                                                <span class="dir-label">Plan</span>
-                                                <span class="dir-value" id="dirMemberPlan">Premium</span>
-                                            </div>
-                                            <div class="dir-info-item">
-                                                <span class="dir-label" id="dirExpiryLabel">Expires</span>
-                                                <span class="dir-value" id="dirMemberExpiry">Feb 15, 2026</span>
-                                            </div>
-                                        </div>
+                                    <div class="dir-header-info">
+                                        <h3 id="dirMemberName">Name</h3>
+                                        <span class="dir-id" id="dirMemberId">MG-000</span>
                                     </div>
                                 </div>
-                                <!-- Action Buttons -->
-                                <div class="dir-actions">
-                                    <button class="dir-btn secondary"
+
+                                <div class="dir-divider"></div>
+
+                                <!-- Middle: Details Grid -->
+                                <div class="dir-details-grid">
+                                    <div class="dir-detail-item">
+                                        <label>CURRENT PLAN</label>
+                                        <div class="value" id="dirMemberPlan">Plan Name</div>
+                                    </div>
+                                    <div class="dir-detail-item">
+                                        <label>STATUS</label>
+                                        <div class="value" id="dirMemberStatus">Active</div>
+                                    </div>
+                                    <div class="dir-detail-item">
+                                        <label id="dirExpiryLabel">EXPIRES</label>
+                                        <div class="value gold-text" id="dirMemberExpiry">Date</div>
+                                    </div>
+                                    <div class="dir-detail-item">
+                                        <label>INSTRUCTOR SESSIONS</label>
+                                        <div class="value gold-text" id="dirInstructorStats">None</div>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom: Actions -->
+                                <button class="dir-btn continue-btn" id="dirActionBtn"
+                                    onclick="event.stopPropagation(); handleDirectoryAction();">
+                                    Continue <i class="fas fa-arrow-right"></i>
+                                </button>
+
+                                <div class="dir-actions-footer">
+                                    <button class="dir-btn secondary-btn"
                                         onclick="event.stopPropagation(); closeDirectoryResult();">
-                                        <i class="fas fa-arrow-left"></i> Close
+                                        Close
                                     </button>
-                                    <button class="dir-btn primary" id="dirActionBtn"
-                                        onclick="event.stopPropagation(); handleDirectoryAction();">
-                                        <i class="fas fa-qrcode"></i> Show QR
-                                    </button>
-                                    <button class="dir-btn checkin"
+                                    <button class="dir-btn checkin-btn"
                                         onclick="event.stopPropagation(); directoryCheckIn();">
                                         <i class="fas fa-door-open"></i> Check In
                                     </button>
@@ -1251,6 +1261,41 @@
             </div>
         </div>
     </div>
+
+    <!-- CHECK-IN PROMPT MODAL (Added for Confirmation) -->
+    <div class="checkin-prompt-overlay" id="checkinPromptModal">
+        <div class="checkin-prompt-container">
+            <div class="prompt-icon">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <h3>Check Member into Gym?</h3>
+            <p>Would you like to add <strong id="checkinMemberName">Member Name</strong> to the active visits panel?</p>
+            <div class="prompt-buttons">
+                <button class="btn-skip" onclick="skipCheckin()">No, Skip</button>
+                <button class="btn-checkin" onclick="proceedCheckin()">
+                    <i class="fas fa-check"></i> Yes, Check In
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIRECTORY CHECK-IN MODAL (Dedicated) -->
+    <div class="checkin-prompt-overlay" id="dirCheckInModal">
+        <div class="checkin-prompt-container">
+            <div class="prompt-icon">
+                <i class="fas fa-id-card-alt"></i>
+            </div>
+            <h3>Confirm Check-In</h3>
+            <p>Mark <strong id="dirCheckInName">Member Name</strong> as present in the gym?</p>
+            <div class="prompt-buttons">
+                <button class="btn-skip" onclick="cancelDirectoryCheckIn()">Cancel</button>
+                <button class="btn-checkin" onclick="confirmDirectoryCheckIn()">
+                    <i class="fas fa-check"></i> Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Exit Confirmation Modal -->
     <div class="modal-overlay" id="exitModal">
         <div class="custom-modal">
