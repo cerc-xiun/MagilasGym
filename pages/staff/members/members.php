@@ -27,46 +27,10 @@
 
 <body class="dashboard-body">
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <img src="../../../assets/images/logo.png" alt="Magilas Logo" class="sidebar-logo">
-                <div class="sidebar-brand">MAGILAS <span class="text-accent">GYM</span></div>
-            </div>
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-label">Overview</div>
-                    <a href="../dashboard/dashboard.php" class="nav-item"><i class="fas fa-th-large"></i>
-                        <span>Dashboard</span></a>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-label">Management</div>
-                    <a href="../members/members.php" class="nav-item active"><i class="fas fa-desktop"></i>
-                        <span>Front Desk</span></a>
-                    <a href="#" class="nav-item" onclick="openPendingModal(); return false;"><i
-                            class="fas fa-user-clock"></i> <span>Pending</span><span class="nav-badge"
-                            id="pendingCount">2</span></a>
-                    <a href="../inventory/inventory.php" class="nav-item"><i class="fas fa-boxes-stacked"></i>
-                        <span>Inventory</span></a>
-                </div>
-            </nav>
-            <div class="sidebar-user">
-                <div class="user-info">
-                    <div class="user-avatar">SM</div>
-                    <div class="user-text">
-                        <h4>Staff Member</h4><span>Front Desk</span>
-                    </div>
-                    <a href="../auth/login.php" class="user-logout" title="Logout"><i
-                            class="fas fa-sign-out-alt"></i></a>
-                </div>
-            </div>
-        </aside>
-
         <!-- Main Content -->
         <main class="main-content">
             <header class="main-header">
                 <div class="header-left">
-                    <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
                     <h1 class="page-title">Front Desk <span class="text-accent">Operations</span></h1>
                 </div>
                 <div class="header-date"><i class="fas fa-calendar-alt"></i> <span id="dateDisplay"></span></div>
@@ -1248,20 +1212,6 @@
             </div>
         </main>
     </div>
-    <!-- Pending Memberships Modal -->
-    <div class="pending-modal" id="pendingModal">
-        <div class="pending-modal-content">
-            <div class="pending-modal-header">
-                <h3><i class="fas fa-user-clock" style="color: var(--warning); margin-right: 8px;"></i> Pending
-                    Memberships</h3>
-                <button class="pending-modal-close" onclick="closePendingModal()"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="pending-modal-body" id="pendingList">
-                <!-- Populated by JS -->
-            </div>
-        </div>
-    </div>
-
     <!-- CHECK-IN PROMPT MODAL (Added for Confirmation) -->
     <div class="checkin-prompt-overlay" id="checkinPromptModal">
         <div class="checkin-prompt-container">
