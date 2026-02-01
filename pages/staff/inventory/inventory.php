@@ -4,289 +4,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Management | Magilas Gym</title>
+    <title>Inventory | Magilas Gym</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="../../../css/dashboard.css">
-    <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
+    <link rel="stylesheet" href="../members/sidebar_premium.css">
     <link rel="stylesheet" href="inventory.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
 </head>
 
 <body class="dashboard-body">
     <div class="dashboard-container">
+        <!-- Staff Portal Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <img src="../../../assets/images/logo.png" alt="Magilas Logo" class="sidebar-logo">
-                <div class="sidebar-brand">MAGILAS <span class="text-accent">GYM</span></div>
+                <img src="../../../assets/images/logo.png" alt="Magilas Gym Logo" class="sidebar-logo">
+                <div class="sidebar-brand">
+                    <span class="brand-main">STAFF'S</span>
+                    <span class="brand-sub">PORTAL</span>
+                </div>
             </div>
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-label">Overview</div>
-                    <a href="../dashboard/dashboard.php" class="nav-item"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
-                </div>
 
-                <div class="nav-section">
-                    <div class="nav-label">Management</div>
-                    <a href="../members/members.php" class="nav-item">
-                        <i class="fas fa-users"></i> <span>Members</span>
-                    </a>
-                    <a href="../inventory/inventory.php" class="nav-item active"><i class="fas fa-boxes-stacked"></i>
-                        <span>Inventory</span></a>
-                </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item" onclick="alert('Dashboard - Coming Soon'); return false;">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="../members/members.php" class="nav-item">
+                    <i class="fas fa-desktop"></i>
+                    <span>Front Desk Operations</span>
+                </a>
+
+                <a href="../members/pending.php" class="nav-item">
+                    <i class="fas fa-user-clock"></i>
+                    <span>Pending Applications</span>
+                </a>
+
+                <a href="inventory.php" class="nav-item active">
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory</span>
+                </a>
+
+                <a href="#" class="nav-item" onclick="alert('Maintenance - Coming Soon'); return false;">
+                    <i class="fas fa-wrench"></i>
+                    <span>Maintenance</span>
+                </a>
             </nav>
-            <div class="sidebar-user">
-                <div class="user-info">
-                    <div class="user-avatar">SM</div>
-                    <div class="user-text">
-                        <h4>Staff Member</h4>
-                        <span>Front Desk</span>
-                    </div>
-                    <a href="../auth/login.php" class="user-logout" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </a>
-                </div>
+
+            <div class="sidebar-footer">
+                <a href="../../auth/login.php" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
             </div>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <header class="page-header" style="display: flex; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <button class="menu-btn" id="menuBtn" style="display: none;"><i class="fas fa-bars"></i></button>
+            <header class="main-header">
+                <div class="header-left">
                     <h1 class="page-title">Inventory <span class="text-accent">Management</span></h1>
                 </div>
-                <button class="btn btn-primary" id="addNewBtn"><i class="fas fa-plus"></i> <span id="addBtnText">Add
-                        Equipment</span></button>
+                <div class="header-date"><i class="fas fa-calendar-alt"></i> <span id="dateDisplay"></span></div>
             </header>
 
-            <div class="full-page-content">
-                <div class="tab-navigation">
-                    <button class="tab-btn active" data-tab="equipment"><i class="fas fa-dumbbell"></i>
-                        Equipment</button>
-                    <button class="tab-btn" data-tab="stock"><i class="fas fa-box"></i> Stock</button>
-                    <button class="tab-btn" data-tab="expenses"><i class="fas fa-receipt"></i> Expenses</button>
+            <!-- Action Bar -->
+            <div class="inventory-actions">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="inventorySearch" placeholder="Search items..." oninput="filterInventory()">
                 </div>
 
-                <!-- EQUIPMENT TAB -->
-                <div class="tab-content active" id="equipment-tab">
-                    <div class="controls-row">
-                        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="equipSearch"
-                                placeholder="Search equipment..."></div>
-                        <select class="filter-select" id="equipCategoryFilter">
-                            <option value="all">All Categories</option>
-                            <option value="Cardio">Cardio</option>
-                            <option value="Strength">Strength</option>
-                            <option value="Free Weights">Free Weights</option>
-                            <option value="Machines">Machines</option>
-                        </select>
-                        <select class="filter-select" id="equipStatusFilter">
-                            <option value="all">All Status</option>
-                            <option value="operational">Operational</option>
-                            <option value="maintenance">Maintenance</option>
-                            <option value="missing">Missing</option>
-                        </select>
-                    </div>
-                    <div class="page-card">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Equipment</th>
-                                    <th>Category</th>
-                                    <th>Location</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="equipmentTableBody"></tbody>
-                        </table>
-                        <div class="pagination" id="equipPagination"></div>
-                    </div>
-                </div>
+                <div class="action-buttons">
+                    <button class="btn-action" onclick="openCategorySettings()" title="Manage Categories">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
 
-                <!-- STOCK TAB -->
-                <div class="tab-content" id="stock-tab">
-                    <div class="inventory-worth">
-                        <div>
-                            <h3>Total Inventory Worth</h3>
-                            <p style="font-size:12px;color:var(--text-dim);">Based on retail prices × quantity</p>
+                    <button class="btn-action btn-filter" onclick="toggleFilterDropdown()" title="Filter by Category">
+                        <i class="fas fa-filter"></i>
+                        <span>Filter</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </button>
+                    <div class="filter-dropdown" id="filterDropdown">
+                        <div class="filter-option active" onclick="selectFilter('all')">
+                            <i class="fas fa-th"></i> All Items
                         </div>
-                        <div class="value" id="totalInventoryWorth">₱0</div>
+                        <!-- Categories populated by JS -->
                     </div>
-                    <div class="controls-row">
-                        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="stockSearch"
-                                placeholder="Search products..."></div>
-                        <select class="filter-select" id="stockTypeFilter">
-                            <option value="all">All Types</option>
-                            <option value="Supplements">Supplements</option>
-                            <option value="Drinks">Drinks</option>
-                            <option value="Snacks">Snacks</option>
-                            <option value="Accessories">Accessories</option>
-                            <option value="Apparel">Apparel</option>
-                        </select>
-                    </div>
-                    <div class="page-card">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Product Name</th>
-                                    <th>Type</th>
-                                    <th>Retail Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total Value</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="stockTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
 
-                <!-- EXPENSES TAB -->
-                <div class="tab-content" id="expenses-tab">
-                    <div class="expense-type-tabs">
-                        <button class="expense-type-btn active" data-type="products">Product Purchases</button>
-                        <button class="expense-type-btn" data-type="bills">Bills & Utilities</button>
-                    </div>
-                    <div class="page-card">
-                        <table class="data-table" id="expenseProductTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Unit Price</th>
-                                    <th>Qty</th>
-                                    <th>Total</th>
-                                    <th>Last Updated</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="expenseProductBody"></tbody>
-                        </table>
-                        <table class="data-table" id="expenseBillTable" style="display:none;">
-                            <thead>
-                                <tr>
-                                    <th>Bill Name</th>
-                                    <th>Amount</th>
-                                    <th>Date & Time</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="expenseBillBody"></tbody>
-                        </table>
-                    </div>
+                    <button class="btn-primary" onclick="openAddModal()">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Item</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inventory Table -->
+            <div class="table-container">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Price (₱)</th>
+                            <th>Total Value (₱)</th>
+                            <th class="actions-col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-boxes"></i>
+                    <h3>No Items Found</h3>
+                    <p>Start by adding your first inventory item</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- MODALS -->
-    <div class="modal-backdrop" id="equipmentModal">
-        <div class="modal-box">
-            <div class="modal-head">
-                <h3 id="equipModalTitle">Add Equipment</h3><button class="modal-close"
-                    onclick="closeModal('equipmentModal')"><i class="fas fa-times"></i></button>
+    <!-- Add/Edit Item Modal -->
+    <div class="modal-overlay" id="itemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Item</h2>
+                <button class="modal-close" onclick="closeItemModal()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="modal-content">
-                <form id="equipmentForm">
-                    <input type="hidden" id="equipEditId">
-                    <div class="form-group"><label>Name</label><input type="text" id="equipName" class="form-input"
-                            required></div>
-                    <div class="form-split">
-                        <div class="form-group"><label>Category</label><select id="equipCategory" class="form-input"
-                                required>
-                                <option value="">Select</option>
-                                <option>Cardio</option>
-                                <option>Strength</option>
-                                <option>Free Weights</option>
-                                <option>Machines</option>
-                            </select></div>
-                        <div class="form-group"><label>Location</label><input type="text" id="equipLocation"
-                                class="form-input" placeholder="e.g., Main Floor"></div>
+            <div class="modal-body">
+                <form id="itemForm" onsubmit="saveItem(event)">
+                    <div class="form-group">
+                        <label for="itemName">Item Name <span class="required">*</span></label>
+                        <input type="text" id="itemName" required placeholder="Enter item name">
+                        <span class="error-msg" id="nameError"></span>
                     </div>
-                    <div class="form-group"><label>Status</label><select id="equipStatus" class="form-input">
-                            <option value="operational">Operational</option>
-                            <option value="maintenance">Needs Maintenance</option>
-                            <option value="missing">Missing</option>
-                        </select></div>
-                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Equipment</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal-backdrop" id="stockModal">
-        <div class="modal-box">
-            <div class="modal-head">
-                <h3 id="stockModalTitle">Add Product</h3><button class="modal-close"
-                    onclick="closeModal('stockModal')"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="modal-content">
-                <form id="stockForm">
-                    <input type="hidden" id="stockEditId">
-                    <div class="form-group"><label>Product Name</label><input type="text" id="stockName"
-                            class="form-input" required></div>
-                    <div class="form-split">
-                        <div class="form-group"><label>Type</label><select id="stockType" class="form-input" required>
-                                <option value="">Select</option>
-                                <option>Supplements</option>
-                                <option>Drinks</option>
-                                <option>Snacks</option>
-                                <option>Accessories</option>
-                                <option>Apparel</option>
-                            </select></div>
-                        <div class="form-group"><label>Retail Price (₱)</label><input type="number" id="stockPrice"
-                                class="form-input" min="0" step="0.01" required></div>
-                    </div>
-                    <div class="form-group"><label>Quantity</label><input type="number" id="stockQty" class="form-input"
-                            min="0" required></div>
-                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Product</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-backdrop" id="expenseModal">
-        <div class="modal-box">
-            <div class="modal-head">
-                <h3 id="expenseModalTitle">Add Expense</h3><button class="modal-close"
-                    onclick="closeModal('expenseModal')"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="modal-content">
-                <form id="expenseForm">
-                    <input type="hidden" id="expenseEditId">
-                    <input type="hidden" id="expenseType" value="product">
-                    <div id="productExpenseFields">
-                        <div class="form-group"><label>Name</label><input type="text" id="expenseName"
-                                class="form-input"></div>
-                        <div class="form-split">
-                            <div class="form-group"><label>Category</label><select id="expenseCategory"
-                                    class="form-input">
-                                    <option>Restock</option>
-                                    <option>Supplies</option>
-                                    <option>Repairs</option>
-                                    <option>Other</option>
-                                </select></div>
-                            <div class="form-group"><label>Unit Price (₱)</label><input type="number" id="expensePrice"
-                                    class="form-input" min="0" step="0.01"></div>
+                    <div class="form-group">
+                        <label for="itemCategory">Category <span class="required">*</span></label>
+                        <div class="custom-select">
+                            <select id="itemCategory" required>
+                                <option value="">Select category</option>
+                                <!-- Populated by JS -->
+                            </select>
+                            <i class="fas fa-chevron-down select-icon"></i>
                         </div>
-                        <div class="form-group"><label>Quantity</label><input type="number" id="expenseQty"
-                                class="form-input" min="1" value="1"></div>
                     </div>
-                    <div id="billExpenseFields" style="display:none;">
-                        <div class="form-group"><label>Bill Name</label><input type="text" id="billName"
-                                class="form-input"></div>
-                        <div class="form-group"><label>Amount (₱)</label><input type="number" id="billAmount"
-                                class="form-input" min="0" step="0.01"></div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemQuantity">Quantity <span class="required">*</span></label>
+                            <input type="number" id="itemQuantity" required min="0" step="1" placeholder="0"
+                                oninput="calculateTotal()">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemPrice">Price (₱) <span class="required">*</span></label>
+                            <input type="number" id="itemPrice" required min="0" step="0.01" placeholder="0.00"
+                                oninput="calculateTotal()">
+                        </div>
                     </div>
-                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Expense</button>
+
+                    <div class="form-group total-display">
+                        <label>Total Value</label>
+                        <div class="total-value">₱ <span id="totalValue">0.00</span></div>
+                    </div>
+
+                    <input type="hidden" id="editItemId">
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeItemModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Item</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <script src="../../../js/inventory.js"></script>
+    <!-- Category Settings Modal -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-content modal-medium">
+            <div class="modal-header">
+                <h2>Category Settings</h2>
+                <button class="modal-close" onclick="closeCategoryModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="category-add">
+                    <input type="text" id="newCategory" placeholder="New category name">
+                    <button class="btn-primary" onclick="addCategory()">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+
+                <div class="category-list" id="categoryList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirm Delete</h2>
+                <button class="modal-close" onclick="closeDeleteModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Are you sure you want to delete <strong id="deleteItemName"></strong>?</p>
+                    <p class="warning-text">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                    <button class="btn-danger" onclick="confirmDelete()">Delete Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="inventory.js"></script>
 </body>
 

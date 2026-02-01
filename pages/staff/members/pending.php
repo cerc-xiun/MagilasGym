@@ -54,8 +54,8 @@
                     <span>Pending List</span>
                 </a>
 
-                <a href="#" class="nav-item" onclick="alert('Inventory - Coming Soon'); return false;">
-                    <i class="fas fa-boxes-stacked"></i>
+                <a href="../inventory/inventory.php" class="nav-item">
+                    <i class="fas fa-boxes"></i>
                     <span>Inventory</span>
                 </a>
 
