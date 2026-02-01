@@ -286,15 +286,14 @@ function proceedRenewalPayment() {
     }, 1000);
 }
 
+// Unified Receipt Display
 function displayReceipt() {
     // Populate member info
-    document.getElementById('receiptMemberName').textContent = renewalState.member.name;
-    document.getElementById('receiptMemberId').textContent = `ID: ${renewalState.member.id}`;
+    const memberName = renewalState.member.name;
+    const memberId = renewalState.member.id;
 
-    // Build transaction items
-    const itemsContainer = document.getElementById('receiptItems');
-    itemsContainer.innerHTML = '';
-
+    // Build Transaction Label & Total
+    let transactionLabel = '';
     let total = 0;
 
     // Add membership item
@@ -304,13 +303,7 @@ function displayReceipt() {
         const price = plan.price * renewalState.renewalDuration;
         total += price;
 
-        const itemRow = document.createElement('div');
-        itemRow.className = 'receipt-row';
-        itemRow.innerHTML = `
-            <span class="label">${plan.name} (${renewalState.renewalDuration} month${renewalState.renewalDuration > 1 ? 's' : ''})</span>
-            <span class="value">₱${price.toLocaleString()}</span>
-        `;
-        itemsContainer.appendChild(itemRow);
+        transactionLabel = `${plan.name} (${renewalState.renewalDuration} month${renewalState.renewalDuration > 1 ? 's' : ''})`;
     }
 
     // Add instructor item
@@ -318,38 +311,45 @@ function displayReceipt() {
         const price = INSTRUCTOR_PRICE * renewalState.instructorDuration;
         total += price;
 
-        const itemRow = document.createElement('div');
-        itemRow.className = 'receipt-row';
-        itemRow.innerHTML = `
-            <span class="label">Instructor Sessions (${renewalState.instructorDuration} month${renewalState.instructorDuration > 1 ? 's' : ''})</span>
-            <span class="value">₱${price.toLocaleString()}</span>
-        `;
-        itemsContainer.appendChild(itemRow);
+        if (transactionLabel) transactionLabel += ' + ';
+        transactionLabel += `Instructor (${renewalState.instructorDuration}mo)`;
     }
 
-    // Payment method
-    const paymentMethods = {
-        'cash': 'Cash',
-        'gcash': 'GCash',
-        'card': 'Credit/Debit Card',
-        'bank': 'Bank Transfer'
+    // Define reset callback
+    const onDoneCallback = () => {
+        // Prepare data for check-in prompt
+        const renewalMemberData = {
+            name: renewalState.member.name,
+            type: 'membership', // Renewals are always memberships
+            planName: renewalState.member.plan,
+            isDayPass: false
+        };
+
+        // Show prompt with callback for actual reset
+        showCheckinPrompt(renewalMemberData, () => {
+            // ACTUAL RESET LOGIC (Called after check-in/skip)
+
+            // Reset to cards
+            document.getElementById('regRenewalFlow').style.display = 'none';
+            document.querySelector('.flip-cards-container').style.display = 'flex';
+
+            // Reset search
+            document.getElementById('renewalSearchInput').value = '';
+            document.getElementById('memberCardResult').style.display = 'none';
+            document.getElementById('renewalStep1').style.display = 'block';
+            document.getElementById('renewalStep2').style.display = 'none';
+        });
     };
-    document.getElementById('receiptPaymentMethod').textContent = paymentMethods[renewalState.paymentMethod] || 'Cash';
 
-    // Date & time
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    document.getElementById('receiptDateTime').textContent = `${dateStr} ${timeStr}`;
-
-    // Total
-    document.getElementById('receiptTotal').textContent = '₱' + total.toLocaleString();
-
-    // Show modal
-    document.getElementById('renewalReceiptModal').classList.add('active');
-
-    // Hide renewal flow
-    document.getElementById('renewalStep2').style.display = 'none';
+    // Use NEW unified receipt generator
+    generateUnifiedReceipt({
+        memberName: memberName,
+        memberId: memberId,
+        transactionName: transactionLabel,
+        amount: total,
+        paymentMethod: renewalState.paymentMethod,
+        onDone: onDoneCallback
+    });
 }
 
 function printReceipt() {
@@ -358,7 +358,7 @@ function printReceipt() {
 
 function closeReceiptAndReset() {
     // Hide receipt
-    document.getElementById('renewalReceiptModal').classList.remove('active');
+
 
     // Prepare data for check-in prompt
     const renewalMemberData = {

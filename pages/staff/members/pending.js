@@ -2,64 +2,64 @@
 // PENDING APPLICATIONS - LOGIC
 // =========================================
 
-// Mock Data
-let applications = [
+// Mock Data (Initial Fallback)
+const defaultApplications = [
     {
         id: 1,
         fullName: "John Michael Doe",
-        contact: "0912-345-6789",
-        email: "john.doe@email.com",
-        planType: "membership",
-        planCategory: "student",
-        planName: "Monthly (Student)",
+        email: "john.doe@example.com",
+        plan: "student",
+        planName: "Student Monthly",
         amount: 600,
-        months: 1,
-        instructor: false,
-        instructorSessions: 0,
-        instructorMonths: 0,
-        appliedDate: "2026-01-30T15:45:00",
+        paymentMethod: "gcash",
+        refNumber: "9876543210",
+        date: "2026-01-28",
         status: "pending",
-        processedDate: null,
-        rejectionReason: null,
-        paymentMethod: null
+        instructor: true,
+        instructorMonths: 1,
+        months: 1,
+        requirements: {
+            id: true,
+            payment: true
+        }
     },
     {
         id: 2,
-        fullName: "Sarah Jane Smith",
-        contact: "0917-888-9999",
-        email: "sarah.smith@email.com",
-        planType: "day-pass",
-        planCategory: null,
-        planName: "Day Pass",
-        amount: 60,
-        months: 0,
-        instructor: false,
-        instructorSessions: 0,
-        instructorMonths: 0,
-        appliedDate: "2026-01-30T14:20:00",
+        fullName: "Jane Smith",
+        email: "jane.smith@example.com",
+        plan: "regular",
+        planName: "Regular Monthly",
+        amount: 800,
+        paymentMethod: "cash",
+        refNumber: "N/A",
+        date: "2026-01-29",
         status: "pending",
-        processedDate: null,
-        rejectionReason: null,
-        paymentMethod: null
+        instructor: false,
+        instructorMonths: 0,
+        months: 1,
+        requirements: {
+            id: false,
+            payment: true
+        }
     },
     {
         id: 3,
-        fullName: "Robert Chen",
-        contact: "0923-456-7890",
-        email: "robert.chen@email.com",
-        planType: "membership",
-        planCategory: "regular",
-        planName: "Monthly (Regular)",
-        amount: 2400,
-        months: 3,
-        instructor: true,
-        instructorSessions: 4,
-        instructorMonths: 3,
-        appliedDate: "2026-01-30T13:10:00",
+        fullName: "Robert Johnson",
+        email: "robert.j@example.com",
+        plan: "senior",
+        planName: "Senior Monthly",
+        amount: 650,
+        paymentMethod: "bank",
+        refNumber: "TRX-456789",
+        date: "2026-01-30",
         status: "pending",
-        processedDate: null,
-        rejectionReason: null,
-        paymentMethod: null
+        instructor: false,
+        instructorMonths: 0,
+        months: 1,
+        requirements: {
+            id: true,
+            payment: true
+        }
     },
     {
         id: 4,
@@ -101,6 +101,14 @@ let applications = [
     }
 ];
 
+// Load from LocalStorage or use Default
+let applications = JSON.parse(localStorage.getItem('pendingApplications')) || defaultApplications;
+
+// Save helper
+function saveApplications() {
+    localStorage.setItem('pendingApplications', JSON.stringify(applications));
+}
+
 // State
 let currentTab = 'pending';
 let currentApplication = null;
@@ -136,6 +144,23 @@ function updateTabCounts() {
     document.getElementById('pendingCount').textContent = pending;
     document.getElementById('acceptedCount').textContent = accepted;
     document.getElementById('rejectedCount').textContent = rejected;
+
+    // Dev Tool: Reset Data
+    const controls = document.querySelector('.pending-controls');
+    if (!document.getElementById('resetBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'resetBtn';
+        btn.innerHTML = '<i class="fas fa-undo"></i> Reset Data';
+        btn.style.cssText = 'background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 16px; border-radius: 8px; cursor: pointer; margin-left: auto;';
+        btn.onclick = () => {
+            if (confirm('Reset all application data?')) {
+                localStorage.removeItem('pendingApplications');
+                localStorage.removeItem('activeVisits');
+                location.reload();
+            }
+        };
+        controls.appendChild(btn);
+    }
 }
 
 // Render Applications
@@ -357,130 +382,62 @@ function confirmPayment() {
 }
 
 // Show Receipt
+// Show Receipt
+// Show Receipt
 function showReceipt() {
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-
-    // Generate pseudo member ID
+    // Generate member ID
     const memberId = 'MG-' + String(Math.floor(Math.random() * 9000) + 1000);
 
-    // Build transaction items (matching registration desk format)
-    let transactionItemsHTML = '';
+    // Build Transaction Label
+    let transactionLabel = '';
 
     // Membership item with duration label
     const isDayPass = currentApplication.months === 0;
     const durationLabel = isDayPass ? '(Single Access)' :
         `(${currentApplication.months} month${currentApplication.months > 1 ? 's' : ''})`;
 
-    transactionItemsHTML += `
-        <div class="receipt-row">
-            <span class="label">${currentApplication.planName} ${durationLabel}</span>
-            <span class="value">₱${currentApplication.amount.toLocaleString()}</span>
-        </div>
-    `;
+    transactionLabel = `${currentApplication.planName} ${durationLabel}`;
 
     // Instructor sessions if applicable
     if (currentApplication.instructor && currentApplication.instructorMonths > 0) {
-        transactionItemsHTML += `
-            <div class="receipt-row">
-                <span class="label">Instructor Sessions (${currentApplication.instructorMonths} month${currentApplication.instructorMonths > 1 ? 's' : ''})</span>
-                <span class="value">Included</span>
-            </div>
-        `;
+        transactionLabel += ` + Instructor (${currentApplication.instructorMonths}mo)`;
     }
-
-    // Payment method labels
-    const paymentMethods = {
-        'cash': 'Cash',
-        'gcash': 'GCash',
-        'bank': 'Bank Transfer'
-    };
-
-    const receiptContent = document.getElementById('receiptContent');
-    receiptContent.innerHTML = `
-        <div class="receipt-header">
-            <i class="fas fa-check-circle"></i>
-            <h2>Registration Successful</h2>
-            <p>Welcome to Magilas Gym</p>
-        </div>
-
-        <div class="receipt-body">
-            <!-- Member Info -->
-            <div class="receipt-section">
-                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
-                    <div class="receipt-label" style="margin-bottom: 0;">Member Information</div>
-                    <div class="receipt-value" style="margin-bottom: 0; font-size: 16px;">${currentApplication.fullName}</div>
-                </div>
-                <div style="font-size: 13px; color: #6b7280;">${memberId}</div>
-            </div>
-
-            <!-- Transaction Details -->
-            <div class="receipt-section">
-                <div class="receipt-label">Transaction Details</div>
-                <div>
-                    ${transactionItemsHTML}
-                </div>
-            </div>
-
-            <!-- QR Code -->
-            <div class="receipt-section" style="text-align: center;">
-                <div class="receipt-label" style="text-align: center;">Member QR Code</div>
-                <div id="receiptQRCode" style="margin: 16px auto; display: inline-block;">
-                    <div style="width: 150px; height: 150px; background: rgba(255, 255, 255, 0.05); border: 2px dashed rgba(184, 150, 12, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-qrcode" style="font-size: 48px; color: rgba(184, 150, 12, 0.4);"></i>
-                    </div>
-                </div>
-                <p style="font-size: 12px; color: #9ca3af; margin-top: 8px;">Scan this code for gym access</p>
-            </div>
-
-            <!-- Payment Info -->
-            <div class="receipt-section">
-                <div class="receipt-row">
-                    <span class="label">Payment Method</span>
-                    <span class="value">${paymentMethods[currentApplication.paymentMethod] || 'Cash'}</span>
-                </div>
-                <div class="receipt-row">
-                    <span class="label">Date & Time</span>
-                    <span class="value">${dateStr} ${timeStr}</span>
-                </div>
-            </div>
-
-            <!-- Total -->
-            <div class="receipt-total">
-                <div class="receipt-row">
-                    <span class="label">Total Paid</span>
-                    <span class="value">₱${currentApplication.amount.toLocaleString()}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="receipt-footer">
-            <button class="btn-print" onclick="window.print()">
-                <i class="fas fa-print"></i> Print
-            </button>
-            <button class="btn-done-receipt" onclick="showCheckinPrompt()">
-                Done
-            </button>
-        </div>
-    `;
 
     // Store member ID for check-in later
     currentApplication.memberId = memberId;
 
-    document.getElementById('receiptModal').classList.add('active');
+    // Use NEW unified receipt generator
+    generateUnifiedReceipt({
+        memberName: currentApplication.fullName,
+        memberId: memberId,
+        transactionName: transactionLabel,
+        amount: currentApplication.amount,
+        paymentMethod: currentApplication.paymentMethod,
+        onDone: showCheckinPrompt
+    });
 }
 
 // Close Receipt Modal
 function closeReceiptModal() {
-    document.getElementById('receipt Modal').classList.remove('active');
+    // Unified receipt handles its own closing
+    // document.getElementById('receipt Modal').classList.remove('active');
 }
 
 // Show Check-in Prompt
 function showCheckinPrompt() {
-    document.getElementById('checkinMemberName').textContent = currentApplication.fullName;
-    document.getElementById('receiptModal').classList.remove('active');
-    document.getElementById('checkinModal').classList.add('active');
+    // Populate name
+    const memberNameEl = document.getElementById('checkinMemberName');
+    if (memberNameEl && currentApplication) {
+        memberNameEl.textContent = currentApplication.fullName;
+    }
+
+    // Show Check-in Modal
+    const checkinModal = document.getElementById('checkinModal');
+    if (checkinModal) {
+        checkinModal.classList.add('active');
+    } else {
+        console.error('Check-in modal not found!');
+    }
 }
 
 // Skip Check-in
@@ -494,6 +451,9 @@ function proceedCheckin() {
     const memberData = {
         name: currentApplication.fullName,
         memberId: currentApplication.memberId || 'MG-' + Math.floor(Math.random() * 9000 + 1000),
+        // Add Plan and Type for robust display
+        planName: currentApplication.planName || 'Standard',
+        type: (currentApplication.planName && currentApplication.planName.toLowerCase().includes('day')) ? 'day-pass' : 'membership',
         checkInTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
         timestamp: Date.now()
     };
@@ -515,17 +475,16 @@ function completeAcceptance(checkedIn) {
     currentApplication.status = 'accepted';
     currentApplication.processedDate = new Date().toISOString();
 
+    // Save changes to localStorage
+    saveApplications();
+
     document.getElementById('checkinModal').classList.remove('active');
     currentApplication = null;
 
     updateTabCounts();
     renderApplications();
 
-    if (checkedIn) {
-        alert('Application accepted and member checked in!\\n\\nThey have been added to the Active Visits list on the Front Desk Operations page.');
-    } else {
-        alert('Application accepted successfully!');
-    }
+
 }
 
 // Show Rejection Modal
@@ -555,6 +514,9 @@ function confirmRejection() {
     currentApplication.status = 'rejected';
     currentApplication.processedDate = new Date().toISOString();
     currentApplication.rejectionReason = reasonText;
+
+    // Save changes to localStorage
+    saveApplications();
 
     document.getElementById('rejectionModal').classList.remove('active');
     currentApplication = null;

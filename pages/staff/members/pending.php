@@ -20,7 +20,10 @@
     <link rel="icon" type="image/png" href="../../../assets/images/logo.png">
     <link rel="stylesheet" href="sidebar_premium.css">
     <link rel="stylesheet" href="pending.css">
-    <link rel="stylesheet" href="receipt_styles.css">
+    <link rel="stylesheet" href="unified_receipt.css">
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
 <body class="dashboard-body">
@@ -104,9 +107,9 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="pendingSearch" placeholder="Search by name, email, plan..."
                         oninput="filterApplications()">
-                </div>
-                <div class="filter-info">
-                    <span id="resultCount">0</span> applications
+                    <div class="filter-info">
+                        <span id="resultCount">0</span> applications
+                    </div>
                 </div>
             </div>
 
@@ -216,12 +219,7 @@
         </div>
     </div>
 
-    <!-- Receipt Modal (Reused from registration) -->
-    <div class="modal-overlay" id="receiptModal">
-        <div class="receipt-container" id="receiptContent">
-            <!-- Populated by JS -->
-        </div>
-    </div>
+
 
     <!-- Check-In Prompt Modal -->
     <div class="modal-overlay" id="checkinModal">
@@ -240,6 +238,8 @@
         </div>
     </div>
 
+
+    <script src="unified_receipt.js"></script>
     <script src="pending.js"></script>
     <script>
         // Initialize date display

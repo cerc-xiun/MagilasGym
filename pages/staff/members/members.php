@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="step_design.css">
     <link rel="stylesheet" href="renewal_enhanced.css">
     <link rel="stylesheet" href="sidebar_premium.css">
+    <link rel="stylesheet" href="unified_receipt.css">
 </head>
 
 <body class="dashboard-body">
@@ -555,63 +556,7 @@
                             </div>
 
 
-                            <!-- Receipt Modal -->
-                            <div class="receipt-modal-overlay" id="renewalReceiptModal">
-                                <div class="receipt-container">
-                                    <div class="receipt-header">
-                                        <i class="fas fa-check-circle"></i>
-                                        <h2>Payment Successful</h2>
-                                        <p>Transaction completed</p>
-                                    </div>
 
-                                    <div class="receipt-body">
-                                        <!-- Member Info -->
-                                        <div class="receipt-section">
-                                            <div class="receipt-label">Member Information</div>
-                                            <div class="receipt-value" id="receiptMemberName">John Doe</div>
-                                            <div style="font-size: 13px; color: #999; margin-top: 4px;"
-                                                id="receiptMemberId">MG-001</div>
-                                        </div>
-
-                                        <!-- Transaction Details -->
-                                        <div class="receipt-section">
-                                            <div class="receipt-label">Transaction Details</div>
-                                            <div id="receiptItems">
-                                                <!-- Populated by JS -->
-                                            </div>
-                                        </div>
-
-                                        <!-- Payment Info -->
-                                        <div class="receipt-section">
-                                            <div class="receipt-row">
-                                                <span class="label">Payment Method</span>
-                                                <span class="value" id="receiptPaymentMethod">Cash</span>
-                                            </div>
-                                            <div class="receipt-row">
-                                                <span class="label">Date & Time</span>
-                                                <span class="value" id="receiptDateTime">Jan 26, 2026 5:30 PM</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Total -->
-                                        <div class="receipt-total">
-                                            <div class="receipt-row">
-                                                <span class="label">Total Paid</span>
-                                                <span class="value" id="receiptTotal">₱800</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="receipt-footer">
-                                        <button class="btn-print" onclick="printReceipt()">
-                                            <i class="fas fa-print"></i> Print
-                                        </button>
-                                        <button class="btn-done-receipt" onclick="closeReceiptAndReset()">
-                                            Done
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- STATE: Step-Based Registration Flow -->
                             <div class="reg-state" id="regStepFlow">
@@ -1038,72 +983,7 @@
                             </div>
                         </div><!-- End new-member-container -->
 
-                        <!-- Registration Receipt Modal -->
-                        <div class="receipt-modal-overlay" id="registrationReceiptModal">
-                            <div class="receipt-container">
-                                <div class="receipt-header">
-                                    <i class="fas fa-check-circle"></i>
-                                    <h2>Registration Successful</h2>
-                                    <p>Welcome to Magilas Gym</p>
-                                </div>
 
-                                <div class="receipt-body">
-                                    <!-- Member Info -->
-                                    <div class="receipt-section">
-                                        <div class="receipt-label">Member Information</div>
-                                        <div class="receipt-value" id="regReceiptMemberName">John Doe</div>
-                                        <div style="font-size: 13px; color: #999; margin-top: 4px;"
-                                            id="regReceiptMemberId">NEW REGISTRATION</div>
-                                    </div>
-
-                                    <!-- Transaction Details -->
-                                    <div class="receipt-section">
-                                        <div class="receipt-label">Transaction Details</div>
-                                        <div id="regReceiptItems">
-                                            <!-- Populated by JS -->
-                                        </div>
-                                    </div>
-
-                                    <!-- QR Code -->
-                                    <div class="receipt-section" style="text-align: center;">
-                                        <div class="receipt-label">Member QR Code</div>
-                                        <div id="regReceiptQRCode" style="margin: 16px auto; display: inline-block;">
-                                        </div>
-                                        <p style="font-size: 12px; color: #999; margin-top: 8px;">Scan this code for gym
-                                            access</p>
-                                    </div>
-
-                                    <!-- Payment Info -->
-                                    <div class="receipt-section">
-                                        <div class="receipt-row">
-                                            <span class="label">Payment Method</span>
-                                            <span class="value" id="regReceiptPaymentMethod">Cash</span>
-                                        </div>
-                                        <div class="receipt-row">
-                                            <span class="label">Date & Time</span>
-                                            <span class="value" id="regReceiptDateTime">Jan 26, 2026 5:30 PM</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Total -->
-                                    <div class="receipt-total">
-                                        <div class="receipt-row">
-                                            <span class="label">Total Paid</span>
-                                            <span class="value" id="regReceiptTotal">₱800</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="receipt-footer">
-                                    <button class="btn-print" onclick="printRegistrationReceipt()">
-                                        <i class="fas fa-print"></i> Print
-                                    </button>
-                                    <button class="btn-done-receipt" onclick="closeRegistrationReceiptAndReset()">
-                                        Done
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Check-In Prompt Modal -->
                         <div class="checkin-prompt-overlay" id="checkinPromptModal">
@@ -1306,6 +1186,8 @@
     </div>
 
 
+    <script src="unified_receipt.js"></script>
+    <script src="directory_functions.js"></script>
     <script src="registration_forms.js"></script>
     <script src="renewal_enhanced.js"></script>
     <script src="members.js"></script>

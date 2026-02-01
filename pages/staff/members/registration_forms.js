@@ -692,27 +692,21 @@ function displayRegistrationReceipt() {
     const isDayPass = (selectedPlanType === 'day-pass');
 
     // Get Name & ID based on context
-    let memberName, memberIdLabel;
+    let memberName, memberId;
 
     if (isDayPass) {
         // Day Pass Logic
         memberName = document.getElementById('dayPassCustomerName')?.value || 'Guest';
-        memberIdLabel = 'Day Pass Holder';
+        memberId = 'Day Pass Holder';
     } else {
         // Membership Logic
         memberName = document.getElementById('memberNameModern')?.value || 'New Member';
         // Generate pseudo ID
-        memberIdLabel = 'MG-' + String(Math.floor(Math.random() * 9000) + 1000);
+        memberId = 'MG-' + String(Math.floor(Math.random() * 9000) + 1000);
     }
 
-    // Populate member info
-    document.getElementById('regReceiptMemberName').textContent = memberName;
-    document.getElementById('regReceiptMemberId').textContent = memberIdLabel;
-
-    // Build transaction items
-    const itemsContainer = document.getElementById('regReceiptItems');
-    itemsContainer.innerHTML = '';
-
+    // Build Transaction Name
+    let transactionLabel = '';
     let total = 0;
 
     // Add plan item
@@ -732,13 +726,7 @@ function displayRegistrationReceipt() {
             durationLabel = `(${membershipDuration} month${membershipDuration > 1 ? 's' : ''})`;
         }
 
-        const itemRow = document.createElement('div');
-        itemRow.className = 'receipt-row';
-        itemRow.innerHTML = `
-            <span class="label">${selectedPlanName} ${durationLabel}</span>
-            <span class="value">₱${price.toLocaleString()}</span>
-        `;
-        itemsContainer.appendChild(itemRow);
+        transactionLabel = `${selectedPlanName} ${durationLabel}`;
     }
 
     // Add instructor item if selected
@@ -747,65 +735,21 @@ function displayRegistrationReceipt() {
         const price = 1250 * instructorSessions;
         total += price;
 
-        const itemRow = document.createElement('div');
-        itemRow.className = 'receipt-row';
-        itemRow.innerHTML = `
-            <span class="label">Instructor Sessions (${instructorSessions} month${instructorSessions > 1 ? 's' : ''})</span>
-            <span class="value">₱${price.toLocaleString()}</span>
-        `;
-        itemsContainer.appendChild(itemRow);
+        transactionLabel += ` + Instructor (${instructorSessions}mo)`;
     }
-
-    // Payment method
-    const paymentMethods = {
-        'cash': 'Cash',
-        'gcash': 'GCash',
-        'card': 'Credit/Debit Card',
-        'bank': 'Bank Transfer'
-    };
-    document.getElementById('regReceiptPaymentMethod').textContent = paymentMethods[selectedPaymentMethod] || 'Cash';
-
-    // Date & time
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    document.getElementById('regReceiptDateTime').textContent = `${dateStr} ${timeStr}`;
-
-    // Total
-    document.getElementById('regReceiptTotal').textContent = '₱' + total.toLocaleString();
-
-    // QR Code Section - Only for Memberships (not Day Pass)
-    const qrSection = document.querySelector('#registrationReceiptModal .receipt-section[style*="text-align: center"]');
-    const qrContainer = document.getElementById('regReceiptQRCode');
-
-    if (selectedPlanType === 'day-pass') {
-        // Hide QR code for day pass
-        if (qrSection) qrSection.style.display = 'none';
-    } else {
-        // Show pseudo QR code for memberships
-        if (qrSection) qrSection.style.display = 'block';
-        if (qrContainer) {
-            // Create pseudo QR code (visual placeholder)
-            qrContainer.innerHTML = `
-                <div style="width: 150px; height: 150px; background: #000; padding: 10px; border: 3px solid #b8960c; border-radius: 8px; position: relative;">
-                    <div style="background: white; width: 100%; height: 100%; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr); gap: 1px;">
-                        ${Array(100).fill(0).map(() =>
-                `<div style="background: ${Math.random() > 0.5 ? '#000' : '#fff'};"></div>`
-            ).join('')}
-                    </div>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 4px; border: 2px solid #b8960c; border-radius: 4px;">
-                        <div style="font-size: 10px; font-weight: bold; color: #b8960c;">${memberIdLabel}</div>
-                    </div>
-                </div>
-            `;
-        }
-    }
-
-    // Show modal
-    document.getElementById('registrationReceiptModal').classList.add('active');
 
     // Hide step flow
     document.getElementById('regStepFlow').style.display = 'none';
+
+    // Use NEW unified receipt generator (unified_receipt.js)
+    generateUnifiedReceipt({
+        memberName: memberName,
+        memberId: memberId,
+        transactionName: transactionLabel,
+        amount: total,
+        paymentMethod: selectedPaymentMethod,
+        onDone: showCheckinPrompt
+    });
 }
 
 function printRegistrationReceipt() {
@@ -813,10 +757,8 @@ function printRegistrationReceipt() {
 }
 
 function closeRegistrationReceiptAndReset() {
-    // Hide receipt
-    document.getElementById('registrationReceiptModal').classList.remove('active');
-
-    // Show check-in prompt instead of immediate reset
+    // Legacy function - kept for compatibility if needed
+    // Unified receipt handles its own closing
     showCheckinPrompt();
 }
 

@@ -636,7 +636,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: right center;
+    transform-origin: center center;
 }
 
 /* Smooth transition for content appearance */
