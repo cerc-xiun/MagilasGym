@@ -6,7 +6,9 @@
 /* Main Content Wrapper - Add padding to prevent edge touching */
 .main-content {
     padding: 32px 40px;
-    overflow-y: auto;
+    overflow-y: auto !important;
+    max-height: 100vh;
+    height: 100%;
 }
 
 /* Header Spacing */
@@ -194,6 +196,8 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     padding: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 400px);
 }
 
 .inventory-table {
@@ -203,7 +207,9 @@
 }
 
 .inventory-table thead {
-    background: rgba(255, 255, 255, 0.05);
+    background: #1a1a1a;
+    /* Solid dark background */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .inventory-table th {

@@ -57,7 +57,7 @@
                     <span>Inventory</span>
                 </a>
 
-                <a href="#" class="nav-item" onclick="alert('Maintenance - Coming Soon'); return false;">
+                <a href="../equipment/equipment.php" class="nav-item">
                     <i class="fas fa-wrench"></i>
                     <span>Maintenance</span>
                 </a>
