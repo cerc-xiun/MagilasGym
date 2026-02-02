@@ -29,37 +29,46 @@
         <!-- Staff Portal Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <img src="../../../assets/images/logo.png" alt="Magilas Logo" class="sidebar-logo">
-                <div class="sidebar-brand">MAGILAS <span class="text-accent">GYM</span></div>
+                <img src="../../../assets/images/logo.png" alt="Magilas Gym Logo" class="sidebar-logo">
+                <div class="sidebar-brand">
+                    <span class="brand-main">STAFF'S</span>
+                    <span class="brand-sub">PORTAL</span>
+                </div>
             </div>
 
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item" onclick="alert('Dashboard - Coming Soon'); return false;">
-                    <i class="fas fa-th-large"></i>
+                    <i class="fas fa-chart-line"></i>
                     <span>Dashboard</span>
                 </a>
+
                 <a href="../members/members.php" class="nav-item">
-                    <i class="fas fa-users"></i>
-                    <span>Members</span>
+                    <i class="fas fa-desktop"></i>
+                    <span>Front Desk Operations</span>
                 </a>
+
                 <a href="../members/pending.php" class="nav-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Pending Apps</span>
+                    <i class="fas fa-user-clock"></i>
+                    <span>Pending Applications</span>
                 </a>
+
                 <a href="../inventory/inventory.php" class="nav-item">
                     <i class="fas fa-boxes"></i>
                     <span>Inventory</span>
                 </a>
+
                 <a href="equipment.php" class="nav-item active">
-                    <i class="fas fa-dumbbell"></i>
+                    <i class="fas fa-wrench"></i>
                     <span>Maintenance</span>
                 </a>
             </nav>
 
-            <a href="../../auth/login.php" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a>
+            <div class="sidebar-footer">
+                <a href="../../auth/login.php" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
         </aside>
 
         <!-- Main Content -->
