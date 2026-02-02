@@ -488,6 +488,21 @@ function renderEquipment() {
                                 </div>
                             </div>
                         ` : ''}
+                        ${item.maintenanceHistory && item.maintenanceHistory.length > 0 ? `
+                            <div class="latest-maintenance">
+                                <div class="detail-item">
+                                    <span class="detail-label">Latest Maintenance Record</span>
+                                    <div class="latest-maintenance-card">
+                                        <div class="maintenance-card-header">
+                                            <span class="maintenance-card-date">${formatDateDisplay(item.maintenanceHistory[0].date)}</span>
+                                            <span class="maintenance-type-badge type-${item.maintenanceHistory[0].type}">${item.maintenanceHistory[0].type.toUpperCase()}</span>
+                                        </div>
+                                        <div class="maintenance-card-description">${item.maintenanceHistory[0].description}</div>
+                                        <div class="maintenance-card-performer">By: ${item.maintenanceHistory[0].performedBy}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ''}
                     </div>
                 </td>
             </tr>
