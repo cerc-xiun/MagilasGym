@@ -13,8 +13,12 @@ let selectedPaymentMethod = 'gcash';
 
 function showRegistrationForm() {
     hideAllRegStates();
-    document.getElementById('regStepFlow').classList.add('active');
-    goToStep(1);
+    const flow = document.getElementById('regStepFlow');
+    if (flow) {
+        flow.classList.add('active');
+        flow.style.display = 'block';
+        goToStep(1);
+    }
 }
 
 function navigateBackToCards() {
@@ -83,6 +87,8 @@ function resetRegistrationFlow() {
 
 // ===== STEP NAVIGATION =====
 
+// ===== STEP NAVIGATION =====
+
 function goToStep(stepNumber) {
     // Validate current step before proceeding
     if (stepNumber > currentStep && !validateCurrentStep()) {
@@ -130,6 +136,11 @@ function validateCurrentStep() {
         return validateStep2();
     }
 
+    if (currentStep === 3) {
+        // Step 3 is final, validation happens on Complete
+        return validateStep3();
+    }
+
     return true;
 }
 
@@ -139,28 +150,42 @@ function selectPlanModern(planType, price) {
     selectedPlanType = planType;
     selectedPlanPrice = price;
 
-    // Update active state
-    document.querySelectorAll('.plan-card-modern').forEach(card => {
-        card.classList.remove('active');
-    });
+    // Remove active class from all cards
+    const cards = document.querySelectorAll('.plan-card-modern');
+    cards.forEach(card => card.classList.remove('active'));
 
-    const selectedCard = document.querySelector(`[data-plan="${planType}"]`);
-    if (selectedCard) {
-        selectedCard.classList.add('active');
-        selectedPlanName = selectedCard.querySelector('h4').textContent;
+    // Find and activate the clicked card
+    // Use robust selector to handle potential structure changes
+    const targetCard = document.querySelector(`.plan-card-modern[data-plan="${planType}"]`);
+    if (targetCard) {
+        targetCard.classList.add('active');
+        const h4 = targetCard.querySelector('h4');
+        if (h4) selectedPlanName = h4.textContent;
     }
 
-    // Show/Hide duration and instructor sections
+    // Toggle logic for Day Pass vs others
     const durationSection = document.getElementById('durationSection');
     const instructorSection = document.getElementById('instructorSection');
 
     if (planType === 'day-pass') {
         if (durationSection) durationSection.style.display = 'none';
         if (instructorSection) instructorSection.style.display = 'none';
+
+        // Reset to minimums for day pass
+        membershipDuration = 1;
+        instructorSessions = 0;
     } else {
         if (durationSection) durationSection.style.display = 'block';
         if (instructorSection) instructorSection.style.display = 'block';
+
+        // Ensure defaults for memberships
+        if (membershipDuration < 1) membershipDuration = 1;
         updateExpirationDate();
+    }
+
+    // Refresh summaries immediately
+    if (typeof updateOrderSummary === 'function') {
+        updateOrderSummary();
     }
 }
 
@@ -206,7 +231,6 @@ function updateExpirationDate() {
 }
 
 // Instructor Toggle
-// Instructor Toggle Fixed
 function toggleInstructor() {
     const checkbox = document.getElementById('instructorCheckbox');
     const quantitySection = document.getElementById('instructorQuantity');
@@ -214,19 +238,18 @@ function toggleInstructor() {
     if (!checkbox) return;
 
     // Explicitly toggle visual state if triggered by parent div click
-    // Note: click on label/input handles itself, so this check prevents double-toggle
-    if (event.target.type !== 'checkbox') {
+    if (event && event.target.type !== 'checkbox') {
         checkbox.checked = !checkbox.checked;
     }
 
     if (quantitySection) {
         quantitySection.style.display = checkbox.checked ? 'block' : 'none';
         if (checkbox.checked) {
-            quantitySection.classList.add('active'); // Trigger animation
+            quantitySection.classList.add('active');
         }
     }
 
-    updateOrderSummary(); // Update price immediately
+    updateOrderSummary();
 }
 
 function incrementInstructor() {
@@ -275,16 +298,15 @@ function validateStep2() {
         const nameInput = document.getElementById('memberNameModern');
         const emailInput = document.getElementById('memberEmailModern');
         const phoneInput = document.getElementById('memberPhoneModern');
-        const photoInput = document.getElementById('memberPhotoModern');
 
         if (!nameInput || !nameInput.value.trim()) {
             showNotification('Please enter member name', 'error');
             return false;
         }
 
-        if (!emailInput || !emailInput.value.trim() || !isValidEmail(emailInput.value)) {
-            showNotification('Please enter a valid email address', 'error');
-            return false;
+        if (!emailInput || !emailInput.value.trim()) { // Simplified email check for now
+            // showNotification('Please enter email', 'error');
+            // return false;
         }
 
         if (!phoneInput || !phoneInput.value.trim()) {
@@ -292,33 +314,11 @@ function validateStep2() {
             return false;
         }
 
-        // FIX: Check if "has-photo" class exists on preview wrapper OR file input has files
-        // This handles cases where file is selected but input.files might be cleared/reset weirdly
-        const preview = document.getElementById('photoPreviewGlass');
-        const hasPhotoClass = preview && preview.classList.contains('has-photo');
-        const hasFile = photoInput && photoInput.files && photoInput.files.length > 0;
-
-        if (!hasPhotoClass && !hasFile) {
-            showNotification('Please upload a photo', 'error');
-            // Visual feedback
-            if (preview) {
-                preview.style.borderColor = 'var(--danger)';
-                setTimeout(() => preview.style.borderColor = '', 2000);
-            }
-            return false;
-        }
-
         return true;
     }
 }
 
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Photo Upload
-// Photo Upload Fix
+// Photo Preview Logic
 function previewPhotoModern(input) {
     const box = document.getElementById('photoPreviewGlass');
     const removeBtn = document.getElementById('removePhotoModern');
@@ -326,17 +326,12 @@ function previewPhotoModern(input) {
     if (!input.files || !input.files[0]) return;
 
     const reader = new FileReader();
-
     reader.onload = function (e) {
-        // Do NOT overwrite innerHTML (keeps input alive)
-
-        // Hide placeholder elements (icon and span)
         const icon = box.querySelector('.fa-camera');
         const span = box.querySelector('span');
         if (icon) icon.style.display = 'none';
         if (span) span.style.display = 'none';
 
-        // Show/Create Image
         let img = box.querySelector('img');
         if (!img) {
             img = document.createElement('img');
@@ -348,7 +343,6 @@ function previewPhotoModern(input) {
         box.classList.add('has-photo');
         if (removeBtn) removeBtn.style.display = 'flex';
     };
-
     reader.readAsDataURL(input.files[0]);
 }
 
@@ -361,12 +355,9 @@ function removePhotoModern() {
 
     if (box) {
         box.classList.remove('has-photo');
-
-        // Remove or hide image
         const img = box.querySelector('img');
         if (img) img.style.display = 'none';
 
-        // Show placeholder
         const icon = box.querySelector('.fa-camera');
         const span = box.querySelector('span');
         if (icon) icon.style.display = 'block';
@@ -379,8 +370,17 @@ function removePhotoModern() {
 // ===== STEP 3: PAYMENT & CONFIRMATION =====
 
 function prepareStep3() {
+    // Just ensure the summary is up to date when entering this step
     updateOrderSummary();
 }
+
+function validateStep3() {
+    // Since payment is defaulted to 'gcash' and QR is removed, 
+    // there's technically nothing to fail validation unless we add payment checking later.
+    return true;
+}
+
+// REMOVED: QR Selection Modal & Logic (As requested)
 
 function updateOrderSummary() {
     const summaryPlan = document.getElementById('summaryPlan');
@@ -742,14 +742,27 @@ function displayRegistrationReceipt() {
     document.getElementById('regStepFlow').style.display = 'none';
 
     // Use NEW unified receipt generator (unified_receipt.js)
-    generateUnifiedReceipt({
+    // Generate Receipt Data
+    const receiptData = {
         memberName: memberName,
         memberId: memberId,
         transactionName: transactionLabel,
-        amount: total,
+        amount: total, // Using 'total' from existing calculation
         paymentMethod: selectedPaymentMethod,
-        onDone: showCheckinPrompt
-    });
+        date: new Date(),
+        qrId: null, // QR removed from flow
+        onDone: () => {
+            // After receipt is closed, show check-in prompt
+            showCheckinPrompt({
+                name: memberName,
+                id: memberId,
+                type: isDayPass ? 'Day Pass' : 'Membership',
+                isDayPass: isDayPass
+            });
+        }
+    };
+
+    generateUnifiedReceipt(receiptData);
 }
 
 function printRegistrationReceipt() {

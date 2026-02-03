@@ -816,10 +816,10 @@
 
                                     <!-- STEP 3: Payment & Confirmation -->
                                     <div class="step-content" id="step3">
-                                        <div class="glass-card">
+                                        <div class="glass-card" style="max-width: 600px; margin: 0 auto;">
                                             <h3 class="step-title">Payment & Confirmation</h3>
 
-                                            <!-- Order Summary -->
+                                            <!-- Order Summary (Centered Layout) -->
                                             <div class="order-summary-glass">
                                                 <h4>Order Summary</h4>
                                                 <div class="summary-row">
@@ -842,8 +842,8 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Payment Method Selection -->
-                                            <div class="payment-method-section">
+                                            <!-- Payment Method (Centered Layout) -->
+                                            <div class="payment-method-section" style="margin-top: 24px;">
                                                 <label class="payment-label">Select Payment Method</label>
                                                 <div class="payment-options-glass">
                                                     <div class="payment-option-glass active" data-payment="gcash"
@@ -867,7 +867,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Step Navigation -->
                                             <div class="step-nav-buttons">
                                                 <button class="btn-step-back"
                                                     onclick="event.stopPropagation(); goToStep(2);">

@@ -76,17 +76,21 @@ function generateUnifiedReceipt(data) {
 
                 <hr class="unified-divider">
 
-                <!-- QR Code -->
+                <!-- QR Code (Conditional) -->
+                ${data.qrId ? `
                 <div class="unified-qr-section">
                     <span class="unified-label">MEMBER QR CODE</span>
-                    <div class="unified-qr-container">
-                        <div class="unified-qr-grid" id="qrGrid"></div>
-                        <div class="unified-qr-center">${memberId}</div>
+                    <div class="unified-qr-container" id="receiptQrContainer">
+                         <div class="qr-id-display-receipt">
+                            <span class="qr-id-label">Assigned QR ID</span>
+                            <strong class="qr-id-value">${data.qrId}</strong>
+                            <span class="qr-id-hint">Code on Card</span>
+                        </div>
                     </div>
                     <span class="unified-subtext">Scan this code for gym access</span>
                 </div>
-
                 <hr class="unified-divider">
+                ` : ''}
 
                 <!-- Payment Details -->
                 <div class="unified-row">
@@ -119,15 +123,28 @@ function generateUnifiedReceipt(data) {
 
     document.body.appendChild(overlay);
 
-    // Generate QR Grid pattern (Random pseudo-QR)
-    const qrGrid = document.getElementById('qrGrid');
-    if (qrGrid) {
-        let gridHTML = '';
-        for (let i = 0; i < 100; i++) {
-            const isBlack = Math.random() > 0.5;
-            gridHTML += `<div style="background: ${isBlack ? '#000' : '#fff'};"></div>`;
+    // 4. Generate QR Code (NOW: Display QR ID Text)
+    const qrContainer = document.getElementById('receiptQrContainer');
+    if (qrContainer) {
+        qrContainer.innerHTML = ''; // Clear previous
+
+        if (data.qrId) {
+            // Display QR ID Text
+            qrContainer.innerHTML = `
+                <div class="qr-id-display-receipt">
+                    <span class="qr-id-label">Assigned QR ID</span>
+                    <strong class="qr-id-value">${data.qrId}</strong>
+                    <span class="qr-id-hint">Code on Card</span>
+                </div>
+            `;
+        } else {
+            // Fallback if no QR ID (e.g., legacy or error)
+            qrContainer.innerHTML = `
+                <div class="qr-placeholder">
+                    <span>No QR ID</span>
+                </div>
+            `;
         }
-        qrGrid.innerHTML = gridHTML;
     }
 
     // Event Listeners
