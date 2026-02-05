@@ -1,3 +1,36 @@
+/* Shop Button Styling */
+.btn-shop {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #b8960c 0%, #8a6f09 100%);
+    border: 1px solid rgba(184, 150, 12, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(184, 150, 12, 0.2);
+}
+
+.btn-shop:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(184, 150, 12, 0.4);
+    background: linear-gradient(135deg, #c9a617 0%, #9b7d0a 100%);
+}
+
+.btn-shop i {
+    font-size: 16px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 :root {
     --active-ratio: 2.5fr;
     --inactive-ratio: 1fr;

@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="renewal_enhanced.css">
     <link rel="stylesheet" href="sidebar_premium.css">
     <link rel="stylesheet" href="unified_receipt.css">
+    <link rel="stylesheet" href="../inventory/inventory.css">
 </head>
 
 <body class="dashboard-body">
@@ -80,7 +81,13 @@
                 <div class="header-left">
                     <h1 class="page-title">Front Desk <span class="text-accent">Operations</span></h1>
                 </div>
-                <div class="header-date"><i class="fas fa-calendar-alt"></i> <span id="dateDisplay"></span></div>
+                <div class="header-right">
+                    <button class="btn-shop" onclick="window.location.href='../inventory/inventory.php?openShop=true'" title="Open Shop POS">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Shop</span>
+                    </button>
+                    <div class="header-date"><i class="fas fa-calendar-alt"></i> <span id="dateDisplay"></span></div>
+                </div>
             </header>
 
             <!-- Dynamic Grid -->
@@ -1185,11 +1192,127 @@
     </div>
 
 
+
+
+    <!-- Toast Notification -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ============================= -->
+    <!-- SHOP POS MODAL -->
+    <!-- ============================= -->
+    <div class="modal-overlay shop-modal" id="shopModal">
+        <div class="shop-container">
+            <div class="shop-header">
+                <div class="shop-header-left">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>Shop POS</h2>
+                </div>
+                <button class="modal-close" onclick="closeShopInterface()" title="Close Shop">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="shop-layout">
+                <div class="products-panel">
+                    <div class="products-header">
+                        <div class="products-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="posProductSearch" placeholder="Search products..." oninput="filterShopPOS()">
+                        </div>
+                        <div class="products-count" id="posProductCount">
+                            <i class="fas fa-box"></i>
+                            <span>0 products</span>
+                        </div>
+                    </div>
+                    <div class="products-grid" id="posProductsGrid"></div>
+                    <div class="empty-state" id="posEmptyState">
+                        <i class="fas fa-inbox"></i>
+                        <p>No products available</p>
+                    </div>
+                </div>
+
+                <div class="cart-panel">
+                    <div class="cart-header">
+                        <i class="fas fa-shopping-basket"></i>
+                        <h3>Current Order</h3>
+                        <button class="cart-clear" onclick="clearCart()" title="Clear Cart">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="cart-items" id="cartItems">
+                        <div class="empty-cart">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Add products to start</p>
+                        </div>
+                    </div>
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="cartSubtotal">₱0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (0%):</span>
+                            <span id="cartTax">₱0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span class="summary-value" id="cartTotal">₱0.00</span>
+                        </div>
+                    </div>
+                    <div class="cart-customer">
+                        <label><i class="fas fa-user"></i> Customer Name (Optional)</label>
+                        <input type="text" id="customerName" placeholder="Enter customer name">
+                    </div>
+                    <div class="cart-payment">
+                        <label><i class="fas fa-credit-card"></i> Payment Method</label>
+                        <div class="payment-methods">
+                            <button class="payment-btn active" data-method="cash" onclick="selectPaymentMethod('cash')">
+                                <i class="fas fa-money-bill-wave"></i> Cash
+                            </button>
+                            <button class="payment-btn" data-method="gcash" onclick="selectPaymentMethod('gcash')">
+                                <i class="fab fa-google-pay"></i> GCash
+                            </button>
+                            <button class="payment-btn" data-method="card" onclick="selectPaymentMethod('card')">
+                                <i class="fas fa-credit-card"></i> Card
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn-checkout" id="checkoutBtn" onclick="processCheckout()" disabled>
+                        <i class="fas fa-check-circle"></i> Complete Sale
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================= -->
+    <!-- RECEIPT MODAL -->
+    <!-- ============================= -->
+    <div class="modal-overlay receipt-modal" id="receiptModal">
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <h3>Receipt</h3>
+                <div class="receipt-actions">
+                    <button class="btn-print" onclick="printReceipt()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button class="btn-close-receipt" onclick="closeReceiptModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="receipt-content" id="receiptContent"></div>
+        </div>
+    </div>
     <script src="unified_receipt.js"></script>
     <script src="directory_functions.js"></script>
     <script src="registration_forms.js"></script>
     <script src="renewal_enhanced.js"></script>
     <script src="members.js"></script>
+
+    <!-- Shop POS Integration - Load Inventory JS -->
+    <script src="../inventory/inventory.js"></script>
 </body>
 
 </html>
+
