@@ -1,0 +1,9 @@
+/* Sticky Header - Transparent with subtle shadow */
+.registration-header-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    background: transparent !important;
+    padding: 20px !important;
+    margin-bottom: 0 !important;
+}

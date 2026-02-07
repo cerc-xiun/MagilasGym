@@ -1,0 +1,267 @@
+/* Unified Receipt System - Scoped Styles */
+.unified-receipt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    font-family: 'Inter', sans-serif;
+}
+
+.unified-receipt-overlay.active {
+    display: flex;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.unified-receipt-card {
+    background: white;
+    width: 400px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: slideIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.unified-receipt-header {
+    background: #b8960c;
+    /* Gold color matching screenshot */
+    padding: 32px 24px;
+    text-align: center;
+    color: white;
+}
+
+.unified-receipt-icon {
+    width: 48px;
+    height: 48px;
+    background: white;
+    border-radius: 50%;
+    color: #b8960c;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.unified-receipt-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.unified-receipt-header p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* Body */
+.unified-receipt-body {
+    padding: 24px;
+    background: white;
+    flex: 1;
+}
+
+.unified-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+.unified-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #6b7280;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.unified-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+    text-align: right;
+}
+
+.unified-value.large {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.unified-subtext {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: -4px;
+    display: block;
+}
+
+.unified-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 16px 0;
+    border: none;
+    border-top: 1px dashed #e5e7eb;
+}
+
+/* QR Section */
+.unified-qr-section {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.unified-qr-container {
+    width: 140px;
+    height: 140px;
+    background: #000;
+    padding: 8px;
+    border: 3px solid #b8960c;
+    border-radius: 8px;
+    margin: 12px auto;
+    position: relative;
+}
+
+.unified-qr-grid {
+    background: white;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px;
+}
+
+.unified-qr-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2px 6px;
+    border: 1px solid #b8960c;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 800;
+    color: #b8960c;
+    z-index: 10;
+}
+
+/* Total Section */
+.unified-total-box {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.unified-total-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.unified-total-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: #b8960c;
+}
+
+/* Footer */
+.unified-receipt-footer {
+    padding: 16px 24px 24px;
+    background: white;
+    display: flex;
+    gap: 12px;
+}
+
+.unified-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.unified-btn.print {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.unified-btn.done {
+    background: #b8960c;
+    color: white;
+    flex: 2;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .unified-receipt-card,
+    .unified-receipt-card * {
+        visibility: visible;
+    }
+
+    .unified-receipt-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .unified-receipt-footer {
+        display: none;
+    }
+
+    .unified-receipt-overlay {
+        position: static;
+        display: block;
+        background: white;
+    }
+}
