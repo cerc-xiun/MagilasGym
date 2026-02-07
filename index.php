@@ -83,7 +83,7 @@
             <h2 class="dev-card-title">DASHBOARDS</h2>
           </div>
           <div class="dev-links">
-            <a href="pages/staff/dashboard.php" class="dev-link">
+            <a href="./pages/staff/members/members.php" class="dev-link">
               <span class="status-dot active"></span>
               Staff Portal
             </a>
